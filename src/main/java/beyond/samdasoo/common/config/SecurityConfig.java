@@ -34,7 +34,7 @@ public class SecurityConfig {
         // 인증 인가 관련
         httpSecurity
                 .authorizeHttpRequests((auth) -> auth
-                        .requestMatchers("/users/signup"
+                        .requestMatchers("/test/**"
                         ).permitAll()
 //                        .requestMatchers("/admin").hasRole("ADMIN")
                         .anyRequest().authenticated()
