@@ -1,6 +1,6 @@
 # SalesBoost
 
-> ### Team - 3dasu
+> ### Team - 3dasoo
 <br>
 
 ## 👨‍👩‍👧‍👦 팀원
