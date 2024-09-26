@@ -1,5 +1,6 @@
 package beyond.samdasoo.user.controller;
 import beyond.samdasoo.user.dto.JoinUserReq;
+import beyond.samdasoo.user.dto.LoginUserReq;
 import beyond.samdasoo.user.service.UserService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -28,4 +29,13 @@ public class UserController {
     /**
      * 로그인 API
      */
+    @PostMapping("/login")
+    public String login(@RequestBody @Valid LoginUserReq loginUserReq){
+
+            userService.login(loginUserReq);
+
+            return "로그인 완료";
+    }
+
+
 }
