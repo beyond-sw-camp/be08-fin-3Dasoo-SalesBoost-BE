@@ -1,6 +1,6 @@
 ---
 name: "⭕️ Test Template"
-about: Create a report to help us improve
+about: 테스트 템플릿
 title: "[Test]"
 labels: test
 assignees: ''
