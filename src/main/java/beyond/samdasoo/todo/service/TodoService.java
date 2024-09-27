@@ -50,16 +50,16 @@ public class TodoService {
     }
 
     @Transactional(readOnly = true)
-    public TodoResponseDto getTodoById(Long id) {
-        Todo todo = todoRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("할 일을 찾을 수 없습니다: " + id));
+    public TodoResponseDto getTodoById(Long no) {
+        Todo todo = todoRepository.findById(no)
+                .orElseThrow(() -> new RuntimeException("할 일을 찾을 수 없습니다: " + no));
         return new TodoResponseDto(todo);
     }
 
     @Transactional
-    public void updateTodo(Long id, TodoUpdateDto todoUpdateDto) {
-        Todo todo = todoRepository.findById(id)
-                .orElseThrow(() -> new EntityNotFoundException("할 일을 찾을 수 없습니다: " + id));
+    public void updateTodo(Long no, TodoUpdateDto todoUpdateDto) {
+        Todo todo = todoRepository.findById(no)
+                .orElseThrow(() -> new EntityNotFoundException("할 일을 찾을 수 없습니다: " + no));
 
         Optional.ofNullable(todoUpdateDto.getTitle()).ifPresent(todo::setTitle);
         Optional.ofNullable(todoUpdateDto.getTodoCls()).ifPresent(todo::setTodoCls);
@@ -70,4 +70,10 @@ public class TodoService {
         Optional.ofNullable(todoUpdateDto.getStatus()).ifPresent(todo::setStatus);
     }
 
+    public void deleteTodo(Long no) {
+        Todo todo = todoRepository.findById(no)
+                .orElseThrow(() -> new RuntimeException("할 일을 찾을 수 없습니다: " + no));
+
+        todoRepository.delete(todo);
+    }
 }
