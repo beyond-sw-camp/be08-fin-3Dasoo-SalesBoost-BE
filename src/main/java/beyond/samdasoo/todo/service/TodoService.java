@@ -4,12 +4,15 @@ import beyond.samdasoo.member.entity.Member;
 import beyond.samdasoo.member.repository.MemberRepository;
 import beyond.samdasoo.todo.dto.TodoRequestDto;
 import beyond.samdasoo.todo.dto.TodoResponseDto;
+import beyond.samdasoo.todo.dto.TodoUpdateDto;
 import beyond.samdasoo.todo.entity.Todo;
 import beyond.samdasoo.todo.repository.TodoRepository;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.Optional;
 
 @Service
 public class TodoService {
@@ -53,5 +56,18 @@ public class TodoService {
         return new TodoResponseDto(todo);
     }
 
+    @Transactional
+    public void updateTodo(Long id, TodoUpdateDto todoUpdateDto) {
+        Todo todo = todoRepository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException("할 일을 찾을 수 없습니다: " + id));
+
+        Optional.ofNullable(todoUpdateDto.getTitle()).ifPresent(todo::setTitle);
+        Optional.ofNullable(todoUpdateDto.getTodoCls()).ifPresent(todo::setTodoCls);
+        Optional.ofNullable(todoUpdateDto.getPriority()).ifPresent(todo::setPriority);
+        Optional.ofNullable(todoUpdateDto.getDueDate()).ifPresent(todo::setDueDate);
+        Optional.ofNullable(todoUpdateDto.getPrivateYn()).ifPresent(todo::setPrivateYn);
+        Optional.ofNullable(todoUpdateDto.getContent()).ifPresent(todo::setContent);
+        Optional.ofNullable(todoUpdateDto.getStatus()).ifPresent(todo::setStatus);
+    }
 
 }

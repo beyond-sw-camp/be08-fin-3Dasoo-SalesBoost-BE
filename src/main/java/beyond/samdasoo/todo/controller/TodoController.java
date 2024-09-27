@@ -2,6 +2,7 @@ package beyond.samdasoo.todo.controller;
 
 import beyond.samdasoo.todo.dto.TodoRequestDto;
 import beyond.samdasoo.todo.dto.TodoResponseDto;
+import beyond.samdasoo.todo.dto.TodoUpdateDto;
 import beyond.samdasoo.todo.service.TodoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -31,4 +32,9 @@ public class TodoController {
         return ResponseEntity.ok(responseDto);
     }
 
+    @PatchMapping("/{no}")
+    public ResponseEntity<Void> patchUpdateTodo(@PathVariable("no") Long no, @RequestBody TodoUpdateDto todoUpdateDto) {
+        todoService.updateTodo(no, todoUpdateDto);
+        return ResponseEntity.noContent().build();
+    }
 }
