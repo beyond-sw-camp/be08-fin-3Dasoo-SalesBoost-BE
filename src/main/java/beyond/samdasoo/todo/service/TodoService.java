@@ -30,17 +30,16 @@ public class TodoService {
         Member member = memberRepository.findById(todoRequestDto.getMemberNo())
                 .orElseThrow(() -> new EntityNotFoundException("회원 ID 조회 불가: " + todoRequestDto.getMemberNo()));
 
-        Todo todo = new Todo();
-        todo.setTitle(todoRequestDto.getTitle());
-        todo.setTodoCls(todoRequestDto.getTodoCls());
-        todo.setPriority(todoRequestDto.getPriority());
-        todo.setDueDate(todoRequestDto.getDueDate());
-        todo.setNotiYn(todoRequestDto.getNotiYn());
-        todo.setNotiDay(todoRequestDto.getNotiDay());
-        todo.setStatus(todoRequestDto.getStatus());
-        todo.setPrivateYn(todoRequestDto.getPrivateYn());
-        todo.setContent(todoRequestDto.getContent());
-        todo.setMemberNo(member);
+        Todo todo = Todo.builder()
+                .title(todoRequestDto.getTitle())
+                .todoCls(todoRequestDto.getTodoCls())
+                .priority(todoRequestDto.getPriority())
+                .dueDate(todoRequestDto.getDueDate())
+                .status(todoRequestDto.getStatus())
+                .privateYn(todoRequestDto.getPrivateYn())
+                .content(todoRequestDto.getContent())
+                .memberNo(member)
+                .build();
 
         todo = todoRepository.save(todo);
 
