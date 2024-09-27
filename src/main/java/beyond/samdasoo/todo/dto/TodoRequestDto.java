@@ -13,8 +13,6 @@ public class TodoRequestDto {
     private String todoCls;
     private String priority;
     private Date dueDate;
-    private String notiYn;
-    private String notiDay;
     private TodoStatus status;
     private String privateYn;
     private String content;
