@@ -2,7 +2,7 @@
 name: "✅ Feature Template"
 about: 기능 구현 관련 템플릿
 title: "[Feat] "
-labels: Feat
+labels: backend, feat
 assignees: ''
 
 ---
@@ -19,3 +19,5 @@ assignees: ''
 
 <br>
 
+## 🆔 관련 요구사항 ID
+REQ{ID번호}
