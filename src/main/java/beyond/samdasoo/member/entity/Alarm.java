@@ -2,9 +2,13 @@ package beyond.samdasoo.member.entity;
 
 import beyond.samdasoo.common.entity.BaseEntity;
 import jakarta.persistence.*;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
 
+
+@NoArgsConstructor
 @Entity
 public class Alarm extends BaseEntity {
 
@@ -18,4 +22,6 @@ public class Alarm extends BaseEntity {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name="member_id")
     private Member member;
+
+
 }
