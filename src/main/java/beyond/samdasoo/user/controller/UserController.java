@@ -1,4 +1,5 @@
 package beyond.samdasoo.user.controller;
+import beyond.samdasoo.common.response.BaseResponse;
 import beyond.samdasoo.user.dto.JoinUserReq;
 import beyond.samdasoo.user.dto.LoginUserReq;
 import beyond.samdasoo.user.service.UserService;
@@ -21,21 +22,22 @@ public class UserController {
      * 회원가입 API
      */
     @PostMapping("/join")
-    public String join(@RequestBody @Valid JoinUserReq joinUserReq){
+    public BaseResponse<String> join(@RequestBody @Valid JoinUserReq joinUserReq){
           userService.join(joinUserReq);
-          return "회원가입 완료";
+          return new BaseResponse<>("회원가입을 완료했습니다");
     }
 
     /**
      * 로그인 API
      */
     @PostMapping("/login")
-    public String login(@RequestBody @Valid LoginUserReq loginUserReq){
+    public BaseResponse<String> login(@RequestBody @Valid LoginUserReq loginUserReq){
 
             userService.login(loginUserReq);
 
-            return "로그인 완료";
+            return new BaseResponse<>("로그인을 완료했습니다");
     }
+
 
 
 
