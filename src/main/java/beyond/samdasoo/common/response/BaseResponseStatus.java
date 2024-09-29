@@ -14,7 +14,10 @@ public enum BaseResponseStatus {
     /**
      * 400 : Request, Response 오류
      */
-
+    /**
+     *  jwt 관련
+     */
+    JWT_AUTH_EMPTY(false, HttpStatus.UNAUTHORIZED.value(),"권한 정보가 없는 토큰입니다."),
     /**
      * user 관련
      */

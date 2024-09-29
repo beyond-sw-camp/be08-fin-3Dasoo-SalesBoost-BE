@@ -1,5 +1,6 @@
 package beyond.samdasoo.common.config;
 
+import beyond.samdasoo.common.exception.JwtAuthenticationEntrypoint;
 import beyond.samdasoo.common.jwt.JwtAuthenticationFilter;
 import beyond.samdasoo.common.jwt.JwtTokenProvider;
 import jdk.jfr.Enabled;
@@ -28,6 +29,7 @@ import java.util.Arrays;
 public class SecurityConfig {
 
     private final JwtTokenProvider jwtTokenProvider;
+    private final JwtAuthenticationEntrypoint jwtAuthenticationEntrypoint;
 
     @Bean
     public BCryptPasswordEncoder bCryptPasswordEncoder() {
@@ -51,7 +53,7 @@ public class SecurityConfig {
         httpSecurity
                 .cors(cors -> cors.configurationSource(corsConfigurationSource()))
                 .authorizeHttpRequests((auth) -> auth
-                .requestMatchers("/api/**","/swagger-ui/**", "/v3/api-docs/**").permitAll()
+              //  .requestMatchers("/api/**","/swagger-ui/**", "/v3/api-docs/**").permitAll()
                 .anyRequest().authenticated()
           );
 
@@ -60,6 +62,9 @@ public class SecurityConfig {
                 .sessionManagement((session) -> session
                         .sessionCreationPolicy(SessionCreationPolicy.STATELESS));
 
+        httpSecurity
+                .exceptionHandling(httpSecurityExceptionHandlingConfigurer
+                        -> httpSecurityExceptionHandlingConfigurer.authenticationEntryPoint(jwtAuthenticationEntrypoint));
         httpSecurity
                 .addFilterBefore(new JwtAuthenticationFilter(jwtTokenProvider), UsernamePasswordAuthenticationFilter.class);
 
