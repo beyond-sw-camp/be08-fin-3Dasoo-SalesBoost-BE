@@ -1,8 +1,6 @@
 package beyond.samdasoo.common.jwt;
 
 import io.jsonwebtoken.Jwts;
-import io.jsonwebtoken.io.Decoders;
-import io.jsonwebtoken.security.Keys;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
@@ -13,13 +11,13 @@ import java.util.Date;
 import java.util.Objects;
 
 @Component
-public class JwtUtil { // Jwt 생성
+public class JwtTokenProvider { // Jwt 생성
 
     private final SecretKey secretKey;
     private final long accessTokenValidMs;
     private final long refreshTokenValidMs;
 
-    public JwtUtil(@Value("${jwt.secret") String secret, @Value("${jwt.token-valid-in-sec}") long tokenValidInSec){
+    public JwtTokenProvider(@Value("${jwt.secret") String secret, @Value("${jwt.token-valid-in-sec}") long tokenValidInSec){
         this.secretKey = new SecretKeySpec(secret.getBytes(StandardCharsets.UTF_8), Jwts.SIG.HS256.key().build().getAlgorithm());
         this.accessTokenValidMs = tokenValidInSec*1000/24; // 1
         this.refreshTokenValidMs = tokenValidInSec*1000/60;

@@ -19,7 +19,7 @@ public class BaseEntity {
 
     @UpdateTimestamp
     @Column(name = "updatedAt" , nullable = false)
-    private LocalDateTime updatedAt;
+    private LocalDateTime updatedAt; // column 생성 날짜
 
 
 }
