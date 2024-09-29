@@ -1,12 +1,12 @@
 package beyond.samdasoo.todo.service;
 
-import beyond.samdasoo.member.entity.Member;
-import beyond.samdasoo.member.repository.MemberRepository;
 import beyond.samdasoo.todo.dto.TodoRequestDto;
 import beyond.samdasoo.todo.dto.TodoResponseDto;
 import beyond.samdasoo.todo.dto.TodoUpdateDto;
 import beyond.samdasoo.todo.entity.Todo;
 import beyond.samdasoo.todo.repository.TodoRepository;
+import beyond.samdasoo.user.entity.User;
+import beyond.samdasoo.user.repository.UserRepository;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -19,19 +19,19 @@ public class TodoService {
 
     private final TodoRepository todoRepository;
 
-    private final MemberRepository memberRepository;
+    private final UserRepository userRepository;
 
     @Autowired
-    public TodoService(TodoRepository todoRepository, MemberRepository memberRepository) {
+    public TodoService(TodoRepository todoRepository, UserRepository userRepository) {
         this.todoRepository = todoRepository;
-        this.memberRepository = memberRepository;
+        this.userRepository = userRepository;
     }
 
     @Transactional
     public TodoResponseDto createTodo(TodoRequestDto todoRequestDto){
 
-        Member member = memberRepository.findById(todoRequestDto.getMemberNo())
-                .orElseThrow(() -> new EntityNotFoundException("회원 ID 조회 불가: " + todoRequestDto.getMemberNo()));
+        User user = userRepository.findById(todoRequestDto.getUserNo())
+                .orElseThrow(() -> new EntityNotFoundException("회원 ID 조회 불가: " + todoRequestDto.getUserNo()));
 
         Todo todo = Todo.builder()
                 .title(todoRequestDto.getTitle())
@@ -41,7 +41,7 @@ public class TodoService {
                 .status(todoRequestDto.getStatus())
                 .privateYn(todoRequestDto.getPrivateYn())
                 .content(todoRequestDto.getContent())
-                .memberNo(member)
+                .userNo(user)
                 .build();
 
         todo = todoRepository.save(todo);

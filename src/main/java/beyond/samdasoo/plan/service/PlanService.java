@@ -1,6 +1,5 @@
 package beyond.samdasoo.plan.service;
 
-import beyond.samdasoo.member.entity.Member;
 import beyond.samdasoo.plan.dto.PlanRequestDto;
 import beyond.samdasoo.plan.dto.PlanResponseDto;
 import beyond.samdasoo.plan.dto.PlanUpdateDto;
