@@ -8,6 +8,7 @@ import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpHeaders;
+import org.springframework.security.core.Authentication;
 import org.springframework.util.PatternMatchUtils;
 import org.springframework.web.filter.OncePerRequestFilter;
 import java.io.IOException;
@@ -38,12 +39,26 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter { // JWT 검�
             request.setAttribute("exception", BaseResponseStatus.JWT_AUTH_EMPTY);
          //    response.sendError(HttpServletResponse.SC_BAD_REQUEST,"JWT Token cannot be parsed");
             filterChain.doFilter(request, response);
+            return;
         }else{
             if(authorizationHeader.startsWith("Bearer")){
                 jwtToken = authorizationHeader.substring(7);
+                if(jwtTokenProvider.validateToken(jwtToken)){ // 토큰 유효성 검사
+                    if(jwtTokenProvider.isExpiredToken(jwtToken)){ // 만료 검사
+                        request.setAttribute("exception",BaseResponseStatus.JWT_EXPIRED_ACCESS_TOKEN);
+                        filterChain.doFilter(request,response);
+                        return;
+                    }
+                }else {
+                    request.setAttribute("exception", BaseResponseStatus.JWT_INVALID_ACCESS_TOKEN); // 실패
+                    filterChain.doFilter(request, response);
+                    return;
+                }
+
             }
         }
 
+        filterChain.doFilter(request,response);
 
     }
 
