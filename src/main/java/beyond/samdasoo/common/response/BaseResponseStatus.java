@@ -21,6 +21,7 @@ public enum BaseResponseStatus {
 
     EMAIL_ALREADY_EXIST(false,HttpStatus.BAD_REQUEST.value(), "이미 사용중인 이메일입니다"),
     EMAIL_OR_PWD_NOT_FOUND(false,HttpStatus.BAD_REQUEST.value(), "이메일/비밀번호를 확인해주세요"),
+    USER_NOT_EXIST(false, HttpStatus.BAD_REQUEST.value(), "존재하지 않는 회원입니다"),
 
 
     /**

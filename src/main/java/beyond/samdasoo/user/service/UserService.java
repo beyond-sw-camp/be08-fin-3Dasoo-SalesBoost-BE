@@ -3,6 +3,7 @@ package beyond.samdasoo.user.service;
 import beyond.samdasoo.common.exception.BaseException;
 import beyond.samdasoo.user.dto.JoinUserReq;
 import beyond.samdasoo.user.dto.LoginUserReq;
+import beyond.samdasoo.user.dto.UserDto;
 import beyond.samdasoo.user.entity.User;
 import beyond.samdasoo.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
@@ -12,8 +13,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.Optional;
 
-import static beyond.samdasoo.common.response.BaseResponseStatus.EMAIL_ALREADY_EXIST;
-import static beyond.samdasoo.common.response.BaseResponseStatus.EMAIL_OR_PWD_NOT_FOUND;
+import static beyond.samdasoo.common.response.BaseResponseStatus.*;
 
 @RequiredArgsConstructor
 @Service
@@ -46,5 +46,12 @@ public class UserService {
         }
 
         // todo : jwt 토큰 발급
+    }
+
+    public UserDto getUser(Long userId) {
+
+        User findUser = userRepository.findById(userId).orElseThrow(()->new BaseException(USER_NOT_EXIST));
+
+        return new UserDto(findUser.getName(), findUser.getEmail());
     }
 }
