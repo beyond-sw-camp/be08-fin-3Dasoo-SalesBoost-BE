@@ -1,7 +1,9 @@
 package beyond.samdasoo.user.service;
 
+import beyond.samdasoo.common.exception.BaseException;
 import beyond.samdasoo.user.dto.JoinUserReq;
 import beyond.samdasoo.user.dto.LoginUserReq;
+import beyond.samdasoo.user.dto.UserDto;
 import beyond.samdasoo.user.entity.User;
 import beyond.samdasoo.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
@@ -10,6 +12,8 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
+
+import static beyond.samdasoo.common.response.BaseResponseStatus.*;
 
 @RequiredArgsConstructor
 @Service
@@ -21,7 +25,7 @@ public class UserService {
     public void join(JoinUserReq joinUserReq){
         Optional<User> byEmail = userRepository.findByEmail(joinUserReq.getEmail());
         if(byEmail.isPresent()){
-            throw new IllegalArgumentException("이미 가입한 이메일");
+            throw new BaseException(EMAIL_ALREADY_EXIST);
         }
 
        User newUser = joinUserReq.toUser(encoder.encode(joinUserReq.getPassword()));
@@ -32,18 +36,22 @@ public class UserService {
 
     public void login(LoginUserReq loginUserReq){
 
-        Optional<User> findUser = userRepository.findByEmail(loginUserReq.getEmail());
+        User findUser = userRepository.findByEmail(loginUserReq.getEmail())
+                .orElseThrow(()->new BaseException(EMAIL_OR_PWD_NOT_FOUND));
 
-        if(!findUser.isPresent()){
-            throw new IllegalArgumentException("이메일 다시 확인");
-        }
-
-        boolean matches = encoder.matches(loginUserReq.getPassword(), findUser.get().getPassword());
+        boolean matches = encoder.matches(loginUserReq.getPassword(), findUser.getPassword());
 
         if(!matches){
-            throw new IllegalArgumentException("비밀번호 다시 확인");
+            throw new BaseException(EMAIL_ALREADY_EXIST);
         }
 
         // todo : jwt 토큰 발급
+    }
+
+    public UserDto getUser(Long userId) {
+
+        User findUser = userRepository.findById(userId).orElseThrow(()->new BaseException(USER_NOT_EXIST));
+
+        return new UserDto(findUser.getName(), findUser.getEmail());
     }
 }
