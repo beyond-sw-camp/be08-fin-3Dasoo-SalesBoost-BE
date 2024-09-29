@@ -1,21 +1,21 @@
 package beyond.samdasoo.todo.entity;
 
 import beyond.samdasoo.common.entity.BaseEntity;
-import beyond.samdasoo.member.entity.Member;
+import beyond.samdasoo.user.entity.User;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.util.Date;
+import java.time.LocalDate;
 
-@Table(name="tb_todo")
-@AllArgsConstructor
-@NoArgsConstructor
-@Builder
-@Entity
 @Data
+@Entity
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
+@Table(name="tb_todo")
 public class Todo extends BaseEntity {
 
     @Id
@@ -23,8 +23,8 @@ public class Todo extends BaseEntity {
     private Long no;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name="member_id", nullable=false)
-    private Member memberNo;
+    @JoinColumn(name="user_no", nullable=false)
+    private User userNo;
 
     @Column(name = "title", nullable = false)
     private String title;
@@ -36,7 +36,7 @@ public class Todo extends BaseEntity {
     private String priority;
 
     @Column(name = "due_date")
-    private Date dueDate;
+    private LocalDate dueDate;
 
 //    TODO: 알람기능 필요 시 추가하도록
 //    @Column(name = "noti_yn", length = 1)
