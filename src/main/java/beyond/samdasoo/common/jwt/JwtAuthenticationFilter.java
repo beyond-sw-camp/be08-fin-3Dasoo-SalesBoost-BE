@@ -1,6 +1,8 @@
 package beyond.samdasoo.common.jwt;
 
 import beyond.samdasoo.common.response.BaseResponseStatus;
+import beyond.samdasoo.user.dto.UserRole;
+import beyond.samdasoo.user.entity.User;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -8,7 +10,9 @@ import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpHeaders;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.util.PatternMatchUtils;
 import org.springframework.web.filter.OncePerRequestFilter;
 import java.io.IOException;
@@ -58,6 +62,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter { // JWT ê²€ì¦
             }
         }
 
+        getAuthentication(jwtToken);
         filterChain.doFilter(request,response);
 
     }
@@ -65,5 +70,13 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter { // JWT ê²€ì¦
 
     private boolean isAuthenticatedPath(String requestURI) {
         return !PatternMatchUtils.simpleMatch(whiteList,requestURI);
+    }
+
+    private void getAuthentication(String token){
+        String email = jwtTokenProvider.getEmail(token);
+        UserRole userRole = UserRole.valueOf(jwtTokenProvider.getRole(token));
+
+        Authentication authToken = new UsernamePasswordAuthenticationToken(email,null,null);
+        SecurityContextHolder.getContext().setAuthentication(authToken);
     }
 }
