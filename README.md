@@ -72,9 +72,14 @@
 
 <br>
 
+## 📑 화면 정의서
+
+[화면 정의서](https://www.figma.com/design/3eVoEOIHFVwVvohUklm3Zy/3dsaoo?node-id=0-1)
+
+<br>
+
 ## 📑 시스템 아키텍처
 
 [![3dasoo_SalesBoost_시스템 아키텍처](https://github.com/user-attachments/assets/80c448e3-716e-462f-bcbc-78bd9ca8a77c)](https://www.figma.com/design/3eVoEOIHFVwVvohUklm3Zy/3dsaoo?node-id=1-2)
-
 
 <br>
