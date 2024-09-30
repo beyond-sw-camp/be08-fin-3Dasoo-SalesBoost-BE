@@ -1,5 +1,7 @@
 package beyond.samdasoo.excel.service;
 
+import beyond.samdasoo.common.exception.BaseException;
+import beyond.samdasoo.common.response.BaseResponseStatus;
 import beyond.samdasoo.excel.dto.ExcelDto;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.poi.ss.usermodel.Cell;
@@ -44,13 +46,14 @@ public class ExcelService {
 
         } catch (IOException e) {
             log.error("엑셀 파일 생성 중에 오류가 발생했습니다.", e);
-            throw e;
+//            throw e;
+            throw new BaseException(BaseResponseStatus.UNEXPECTED_ERROR);
         } finally {
             if (outputStream != null) {
                 try {
                     outputStream.close();
                 } catch (IOException e) {
-                    log.error("출력 스트림을 close하는데 실패했습니다.", e);
+                    log.error("출력 스트림을 close 하는데 실패했습니다.", e);
                 }
             }
         }

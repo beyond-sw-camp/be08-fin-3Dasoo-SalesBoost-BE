@@ -14,20 +14,21 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api")
-//@CrossOrigin(origins = "*", methods = {RequestMethod.GET, RequestMethod.POST})
 public class ExcelController {
     private final ExcelService excelService;
 
     @PostMapping("/export/excel")
     public ResponseEntity<byte[]> exportExcel(@RequestBody ExcelDto excelDto) {
+//    public ResponseEntity<BaseResponse<byte[]>> exportExcel(@RequestBody ExcelDto excelDto) {
         try {
             byte[] excelFile = excelService.generateExcelFile(excelDto);
 
             HttpHeaders headers = new HttpHeaders();
-            headers.add(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=" + excelDto.getFileName());
+            headers.add(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=table_data.xlsx");
             headers.add(HttpHeaders.CONTENT_TYPE, "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
 
-            return new ResponseEntity<>(excelFile, headers, HttpStatus.OK);
+            return ResponseEntity.ok().headers(headers).body(excelFile);
+//            return new ResponseEntity<>(new BaseResponse<>(excelFile), headers, HttpStatus.OK);
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }

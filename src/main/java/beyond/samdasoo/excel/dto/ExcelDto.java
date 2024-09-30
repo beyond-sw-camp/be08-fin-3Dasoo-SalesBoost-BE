@@ -10,9 +10,6 @@ import java.util.Map;
 @ToString
 public class ExcelDto {
     private String fileName;
-//    private String filePath;
-//    private String fileType;
-//    private String fileSize;
     private String sheetName;
     private List<Map<String, Object>> tableData;
 }
