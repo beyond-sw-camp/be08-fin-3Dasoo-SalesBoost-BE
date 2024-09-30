@@ -6,6 +6,7 @@ import beyond.samdasoo.sales.dto.SalesRequestDto;
 import beyond.samdasoo.sales.dto.SalesResponseDto;
 import beyond.samdasoo.sales.entity.Sales;
 import beyond.samdasoo.sales.repository.SalesRepository;
+import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -31,10 +32,10 @@ public class SalesService {
     }
 
     // 단일 매출 조회
-    public SalesResponseDto getSales(Integer salesNo) {
+    public SalesResponseDto getSales(Long salesNo) {
         return salesRepository.findById(salesNo)
                 .map(SalesResponseDto::new)
-                .orElseThrow(() -> new IllegalArgumentException("해당 매출 조회 불가: " + salesNo));
+                .orElseThrow(() -> new EntityNotFoundException("해당 매출 조회 불가: " + salesNo));
     }
 
     // 매출 생성
@@ -42,7 +43,7 @@ public class SalesService {
     public SalesResponseDto createSales(SalesRequestDto requestDto) {
 
         Contract contract = contractRepository.findById(requestDto.getContractNo())
-                .orElseThrow(() -> new IllegalArgumentException("해당 계약 정보 조회 불가: " + requestDto.getContractNo()));
+                .orElseThrow(() -> new EntityNotFoundException("해당 계약 정보 조회 불가: " + requestDto.getContractNo()));
 
         Sales sales = Sales.builder()
                 .salesCls(requestDto.getSalesCls())
@@ -66,12 +67,12 @@ public class SalesService {
 
     // 매출 업데이트
     @Transactional
-    public SalesResponseDto updateSales(Integer salesNo, SalesRequestDto requestDto) {
+    public SalesResponseDto updateSales(Long salesNo, SalesRequestDto requestDto) {
         Sales sales = salesRepository.findById(salesNo)
-                .orElseThrow(() -> new IllegalArgumentException("해당 매출 정보 조회 불가: " + salesNo));
+                .orElseThrow(() -> new EntityNotFoundException("해당 매출 정보 조회 불가: " + salesNo));
 
         Contract contract = contractRepository.findById(requestDto.getContractNo())
-                .orElseThrow(() -> new IllegalArgumentException("해당 계약 정보 조회 불가: " + requestDto.getContractNo()));
+                .orElseThrow(() -> new EntityNotFoundException("해당 계약 정보 조회 불가: " + requestDto.getContractNo()));
 
         // No는 기존 값 사용
         sales = Sales.builder()
@@ -97,7 +98,7 @@ public class SalesService {
 
     // 매출 삭제
     @Transactional
-    public void deleteSales(Integer salesNo) {
+    public void deleteSales(Long salesNo) {
         salesRepository.deleteById(salesNo);
     }
 }

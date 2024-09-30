@@ -23,7 +23,7 @@ public class SalesController {
 
     // 특정 매출 조회
     @GetMapping("/{no}")
-    public SalesResponseDto getSales(@PathVariable("no") Integer no) {
+    public SalesResponseDto getSales(@PathVariable("no") Long no) {
         return salesService.getSales(no);
     }
 
@@ -35,13 +35,13 @@ public class SalesController {
 
     // 매출 삭제
     @DeleteMapping("/{no}")
-    public void deleteSales(@PathVariable("no") Integer no) {
+    public void deleteSales(@PathVariable("no") Long no) {
         salesService.deleteSales(no);
     }
 
     // 매출 수정
     @PatchMapping("/{no}")
-    public void updateSales(@PathVariable("no") Integer no, @RequestBody SalesRequestDto salesRequestDto) {
+    public void updateSales(@PathVariable("no") Long no, @RequestBody SalesRequestDto salesRequestDto) {
         salesService.updateSales(no, salesRequestDto);
     }
 
