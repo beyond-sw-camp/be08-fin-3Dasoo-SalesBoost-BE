@@ -1,7 +1,6 @@
 package beyond.samdasoo.contract.dto;
 
 import beyond.samdasoo.contract.entity.Contract;
-import beyond.samdasoo.estimate.entity.Estimate;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -30,7 +29,7 @@ public class ContractResponseDto {
     private String renewalNotificationYn;
     private String renewalNotificationDay;
     private String note;
-    private Estimate estimate;
+    private Long estimateNo;
 
     public ContractResponseDto(Contract contract) {
         this.contractNo = contract.getContractNo();
@@ -53,6 +52,6 @@ public class ContractResponseDto {
         this.renewalNotificationYn = contract.getRenewalNotificationYn();
         this.renewalNotificationDay = contract.getRenewalNotificationDay();
         this.note = contract.getNote();
-        this.estimate = contract.getEstimate();
+        this.estimateNo = contract.getEstimate().getEstNo();
     }
 }

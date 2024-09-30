@@ -1,6 +1,5 @@
 package beyond.samdasoo.contract.dto;
 
-import beyond.samdasoo.estimate.entity.Estimate;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -28,6 +27,6 @@ public class ContractRequestDto {
     private String renewalNotificationYn;
     private String renewalNotificationDay;
     private String note;
-    private Estimate estimate;
+    private Long estimateNo;
 
 }
