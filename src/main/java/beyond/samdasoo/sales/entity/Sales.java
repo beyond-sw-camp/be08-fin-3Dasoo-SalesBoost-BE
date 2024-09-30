@@ -1,5 +1,6 @@
 package beyond.samdasoo.sales.entity;
 
+import beyond.samdasoo.contract.entity.Contract;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -57,6 +58,7 @@ public class Sales {
     @Column(name = "note")
     private String note;
 
-    @Column(name = "contract_no", nullable = false)
-    private Long contractNo;
+    @JoinColumn(name = "contract_no", nullable = false)
+    @OneToOne
+    private Contract contract;
 }

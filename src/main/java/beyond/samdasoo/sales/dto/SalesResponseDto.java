@@ -40,6 +40,6 @@ public class SalesResponseDto {
         this.busiType = sales.getBusiType();
         this.busiTypeDetail = sales.getBusiTypeDetail();
         this.note = sales.getNote();
-        this.contractNo = sales.getContractNo();
+        this.contractNo = sales.getContract().getContractNo();
     }
 }

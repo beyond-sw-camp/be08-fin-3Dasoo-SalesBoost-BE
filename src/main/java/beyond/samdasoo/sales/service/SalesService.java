@@ -1,5 +1,7 @@
 package beyond.samdasoo.sales.service;
 
+import beyond.samdasoo.contract.entity.Contract;
+import beyond.samdasoo.contract.repository.ContractRepository;
 import beyond.samdasoo.sales.dto.SalesRequestDto;
 import beyond.samdasoo.sales.dto.SalesResponseDto;
 import beyond.samdasoo.sales.entity.Sales;
@@ -17,6 +19,8 @@ import java.util.stream.Collectors;
 public class SalesService {
 
     private final SalesRepository salesRepository;
+
+    private final ContractRepository contractRepository;
 
     // 전체 매출 조회
     public List<SalesResponseDto> getAllSales() {
@@ -36,6 +40,10 @@ public class SalesService {
     // 매출 생성
     @Transactional
     public SalesResponseDto createSales(SalesRequestDto requestDto) {
+
+        Contract contract = contractRepository.findById(requestDto.getContractNo())
+                .orElseThrow(() -> new IllegalArgumentException("해당 계약 정보 조회 불가: " + requestDto.getContractNo()));
+
         Sales sales = Sales.builder()
                 .salesCls(requestDto.getSalesCls())
                 .salesDate(requestDto.getSalesDate())
@@ -47,7 +55,7 @@ public class SalesService {
                 .price(requestDto.getPrice())
                 .busiType(requestDto.getBusiType())
                 .busiTypeDetail(requestDto.getBusiTypeDetail())
-                .contractNo(requestDto.getContractNo())
+                .contract(contract)
                 .expArrivalDate(requestDto.getExpArrivalDate())
                 .note(requestDto.getNote())
                 .build();
@@ -60,7 +68,10 @@ public class SalesService {
     @Transactional
     public SalesResponseDto updateSales(Integer salesNo, SalesRequestDto requestDto) {
         Sales sales = salesRepository.findById(salesNo)
-                .orElseThrow(() -> new IllegalArgumentException("Sales not found with id: " + salesNo));
+                .orElseThrow(() -> new IllegalArgumentException("해당 매출 정보 조회 불가: " + salesNo));
+
+        Contract contract = contractRepository.findById(requestDto.getContractNo())
+                .orElseThrow(() -> new IllegalArgumentException("해당 계약 정보 조회 불가: " + requestDto.getContractNo()));
 
         // No는 기존 값 사용
         sales = Sales.builder()
@@ -75,7 +86,7 @@ public class SalesService {
                 .price(requestDto.getPrice())
                 .busiType(requestDto.getBusiType())
                 .busiTypeDetail(requestDto.getBusiTypeDetail())
-                .contractNo(requestDto.getContractNo())
+                .contract(contract)
                 .expArrivalDate(requestDto.getExpArrivalDate())
                 .note(requestDto.getNote())
                 .build();
