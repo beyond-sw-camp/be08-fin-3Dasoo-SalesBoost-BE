@@ -1,5 +1,6 @@
 package beyond.samdasoo.contract.entity;
 
+import beyond.samdasoo.estimate.entity.Estimate;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -80,5 +81,6 @@ public class Contract {
 
     @Column(name = "est_no")
     @JoinColumn(name = "est_no", nullable = false)
-    private Long estimateNo;
+    @OneToOne
+    private Estimate estimateNo;
 }
