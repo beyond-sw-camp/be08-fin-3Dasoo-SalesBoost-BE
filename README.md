@@ -71,3 +71,10 @@
 [ERD](https://www.erdcloud.com/d/PHYe2XTF67MMkxSL9)
 
 <br>
+
+## 📑 시스템 아키텍처
+
+[![3dasoo_SalesBoost_시스템 아키텍처](https://github.com/user-attachments/assets/80c448e3-716e-462f-bcbc-78bd9ca8a77c)](https://www.figma.com/design/3eVoEOIHFVwVvohUklm3Zy/3dsaoo?node-id=1-2)
+
+
+<br>
