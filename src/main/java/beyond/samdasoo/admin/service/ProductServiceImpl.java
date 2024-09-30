@@ -28,7 +28,7 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public Product addProduct(ProductRequestDto request) {
+    public void addProduct(ProductRequestDto request) {
         boolean exists = productRepository.existsByName(request.getName());
 
         if(exists){
@@ -51,7 +51,7 @@ public class ProductServiceImpl implements ProductService {
                 .build();
 
 
-        return productRepository.save(product);
+        productRepository.save(product);
     }
 
     @Override

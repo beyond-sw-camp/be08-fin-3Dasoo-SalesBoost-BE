@@ -56,7 +56,7 @@ public class Product extends BaseEntity {
     private int supplyPrice;        // 원가
 
     @Column(name = "tax_rate")
-    private int taxRate;            // 세율
+    private Integer taxRate;            // 세율
 
     @Column(nullable = false)
     private int price;              // 가격
