@@ -53,9 +53,9 @@ public class UserService {
         return new LoginUserRes(accessToken,findUser.getName(), findUser.getEmail(), findUser.getRole());
     }
 
-    public UserDto getUser(Long userId) {
-
-        User findUser = userRepository.findById(userId).orElseThrow(()->new BaseException(USER_NOT_EXIST));
+    public UserDto getUser(String email) {
+     //   User findUser = userRepository.findById(userId).orElseThrow(()->new BaseException(USER_NOT_EXIST));
+        User findUser = userRepository.findByEmail(email).orElseThrow(()->new BaseException(USER_NOT_EXIST));
 
         return new UserDto(findUser.getName(), findUser.getEmail(),findUser.getRole());
     }
