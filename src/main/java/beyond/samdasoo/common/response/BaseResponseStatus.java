@@ -29,6 +29,11 @@ public enum BaseResponseStatus {
     EMAIL_OR_PWD_NOT_FOUND(false,HttpStatus.BAD_REQUEST.value(), "이메일/비밀번호를 확인해주세요"),
     USER_NOT_EXIST(false, HttpStatus.BAD_REQUEST.value(), "존재하지 않는 회원입니다"),
 
+    /**
+     * product 관련
+     */
+    PRODUCT_ALREADY_EXIST(false, HttpStatus.BAD_REQUEST.value(), "이미 등록된 제품입니다."),
+    Product_NOT_EXIST(false, HttpStatus.BAD_REQUEST.value(), "존재하지 않는 제품입니다."),
 
     /**
      * 500 :  Database, Server 오류
