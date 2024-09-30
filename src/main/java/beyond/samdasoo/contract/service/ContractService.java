@@ -56,7 +56,7 @@ public class ContractService {
                 .renewalNotificationYn(requestDto.getRenewalNotificationYn())
                 .renewalNotificationDay(requestDto.getRenewalNotificationDay())
                 .note(requestDto.getNote())
-                .estimateNo(requestDto.getEstimateNo())
+                .estimate(requestDto.getEstimate())
                 .build();
 
         Contract savedContract = contractRepository.save(contract);
@@ -90,7 +90,7 @@ public class ContractService {
                 .renewalNotificationYn(requestDto.getRenewalNotificationYn())
                 .renewalNotificationDay(requestDto.getRenewalNotificationDay())
                 .note(requestDto.getNote())
-                .estimateNo(requestDto.getEstimateNo())
+                .estimate(requestDto.getEstimate())
                 .build();
 
         Contract updatedContract = contractRepository.save(contract);

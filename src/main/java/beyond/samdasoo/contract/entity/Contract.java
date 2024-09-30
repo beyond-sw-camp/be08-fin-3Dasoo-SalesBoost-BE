@@ -79,8 +79,7 @@ public class Contract {
     @Column(name = "note")
     private String note;
 
-    @Column(name = "est_no")
     @JoinColumn(name = "est_no", nullable = false)
     @OneToOne
-    private Estimate estimateNo;
+    private Estimate estimate;
 }
