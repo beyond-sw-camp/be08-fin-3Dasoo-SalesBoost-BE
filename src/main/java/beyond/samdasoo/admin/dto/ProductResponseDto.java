@@ -36,7 +36,7 @@ public class ProductResponseDto {
 
     private int supplyPrice;
 
-    private int taxRate;
+    private Integer taxRate;
 
     private int price;
 

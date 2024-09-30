@@ -43,4 +43,25 @@ public class ProductController {
 
         return new BaseResponse<>(product);
     }
+
+    // 제품 번호로 상품 삭제 API
+    @DeleteMapping("/{no}")
+    @Operation(summary = "제품 삭제", description = "관리자 계정에 등록되어있는 제품 번호로 제품을 삭제")
+    public BaseResponse<String> deleteProductByNo(@PathVariable("no") Long productNo){
+
+        productService.deleteProductByNo(productNo);
+
+        return new BaseResponse<>("제품 삭제를 완료했습니다.");
+    }
+
+    // 제품 번호로 상품 수정 API
+    @PatchMapping("/{no}")
+    @Operation(summary = "제품 수정", description = "관리자 계정에 등록되어있는 제품 번호로 제품을 수정")
+    public BaseResponse<String> updateProductByNo(@PathVariable("no") Long productNo, @RequestBody ProductRequestDto request){
+
+        productService.updateProductByNo(productNo, request);
+
+        return new BaseResponse<>("제품 수정을 완료했습니다.");
+    }
+
 }
