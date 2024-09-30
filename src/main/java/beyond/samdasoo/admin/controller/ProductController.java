@@ -19,7 +19,6 @@ public class ProductController {
 
     // 모든 상품 조회 API
     @GetMapping
-    @ResponseBody
     @Operation(summary = "모든 제품 조회", description = "관리자 계정에 등록되어있는 모든 제품을 조회")
     public List<ProductResponseDto> getAllProducts() {
         return productService.getAllProducts();
