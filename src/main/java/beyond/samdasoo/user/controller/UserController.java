@@ -9,7 +9,11 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
+
+import static beyond.samdasoo.common.utils.UserUtil.getLoginUserEmail;
 
 @Tag(name="User APIs",description = "유저 관련 API")
 @RequiredArgsConstructor
@@ -48,11 +52,11 @@ public class UserController {
     /**
      * 유저 정보 조회 API
      */
-    @Operation(summary = "유저 조회", description = "유저 정보를 조회한다.")
-    @GetMapping("/{id}")
-    public BaseResponse<UserDto> getUser(@PathVariable(name = "id") Long userId){
-
-        UserDto result = userService.getUser(userId);
+    @Operation(summary = "유저 정보 조회", description = "현재 로그인한 유저 정보를 조회한다.")
+    @GetMapping("/my-info")
+    public BaseResponse<UserDto> getUser(){
+        String loginUserEmail = getLoginUserEmail();
+        UserDto result = userService.getUser(loginUserEmail);
 
         return new BaseResponse<>(result);
     }
