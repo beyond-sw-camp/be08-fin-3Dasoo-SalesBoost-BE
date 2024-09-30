@@ -1,8 +1,10 @@
 package beyond.samdasoo.user.service;
 
 import beyond.samdasoo.common.exception.BaseException;
+import beyond.samdasoo.common.jwt.JwtTokenProvider;
 import beyond.samdasoo.user.dto.JoinUserReq;
 import beyond.samdasoo.user.dto.LoginUserReq;
+import beyond.samdasoo.user.dto.LoginUserRes;
 import beyond.samdasoo.user.dto.UserDto;
 import beyond.samdasoo.user.entity.User;
 import beyond.samdasoo.user.repository.UserRepository;
@@ -20,6 +22,7 @@ import static beyond.samdasoo.common.response.BaseResponseStatus.*;
 public class UserService {
     private final BCryptPasswordEncoder encoder;
     private final UserRepository userRepository;
+    private final JwtTokenProvider jwtTokenProvider;
 
 
     public void join(JoinUserReq joinUserReq){
@@ -34,7 +37,7 @@ public class UserService {
 
     }
 
-    public void login(LoginUserReq loginUserReq){
+    public LoginUserRes login(LoginUserReq loginUserReq){
 
         User findUser = userRepository.findByEmail(loginUserReq.getEmail())
                 .orElseThrow(()->new BaseException(EMAIL_OR_PWD_NOT_FOUND));
@@ -45,13 +48,15 @@ public class UserService {
             throw new BaseException(EMAIL_ALREADY_EXIST);
         }
 
-        // todo : jwt 토큰 발급
+        String accessToken = jwtTokenProvider.createToken(findUser.getEmail(), findUser.getRole().toString(),"ACCESS");
+
+        return new LoginUserRes(accessToken,findUser.getName(), findUser.getEmail(), findUser.getRole());
     }
 
     public UserDto getUser(Long userId) {
 
         User findUser = userRepository.findById(userId).orElseThrow(()->new BaseException(USER_NOT_EXIST));
 
-        return new UserDto(findUser.getName(), findUser.getEmail());
+        return new UserDto(findUser.getName(), findUser.getEmail(),findUser.getRole());
     }
 }

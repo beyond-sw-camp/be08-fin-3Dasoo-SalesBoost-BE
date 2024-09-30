@@ -4,6 +4,8 @@ import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.MalformedJwtException;
 import io.jsonwebtoken.UnsupportedJwtException;
+import io.jsonwebtoken.io.Decoders;
+import io.jsonwebtoken.security.Keys;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
@@ -22,9 +24,9 @@ public class JwtTokenProvider { // Jwt 생성
     private final long accessTokenValidMs;
     private final long refreshTokenValidMs;
 
-    public JwtTokenProvider(@Value("${jwt.secret") String secret, @Value("${jwt.token-valid-in-sec}") long tokenValidInSec){
+    public JwtTokenProvider(@Value("${jwt.secret}") String secret, @Value("${jwt.token-valid-in-sec}") long tokenValidInSec){
         this.secretKey = new SecretKeySpec(secret.getBytes(StandardCharsets.UTF_8), Jwts.SIG.HS256.key().build().getAlgorithm());
-        this.accessTokenValidMs = tokenValidInSec*1000/24; // 1
+        this.accessTokenValidMs = tokenValidInSec; // 1
         this.refreshTokenValidMs = tokenValidInSec*1000/60;
 
     }

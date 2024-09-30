@@ -53,7 +53,7 @@ public class SecurityConfig {
         httpSecurity
                 .cors(cors -> cors.configurationSource(corsConfigurationSource()))
                 .authorizeHttpRequests((auth) -> auth
-              //  .requestMatchers("/api/**","/swagger-ui/**", "/v3/api-docs/**").permitAll()
+                .requestMatchers("/api/**","/swagger-ui/**", "/v3/api-docs/**").permitAll()
                 .anyRequest().authenticated()
           );
 
