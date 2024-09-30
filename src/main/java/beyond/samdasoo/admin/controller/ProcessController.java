@@ -2,7 +2,6 @@ package beyond.samdasoo.admin.controller;
 
 import beyond.samdasoo.admin.dto.ProcessRequestDto;
 import beyond.samdasoo.admin.dto.ProcessResponseDto;
-import beyond.samdasoo.admin.entity.Process;
 import beyond.samdasoo.admin.service.ProcessService;
 import beyond.samdasoo.common.response.BaseResponse;
 import io.swagger.v3.oas.annotations.Operation;
@@ -22,8 +21,9 @@ public class ProcessController {
     // 모든 상품 조회 API
     @GetMapping
     @Operation(summary = "모든 프로세스 조회", description = "관리자 계정에 등록되어있는 모든 프로세스를 조회")
-    public List<ProcessResponseDto> getAllProducts() {
-        return processService.getAllProcesses();
+    public BaseResponse<List< ProcessResponseDto >> getAllProducts() {
+        List<ProcessResponseDto> processes = processService.getAllProcesses();
+        return new BaseResponse<>(processes);
     }
 
     @PostMapping

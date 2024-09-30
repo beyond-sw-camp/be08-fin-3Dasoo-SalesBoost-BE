@@ -2,7 +2,6 @@ package beyond.samdasoo.admin.controller;
 
 import beyond.samdasoo.admin.dto.SubProcessRequestDto;
 import beyond.samdasoo.admin.dto.SubProcessResponseDto;
-import beyond.samdasoo.admin.entity.SubProcess;
 import beyond.samdasoo.admin.service.SubProcessService;
 import beyond.samdasoo.common.response.BaseResponse;
 import io.swagger.v3.oas.annotations.Operation;
@@ -22,8 +21,9 @@ public class SubProcessController {
 
     @GetMapping("/{processName}")
     @Operation(summary = "해당 상위 프로세스의 하위 프로세스 조회", description = "관리자 계정에서 하위 프로세스를 조회")
-    public List<SubProcessResponseDto> getSubProcessByProcessNo(@PathVariable("processName") String processName){
-        return subProcessService.getSubProcessesByProcessName(processName);
+    public BaseResponse<List<SubProcessResponseDto>> getSubProcessByProcessNo(@PathVariable("processName") String processName){
+        List<SubProcessResponseDto> subProcesses = subProcessService.getSubProcessesByProcessName(processName);
+        return new BaseResponse<>(subProcesses);
     }
 
     @PostMapping
