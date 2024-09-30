@@ -5,11 +5,13 @@ import beyond.samdasoo.admin.dto.ProductResponseDto;
 import beyond.samdasoo.admin.service.ProductService;
 import beyond.samdasoo.common.response.BaseResponse;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+@Tag(name="Product APIs",description = "제품 관련 API")
 @RestController
 @RequestMapping("/api/products")
 public class ProductController {
@@ -20,8 +22,9 @@ public class ProductController {
     // 모든 상품 조회 API
     @GetMapping
     @Operation(summary = "모든 제품 조회", description = "관리자 계정에 등록되어있는 모든 제품을 조회")
-    public List<ProductResponseDto> getAllProducts() {
-        return productService.getAllProducts();
+    public BaseResponse<List<ProductResponseDto>> getAllProducts() {
+        List<ProductResponseDto> products = productService.getAllProducts();
+        return new BaseResponse<>(products);
     }
 
     // 상품 추가 API
