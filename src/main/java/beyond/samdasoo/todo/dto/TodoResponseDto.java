@@ -4,7 +4,7 @@ import beyond.samdasoo.todo.entity.Todo;
 import beyond.samdasoo.todo.entity.TodoStatus;
 import lombok.Data;
 
-import java.util.Date;
+import java.time.LocalDate;
 
 @Data
 public class TodoResponseDto {
@@ -13,13 +13,11 @@ public class TodoResponseDto {
     private String title;
     private String todoCls;
     private String priority;
-    private Date dueDate;
-    private String notiYn;
-    private String notiDay;
+    private LocalDate dueDate;
     private TodoStatus status;
     private String privateYn;
     private String content;
-    private Long memberNo;
+    private Long userNo;
 
     public TodoResponseDto(Todo todo) {
         this.no = todo.getNo();
@@ -27,12 +25,10 @@ public class TodoResponseDto {
         this.todoCls = todo.getTodoCls();
         this.priority = todo.getPriority();
         this.dueDate = todo.getDueDate();
-        this.notiYn = todo.getNotiYn();
-        this.notiDay = todo.getNotiDay();
         this.status = todo.getStatus();
         this.privateYn = todo.getPrivateYn();
         this.content = todo.getContent();
-        this.memberNo = todo.getMemberNo().getId();
+        this.userNo = todo.getUserNo().getId();
     }
 
 }
