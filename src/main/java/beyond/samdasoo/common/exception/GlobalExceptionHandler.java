@@ -2,7 +2,11 @@ package beyond.samdasoo.common.exception;
 
 import beyond.samdasoo.common.response.BaseResponse;
 import beyond.samdasoo.common.response.BaseResponseStatus;
+import jakarta.servlet.http.HttpServletRequest;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.AuthenticationException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
@@ -20,5 +24,18 @@ public class GlobalExceptionHandler {
     public BaseResponse<BaseResponseStatus> exceptionHandle(Exception exception) {
         log.error("Exception has occured. ", exception);
         return new BaseResponse<>(BaseResponseStatus.UNEXPECTED_ERROR);
+    }
+    @ExceptionHandler(AuthenticationException.class)
+    public ResponseEntity<BaseResponse<BaseResponseStatus>> authenticationExceptionHandle(AuthenticationException e, HttpServletRequest request){
+        BaseResponseStatus status;
+        if (request.getAttribute("exception") instanceof BaseResponseStatus){
+            status = (BaseResponseStatus)request.getAttribute("exception");
+
+        }else{
+            log.warn("Unknown Authentication Exception. error message: {}", e.getMessage());
+            status = BaseResponseStatus.EMAIL_ALREADY_EXIST;
+        }
+
+        return new ResponseEntity<>(new BaseResponse<>(status), HttpStatus.UNAUTHORIZED);
     }
 }

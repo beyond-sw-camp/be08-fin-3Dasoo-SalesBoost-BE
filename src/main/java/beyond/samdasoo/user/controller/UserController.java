@@ -2,6 +2,7 @@ package beyond.samdasoo.user.controller;
 import beyond.samdasoo.common.response.BaseResponse;
 import beyond.samdasoo.user.dto.JoinUserReq;
 import beyond.samdasoo.user.dto.LoginUserReq;
+import beyond.samdasoo.user.dto.LoginUserRes;
 import beyond.samdasoo.user.dto.UserDto;
 import beyond.samdasoo.user.service.UserService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -34,11 +35,14 @@ public class UserController {
      */
     @Operation(summary = "로그인", description = "이메일과 비밀번호를 받아 로그인을 진행한다.")
     @PostMapping("/login")
-    public BaseResponse<String> login(@RequestBody @Valid LoginUserReq loginUserReq){
+    public BaseResponse<LoginUserRes> login(@RequestBody @Valid LoginUserReq loginUserReq){
 
-            userService.login(loginUserReq);
+            LoginUserRes result = userService.login(loginUserReq);
 
-            return new BaseResponse<>("로그인을 완료했습니다");
+
+            // todo : 리프레시 토큰 발급
+
+            return new BaseResponse<>(result);
     }
 
     /**

@@ -14,7 +14,13 @@ public enum BaseResponseStatus {
     /**
      * 400 : Request, Response 오류
      */
-
+    /**
+     *  jwt 관련
+     */
+    JWT_AUTH_EMPTY(false, HttpStatus.UNAUTHORIZED.value(),"권한 정보가 없는 토큰입니다."),
+    JWT_EXPIRED_ACCESS_TOKEN(false, HttpStatus.UNAUTHORIZED.value(), "만료된 액세스 토큰입니다"),
+    JWT_INVALID_ACCESS_TOKEN(false, HttpStatus.UNAUTHORIZED.value(), "유효하지 않은 액세스 토큰입니다"),
+    JWT_INVALID_REFRESH_TOKEN(false, HttpStatus.UNAUTHORIZED.value(), "유효하지 않은 리프레시 토큰입니다"),
     /**
      * user 관련
      */

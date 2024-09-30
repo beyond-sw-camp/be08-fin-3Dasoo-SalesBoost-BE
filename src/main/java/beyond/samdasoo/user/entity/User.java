@@ -1,5 +1,6 @@
 package beyond.samdasoo.user.entity;
 
+import beyond.samdasoo.common.entity.BaseEntity;
 import beyond.samdasoo.user.dto.UserRole;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
@@ -10,7 +11,7 @@ import lombok.NoArgsConstructor;
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Entity
-public class User {
+public class User extends BaseEntity {
 
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "USER_NO")
