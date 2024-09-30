@@ -9,6 +9,8 @@ import lombok.NoArgsConstructor;
 import org.hibernate.annotations.CreationTimestamp;
 import java.time.LocalDateTime;
 
+@AllArgsConstructor
+@Builder
 @Getter
 @Table(name = "TB_POETNTIAL_CUSTOMER")
 @Entity
@@ -29,8 +31,10 @@ public class PotentialCustomer extends BaseEntity{
 
     private String cls; // 접촉구분
 
+    @Enumerated(EnumType.STRING)
     private Status status; // 접촉상태
 
+    @Enumerated(EnumType.STRING)
     private Grade grade; // 가망 등급
 
     private String phone; // 휴대폰 번호
@@ -52,8 +56,12 @@ public class PotentialCustomer extends BaseEntity{
     @Column(name = "modify_date")
     private LocalDateTime modifyDate; // 고객으로 전환일
 
+    public PotentialCustomer() {
+
+    }
+
     @Getter
-    private enum Grade{
+    public enum Grade{
         S("S등급"),
         A("A등급"),
         B("B등급"),
@@ -67,7 +75,7 @@ public class PotentialCustomer extends BaseEntity{
     }
 
     @Getter
-    private enum Status{
+    public enum Status{
         NO_CONTACT("미접촉"),
         TRY_CONTACT("접촉시도"),
         CONTACTING("접촉중"),
