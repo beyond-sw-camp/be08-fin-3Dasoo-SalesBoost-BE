@@ -36,6 +36,15 @@ public enum BaseResponseStatus {
     Product_NOT_EXIST(false, HttpStatus.BAD_REQUEST.value(), "존재하지 않는 제품입니다."),
 
     /**
+     * process 관련
+     */
+    PROCESS_ALREADY_EXIST(false, HttpStatus.BAD_REQUEST.value(),"이미 등록된 프로세스 입니다."),
+    PROCESS_NOT_EXIST(false, HttpStatus.BAD_REQUEST.value(), "등록되지 않은 프로세스입니다."),
+    /**
+     * subprocess 관련
+     */
+    SUBPROCESS_ALREADY_EXIST(false, HttpStatus.BAD_REQUEST.value(), "이미 등록된 하위 프로세스 입니다."),
+    /**
      * 500 :  Database, Server 오류
      */
 
