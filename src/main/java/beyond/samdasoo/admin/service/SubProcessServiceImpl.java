@@ -65,5 +65,64 @@ public class SubProcessServiceImpl implements SubProcessService{
                 .map(subProcess -> new SubProcessResponseDto(subProcess))
                 .collect(Collectors.toList());
     }
+
+    @Override
+    public void deleteSubProcessByNo(Long no) {
+        Optional<SubProcess> optionalSubProcess = subProcessRepository.findById(no);
+
+        if(optionalSubProcess.isEmpty()){
+            throw new BaseException(SUBPROCESS_NOT_EXIST);
+        }
+
+        subProcessRepository.deleteById(no);
+    }
+
+    @Override
+    public void updateSubProcessByNo(Long no, SubProcessRequestDto request) {
+        Optional<SubProcess> optionalSubProcess = subProcessRepository.findById(no);
+
+
+        if(optionalSubProcess.isEmpty()){
+            throw new BaseException(SUBPROCESS_NOT_EXIST);
+        }
+
+
+        SubProcess subProcess = optionalSubProcess.get();
+
+
+        if(request.getProcessNo() != null){
+            Optional<Process> optionalProcess = processRepository.findById(request.getProcessNo());
+
+            if (optionalProcess.isEmpty()) {
+                throw new BaseException(PROCESS_NOT_EXIST);
+            }
+
+            Process process = optionalProcess.get();
+
+            subProcess.setProcess(process);
+        }
+
+        if(request.getSubProcessName() != null){
+            subProcess.setSubProcessName(request.getSubProcessName());
+        }
+
+        if(request.getProgressStep() != null){
+            subProcess.setProgressStep(request.getProgressStep());
+        }
+
+        if(request.getSuccessRate() != null){
+            subProcess.setSuccessRate(request.getSuccessRate());
+        }
+
+        if(request.getAction() != null){
+            subProcess.setAction(request.getAction());
+        }
+
+        if(request.getExpectedDuration() != null){
+            subProcess.setExpectedDuration(request.getExpectedDuration());
+        }
+
+        subProcessRepository.save(subProcess);
+    }
 }
 

@@ -9,9 +9,11 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 import static beyond.samdasoo.common.response.BaseResponseStatus.PROCESS_ALREADY_EXIST;
+import static beyond.samdasoo.common.response.BaseResponseStatus.PROCESS_NOT_EXIST;
 
 @Service
 @RequiredArgsConstructor
@@ -43,6 +45,46 @@ public class ProcessServiceImpl implements ProcessService {
                 .description(request.getDescription())
                 .build();
 
+
+        processRepository.save(process);
+    }
+
+    @Override
+    public void deleteProcessByNo(Long no) {
+        Optional<Process> optionalProcess = processRepository.findById(no);
+
+        if(optionalProcess.isEmpty()){
+            throw new BaseException(PROCESS_NOT_EXIST);
+        }
+
+        processRepository.deleteById(no);
+    }
+
+    @Override
+    public void updateProcessByNo(Long no, ProcessRequestDto request) {
+        Optional<Process> optionalProcess = processRepository.findById(no);
+
+        if(optionalProcess.isEmpty()){
+            throw new BaseException(PROCESS_NOT_EXIST);
+        }
+
+        Process process = optionalProcess.get();
+
+        if(request.getProcessName() != null){
+            process.setProcessName(request.getProcessName());
+        }
+
+        if(request.getIsDefault() != null){
+            process.setIsDefault(request.getIsDefault());
+        }
+
+        if(request.getExpectedDuration() != null){
+            process.setExpectedDuration(request.getExpectedDuration());
+        }
+
+        if(request.getDescription() != null){
+            process.setDescription(request.getDescription());
+        }
 
         processRepository.save(process);
     }

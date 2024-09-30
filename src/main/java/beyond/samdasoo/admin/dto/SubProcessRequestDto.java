@@ -13,8 +13,6 @@ public class SubProcessRequestDto {
 
     private Long processNo;         // 상위 프로세스 식별 번호
 
-    private Long subProcessNo;      // 서브 프로세스 식별 번호
-
     private String subProcessName;      // 서브 프로세스 이름
 
     private String progressStep;        // 현재 진행 단계
