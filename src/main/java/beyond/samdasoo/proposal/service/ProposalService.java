@@ -1,5 +1,7 @@
 package beyond.samdasoo.proposal.service;
 
+import beyond.samdasoo.lead.Lead;
+import beyond.samdasoo.lead.repository.LeadRepository;
 import beyond.samdasoo.proposal.dto.ProposalRequestDto;
 import beyond.samdasoo.proposal.dto.ProposalResponseDto;
 import beyond.samdasoo.proposal.entity.Proposal;
@@ -9,17 +11,20 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 @Service
 public class ProposalService {
 
     private final ProposalRepository proposalRepository;
-    //private final LeadRepository leadRepository;
+    private final LeadRepository leadRepository;
 
     @Autowired
-    //public ProposalService(ProposalRepository proposalRepository, LeadRepository leadRepository) {
-        public ProposalService(ProposalRepository proposalRepository) {
+    public ProposalService(ProposalRepository proposalRepository, LeadRepository leadRepository) {
+//        public ProposalService(ProposalRepository proposalRepository) {
         this.proposalRepository = proposalRepository;
-        //this.leadRepository = leadRepository;
+        this.leadRepository = leadRepository;
     }
 
     @Transactional
@@ -36,7 +41,6 @@ public class ProposalService {
         proposal.setPrDate(proposalRequestDto.getPrDate());
         proposal.setNote(proposalRequestDto.getNote());
 
-        // Only fetch and set Lead if leadNo is provided
 //        if (proposalRequestDto.getLeadNo() != null) {
 //            Lead lead = leadRepository.findById(proposalRequestDto.getLeadNo())
 //                    .orElseThrow(() -> new EntityNotFoundException("Lead not found: " + proposalRequestDto.getLeadNo()));
@@ -48,10 +52,44 @@ public class ProposalService {
         return new ProposalResponseDto(proposal);
     }
 
+    public List<ProposalResponseDto> getAllProposals() {
+        List<Proposal> proposals = proposalRepository.findAll();
+        return proposals.stream()
+                .map(proposal -> new ProposalResponseDto(proposal))
+                .collect(Collectors.toList());
+    }
+
     @Transactional(readOnly = true)
     public ProposalResponseDto getProposalById(Long propNo) {
         Proposal proposal = proposalRepository.findById(propNo)
-                .orElseThrow(() -> new EntityNotFoundException("Proposal not found: " + propNo));
+                .orElseThrow(() -> new EntityNotFoundException("제안을 찾을 수 없습니다: " + propNo));
         return new ProposalResponseDto(proposal);
+    }
+
+    @Transactional
+    public ProposalResponseDto updateProposal(Long propNo, ProposalRequestDto proposalRequestDto) {
+        Proposal proposal = proposalRepository.findById(propNo)
+                .orElseThrow(() -> new EntityNotFoundException("제안을 찾을 수 없습니다: " + propNo));
+
+        proposal.setName(proposalRequestDto.getName());
+        proposal.setCont(proposalRequestDto.getCont());
+        proposal.setReqDate(proposalRequestDto.getReqDate());
+        proposal.setStartDate(proposalRequestDto.getStartDate());
+        proposal.setEndDate(proposalRequestDto.getEndDate());
+        proposal.setSubmitDate(proposalRequestDto.getSubmitDate());
+        proposal.setPrDate(proposalRequestDto.getPrDate());
+        proposal.setNote(proposalRequestDto.getNote());
+
+        proposal = proposalRepository.save(proposal);
+        return new ProposalResponseDto(proposal);
+    }
+
+    @Transactional
+    public void deleteProposal(Long propNo) {
+        Proposal proposal = proposalRepository.findById(propNo)
+                        .orElseThrow(() -> new EntityNotFoundException("제안을 찾을 수 없습니다:" + propNo));
+
+        proposalRepository.deleteById(propNo);
+
     }
 }
