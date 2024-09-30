@@ -5,11 +5,13 @@ import beyond.samdasoo.admin.dto.ProductResponseDto;
 import beyond.samdasoo.admin.service.ProductService;
 import beyond.samdasoo.common.response.BaseResponse;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+@Tag(name="Product APIs",description = "제품 관련 API")
 @RestController
 @RequestMapping("/api/products")
 public class ProductController {

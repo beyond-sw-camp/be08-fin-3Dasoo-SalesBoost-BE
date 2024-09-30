@@ -6,13 +6,15 @@ import beyond.samdasoo.admin.entity.SubProcess;
 import beyond.samdasoo.admin.service.SubProcessService;
 import beyond.samdasoo.common.response.BaseResponse;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/subprocess")
+@RequestMapping("/api/subprocesses")
+@Tag(name="SubProcess APIs",description = "하위 프로세스 관련 API")
 public class SubProcessController {
 
     @Autowired

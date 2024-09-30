@@ -6,13 +6,15 @@ import beyond.samdasoo.admin.entity.Process;
 import beyond.samdasoo.admin.service.ProcessService;
 import beyond.samdasoo.common.response.BaseResponse;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+@Tag(name="Process APIs",description = "프로세스 관련 API")
 @RestController
-@RequestMapping("/api/process")
+@RequestMapping("/api/processes")
 public class ProcessController {
     @Autowired
     private ProcessService processService;
