@@ -1,5 +1,6 @@
 package beyond.samdasoo.todo.service;
 
+import beyond.samdasoo.common.exception.BaseException;
 import beyond.samdasoo.todo.dto.TodoRequestDto;
 import beyond.samdasoo.todo.dto.TodoResponseDto;
 import beyond.samdasoo.todo.dto.TodoUpdateDto;
@@ -7,12 +8,14 @@ import beyond.samdasoo.todo.entity.Todo;
 import beyond.samdasoo.todo.repository.TodoRepository;
 import beyond.samdasoo.user.entity.User;
 import beyond.samdasoo.user.repository.UserRepository;
-import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Optional;
+
+import static beyond.samdasoo.common.response.BaseResponseStatus.TODO_NOT_EXIST;
+import static beyond.samdasoo.common.response.BaseResponseStatus.USER_NOT_EXIST;
 
 @Service
 public class TodoService {
@@ -27,11 +30,16 @@ public class TodoService {
         this.userRepository = userRepository;
     }
 
+    private Todo findById(Long no){
+        return todoRepository.findById(no)
+                .orElseThrow(() -> new BaseException(TODO_NOT_EXIST));
+    }
+
     @Transactional
     public TodoResponseDto createTodo(TodoRequestDto todoRequestDto){
 
         User user = userRepository.findById(todoRequestDto.getUserNo())
-                .orElseThrow(() -> new EntityNotFoundException("회원 ID 조회 불가: " + todoRequestDto.getUserNo()));
+                .orElseThrow(() -> new BaseException(USER_NOT_EXIST));
 
         Todo todo = Todo.builder()
                 .title(todoRequestDto.getTitle())
@@ -41,7 +49,7 @@ public class TodoService {
                 .status(todoRequestDto.getStatus())
                 .privateYn(todoRequestDto.getPrivateYn())
                 .content(todoRequestDto.getContent())
-                .userNo(user)
+                .user(user)
                 .build();
 
         todo = todoRepository.save(todo);
@@ -50,16 +58,11 @@ public class TodoService {
     }
 
     @Transactional(readOnly = true)
-    public TodoResponseDto getTodoById(Long no) {
-        Todo todo = todoRepository.findById(no)
-                .orElseThrow(() -> new RuntimeException("할 일을 찾을 수 없습니다: " + no));
-        return new TodoResponseDto(todo);
-    }
+    public TodoResponseDto getTodoById(Long no) { return new TodoResponseDto(findById(no)); }
 
     @Transactional
     public void updateTodo(Long no, TodoUpdateDto todoUpdateDto) {
-        Todo todo = todoRepository.findById(no)
-                .orElseThrow(() -> new EntityNotFoundException("할 일을 찾을 수 없습니다: " + no));
+        Todo todo = findById(no);
 
         Optional.ofNullable(todoUpdateDto.getTitle()).ifPresent(todo::setTitle);
         Optional.ofNullable(todoUpdateDto.getTodoCls()).ifPresent(todo::setTodoCls);
@@ -70,10 +73,5 @@ public class TodoService {
         Optional.ofNullable(todoUpdateDto.getStatus()).ifPresent(todo::setStatus);
     }
 
-    public void deleteTodo(Long no) {
-        Todo todo = todoRepository.findById(no)
-                .orElseThrow(() -> new RuntimeException("할 일을 찾을 수 없습니다: " + no));
-
-        todoRepository.delete(todo);
-    }
+    public void deleteTodo(Long no) { todoRepository.delete(findById(no)); }
 }
