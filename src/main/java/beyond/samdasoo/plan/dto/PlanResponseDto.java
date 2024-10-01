@@ -20,7 +20,7 @@ public class PlanResponseDto {
     private String content;
 
     public PlanResponseDto(Plan plan) {
-        this.planNo = plan.getPlanNo();
+        this.planNo = plan.getNo();
         this.userNo = plan.getUser().getId();
         this.personalYn = plan.getPersonalYn();
         this.planCls = plan.getPlanCls();

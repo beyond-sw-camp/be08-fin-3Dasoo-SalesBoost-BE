@@ -21,11 +21,15 @@ public class Todo extends BaseEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long todoNo;
+    private Long no;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name="user_no", nullable=false)
     private User user;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "plan_no")
+    private Plan plan;
 
     @Column(name = "title", nullable = false)
     private String title;
