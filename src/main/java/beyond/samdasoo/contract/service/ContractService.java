@@ -1,12 +1,13 @@
 package beyond.samdasoo.contract.service;
 
+import beyond.samdasoo.common.exception.BaseException;
+import beyond.samdasoo.common.response.BaseResponseStatus;
 import beyond.samdasoo.contract.dto.ContractRequestDto;
 import beyond.samdasoo.contract.dto.ContractResponseDto;
 import beyond.samdasoo.contract.entity.Contract;
 import beyond.samdasoo.contract.repository.ContractRepository;
 import beyond.samdasoo.estimate.entity.Estimate;
 import beyond.samdasoo.estimate.repository.EstimateRepository;
-import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -34,13 +35,13 @@ public class ContractService {
     public ContractResponseDto getContract(Long contractNo) {
         return contractRepository.findById(contractNo)
                 .map(ContractResponseDto::new)
-                .orElseThrow(() -> new IllegalArgumentException("해당 계약 조회 불가: " + contractNo));
+                .orElseThrow(() -> new BaseException(BaseResponseStatus.CONTRACT_NOT_EXIST));
     }
 
     @Transactional
     public ContractResponseDto createContract(ContractRequestDto requestDto) {
         Estimate estimate = estimateRepository.findById(requestDto.getEstimateNo())
-                .orElseThrow(() -> new EntityNotFoundException("해당 견적 조회 불가: " + requestDto.getEstimateNo()));
+                .orElseThrow(() -> new BaseException(BaseResponseStatus.CONTRACT_NOT_EXIST));
 
         Contract contract = Contract.builder()
                 .name(requestDto.getName())
@@ -73,9 +74,9 @@ public class ContractService {
     @Transactional
     public ContractResponseDto updateContract(Long contractNo, ContractRequestDto requestDto) {
         Contract contract = contractRepository.findById(contractNo)
-                .orElseThrow(() -> new IllegalArgumentException("해당 계약 내용을 찾을 수 없음: " + contractNo));
+                .orElseThrow(() -> new BaseException(BaseResponseStatus.CONTRACT_NOT_EXIST));
         Estimate estimate = estimateRepository.findById(requestDto.getEstimateNo())
-                .orElseThrow(() -> new EntityNotFoundException("해당 견적 조회 불가: " + requestDto.getEstimateNo()));
+                .orElseThrow(() -> new BaseException(BaseResponseStatus.ESTIMATE_NOT_EXIST));
 
         contract = Contract.builder()
                 .contractNo(contract.getContractNo())  // 기존 계약번호 유지
@@ -108,6 +109,9 @@ public class ContractService {
     // 계약 삭제
     @Transactional
     public void deleteContract(Long contractNo) {
+        if(!contractRepository.existsById(contractNo)){
+            new BaseException(BaseResponseStatus.CONTRACT_NOT_EXIST);
+        }
         contractRepository.deleteById(contractNo);
     }
 }
