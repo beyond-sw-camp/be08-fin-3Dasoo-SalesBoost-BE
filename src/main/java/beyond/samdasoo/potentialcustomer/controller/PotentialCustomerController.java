@@ -3,11 +3,14 @@ package beyond.samdasoo.potentialcustomer.controller;
 import beyond.samdasoo.common.response.BaseResponse;
 import beyond.samdasoo.potentialcustomer.dto.CreatePotentialCustomerReq;
 import beyond.samdasoo.potentialcustomer.dto.PotentialCustomerDto;
+import beyond.samdasoo.potentialcustomer.dto.PotentialCustomerListDto;
 import beyond.samdasoo.potentialcustomer.entity.PotentialCustomer;
 import beyond.samdasoo.potentialcustomer.service.PotentialCustomerService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RequiredArgsConstructor
 @RequestMapping("/api/sales/prospect")
@@ -50,6 +53,11 @@ public class PotentialCustomerController {
     /**
      *  잠재고객 목록 조회 API
      */
+    @GetMapping
+    public BaseResponse<List<PotentialCustomerListDto>> getAllPotentialCustomer() {
+        List<PotentialCustomerListDto> result = potentialCustomerService.getAllPotentialCustomer();
+        return new BaseResponse<>(result);
+    }
 
 
 }
