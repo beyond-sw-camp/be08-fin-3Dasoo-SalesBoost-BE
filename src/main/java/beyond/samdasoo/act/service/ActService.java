@@ -4,12 +4,14 @@ import beyond.samdasoo.act.dto.ActRequestDto;
 import beyond.samdasoo.act.dto.ActResponseDto;
 import beyond.samdasoo.act.entity.Act;
 import beyond.samdasoo.act.repository.ActRepository;
+import beyond.samdasoo.common.exception.BaseException;
 import beyond.samdasoo.lead.repository.LeadRepository;
-import jakarta.persistence.EntityNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Optional;
+
+import static beyond.samdasoo.common.response.BaseResponseStatus.ACT_NOT_EXIST;
 
 @Service
 public class ActService {
@@ -25,7 +27,7 @@ public class ActService {
 
     private Act findActById(Long no) {
         return actRepository.findById(no)
-                .orElseThrow(() -> new EntityNotFoundException("활동을 찾을 수 없습니다: " + no));
+                .orElseThrow(() -> new BaseException(ACT_NOT_EXIST));
     }
 
 //     TODO: 영업기회 엔티티 완성 후 주석 해제 예정

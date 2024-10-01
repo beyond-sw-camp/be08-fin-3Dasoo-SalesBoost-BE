@@ -33,4 +33,22 @@ public class ProcessController {
         return new BaseResponse<>("프로세스 등록을 완료했습니다.");
     }
 
+    @DeleteMapping("/{no}")
+    @Operation(summary = "프로세스 삭제", description = "관리자 계정에 프로세스 번호로 프로세스 삭제")
+    public BaseResponse<String> deleteProcessByNo(@PathVariable("no") Long no){
+
+        processService.deleteProcessByNo(no);
+
+        return new BaseResponse<>("프로세스 삭제를 완료했습니다.");
+    }
+
+    @PatchMapping("/{no}")
+    @Operation(summary = "프로세스 수정", description = "관리자 계정에 프로세스 번호로 프로세스 수정")
+    public BaseResponse<String> updateProcessByNo(@PathVariable("no") Long no, @RequestBody ProcessRequestDto request){
+
+        processService.updateProcessByNo(no, request);
+
+        return new BaseResponse<>("프로세스 수정을 완료했습니다.");
+    }
+
 }
