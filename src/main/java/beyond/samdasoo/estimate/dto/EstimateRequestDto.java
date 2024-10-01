@@ -16,6 +16,6 @@ public class EstimateRequestDto {
     private int tax;
     private int totalPrice;
     private String note;
-    //private Long prodNo;
+    private Long prodNo;
     private Long propNo;
 }
