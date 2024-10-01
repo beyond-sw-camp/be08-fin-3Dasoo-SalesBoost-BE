@@ -1,9 +1,11 @@
 package beyond.samdasoo.potentialcustomer.dto;
 import beyond.samdasoo.potentialcustomer.entity.PotentialCustomer;
+import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
 
 @Getter
 public class CreatePotentialCustomerReq {
+    @NotNull
     private String name; // 필수
 
     private String company; // 고객사
@@ -12,11 +14,13 @@ public class CreatePotentialCustomerReq {
 
     private String position; // 직책
 
+    @NotNull
     private String cls; // 접촉구분
 
-    private PotentialCustomer.Status status; // 접촉상태
+    @NotNull
+    private int status; // 접촉상태
 
-    private PotentialCustomer.Grade grade; // 가망 등급
+    private int grade; // 가망 등급
 
     private String phone; // 휴대폰 번호
 
@@ -38,8 +42,8 @@ public class CreatePotentialCustomerReq {
                 .dept(dept)
                 .position(position)
                 .cls(cls)
-                .status(status)
-                .grade(grade)
+                .status(PotentialCustomer.Status.getStatus(status))
+                .grade(PotentialCustomer.Grade.getGrade(grade))
                 .phone(phone)
                 .tel(tel)
                 .email(email)

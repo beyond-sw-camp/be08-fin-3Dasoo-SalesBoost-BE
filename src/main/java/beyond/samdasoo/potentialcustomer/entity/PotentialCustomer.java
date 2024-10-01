@@ -29,8 +29,10 @@ public class PotentialCustomer extends BaseEntity{
 
     private String position; // 직책
 
+    @Column(nullable = false)
     private String cls; // 접촉구분
 
+    @Column(nullable = false) // 필수
     @Enumerated(EnumType.STRING)
     private Status status; // 접촉상태
 
@@ -62,31 +64,52 @@ public class PotentialCustomer extends BaseEntity{
 
     @Getter
     public enum Grade{
-        S("S등급"),
-        A("A등급"),
-        B("B등급"),
-        C("C등급");
+        X("미선택",0),
+        S("S등급",1),
+        A("A등급",2),
+        B("B등급",3),
+        C("C등급",4);
 
         private final String message;
+        private final int code;
 
-        Grade(String message){
+        Grade(String message, int code){
             this.message = message;
+            this.code = code;
+        }
+
+        public static Grade getGrade(int code){
+            for (Grade grade : Grade.values()) {
+                if(grade.getCode() == code)
+                    return grade;
+            }
+            throw new IllegalArgumentException("유효하지 않은 등급 번호 입니다.");
         }
     }
 
     @Getter
     public enum Status{
-        NO_CONTACT("미접촉"),
-        TRY_CONTACT("접촉시도"),
-        CONTACTING("접촉중"),
-        NOT_CONTACT("접촉금지"),
-        CONVERT_CUSTOMER("고객전환"),
-        EXIST_CUSTOMER("기존고객");
+        NO_CONTACT("미접촉",1),
+        TRY_CONTACT("접촉시도",2),
+        CONTACTING("접촉중",3),
+        NOT_CONTACT("접촉금지",4),
+        CONVERT_CUSTOMER("고객전환",5),
+        EXIST_CUSTOMER("기존고객",6);
 
         private final String message;
+        private final int code;
 
-        Status(String message){
+        Status(String message,int code){
             this.message =  message;
+            this.code = code;
+        }
+
+        public static Status getStatus(int code){
+            for (Status status : Status.values()) {
+                if(status.getCode() == code)
+                    return status;
+            }
+            throw new IllegalArgumentException("유효하지 않은 접촉상태 번호 입니다.");
         }
 
     }
