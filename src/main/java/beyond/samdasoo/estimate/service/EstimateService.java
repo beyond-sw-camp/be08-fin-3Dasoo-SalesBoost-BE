@@ -1,5 +1,7 @@
 package beyond.samdasoo.estimate.service;
 
+import beyond.samdasoo.admin.entity.Product;
+import beyond.samdasoo.admin.repository.ProductRepository;
 import beyond.samdasoo.estimate.dto.EstimateRequestDto;
 import beyond.samdasoo.estimate.dto.EstimateResponseDto;
 import beyond.samdasoo.estimate.entity.Estimate;
@@ -18,14 +20,13 @@ import java.util.stream.Collectors;
 public class EstimateService {
 
     private final EstimateRepository estimateRepository;
-   // private final ProductRepository productRepository;
+    private final ProductRepository productRepository;
     private final ProposalRepository proposalRepository;
 
     @Autowired
-//    public EstimateService(EstimateRepository estimateRepository, ProductRepository productRepository, ProposalRepository proposalRepository) {
-    public EstimateService(EstimateRepository estimateRepository,ProposalRepository proposalRepository) {
+    public EstimateService(EstimateRepository estimateRepository, ProductRepository productRepository, ProposalRepository proposalRepository) {
         this.estimateRepository = estimateRepository;
-        //this.productRepository = productRepository;
+        this.productRepository = productRepository;
         this.proposalRepository = proposalRepository;
     }
 
@@ -33,8 +34,8 @@ public class EstimateService {
     public EstimateResponseDto createEstimate(EstimateRequestDto estimateRequestDto) {
 
 
-//        Product product = productRepository.findById(estimateRequestDto.getProdNo())
-//                .orElseThrow(() -> new EntityNotFoundException("Product not found: " + estimateRequestDto.getProdNo()));
+        Product product = productRepository.findById(estimateRequestDto.getProdNo())
+                .orElseThrow(() -> new EntityNotFoundException("Product not found: " + estimateRequestDto.getProdNo()));
 
         Proposal proposal = proposalRepository.findById(estimateRequestDto.getPropNo())
                 .orElseThrow(() -> new EntityNotFoundException("제안을 찾을 수 없습니다: " + estimateRequestDto.getPropNo()));
@@ -49,7 +50,7 @@ public class EstimateService {
         estimate.setTax(estimateRequestDto.getTax());
         estimate.setTotalPrice(estimateRequestDto.getTotalPrice());
         estimate.setNote(estimateRequestDto.getNote());
-//        estimate.setProdNo(product);
+        estimate.setProduct(product);
         estimate.setProposal(proposal);
 
         estimate = estimateRepository.save(estimate);
