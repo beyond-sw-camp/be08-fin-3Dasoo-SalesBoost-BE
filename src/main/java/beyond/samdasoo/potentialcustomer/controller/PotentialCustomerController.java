@@ -20,9 +20,9 @@ public class PotentialCustomerController {
      잠재고객 생성 API
      */
     @PostMapping("")
-    public String createPotentialCustomer(@RequestBody @Valid CreatePotentialCustomerReq request) {
+    public BaseResponse<String> createPotentialCustomer(@RequestBody @Valid CreatePotentialCustomerReq request) {
         potentialCustomerService.create(request);
-        return "잠재고객 생성";
+        return new BaseResponse<>("잠재고객 생성을 완료하였습니다.");
 
     }
 
@@ -42,6 +42,7 @@ public class PotentialCustomerController {
     @GetMapping("/{no}")
     public BaseResponse<PotentialCustomerDto> getPotentialCustomer(@PathVariable Long no) {
         PotentialCustomerDto result = potentialCustomerService.getPotentialCustomer(no);
+        System.out.println(result);
         return new BaseResponse<>(result);
     }
 
