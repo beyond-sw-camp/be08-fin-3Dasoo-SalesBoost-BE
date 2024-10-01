@@ -20,11 +20,11 @@ public class Plan extends BaseEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long no;
+    private Long planNo;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_no", nullable = false)
-    private User userNo;
+    private User user;
 
     @Column(name = "personal_yn", nullable = false, length = 1)
     private String personalYn;

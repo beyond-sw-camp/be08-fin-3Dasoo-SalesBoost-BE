@@ -4,13 +4,19 @@ import beyond.samdasoo.admin.entity.Product;
 import beyond.samdasoo.common.entity.BaseEntity;
 import beyond.samdasoo.proposal.entity.Proposal;
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.time.LocalDate;
 
 @Table(name="tb_estimate")
-@Entity
 @Data
+@Entity
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
 public class Estimate extends BaseEntity {
 
     @Id

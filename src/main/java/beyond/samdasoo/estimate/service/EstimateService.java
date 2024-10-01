@@ -2,6 +2,7 @@ package beyond.samdasoo.estimate.service;
 
 import beyond.samdasoo.admin.entity.Product;
 import beyond.samdasoo.admin.repository.ProductRepository;
+import beyond.samdasoo.common.response.BaseResponseStatus;
 import beyond.samdasoo.estimate.dto.EstimateRequestDto;
 import beyond.samdasoo.estimate.dto.EstimateResponseDto;
 import beyond.samdasoo.estimate.entity.Estimate;
@@ -12,6 +13,7 @@ import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import beyond.samdasoo.common.exception.BaseException;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -33,12 +35,11 @@ public class EstimateService {
     @Transactional
     public EstimateResponseDto createEstimate(EstimateRequestDto estimateRequestDto) {
 
-
         Product product = productRepository.findById(estimateRequestDto.getProdNo())
-                .orElseThrow(() -> new EntityNotFoundException("Product not found: " + estimateRequestDto.getProdNo()));
+                .orElseThrow(() -> new BaseException(BaseResponseStatus.Product_NOT_EXIST));
 
         Proposal proposal = proposalRepository.findById(estimateRequestDto.getPropNo())
-                .orElseThrow(() -> new EntityNotFoundException("제안을 찾을 수 없습니다: " + estimateRequestDto.getPropNo()));
+                .orElseThrow(() -> new BaseException(BaseResponseStatus.PROPOSAL_NOT_EXIST));
 
         Estimate estimate = new Estimate();
         estimate.setName(estimateRequestDto.getName());
@@ -68,14 +69,14 @@ public class EstimateService {
     @Transactional(readOnly = true)
     public EstimateResponseDto getEstimateById(Long estNo) {
         Estimate estimate = estimateRepository.findById(estNo)
-                .orElseThrow(() -> new EntityNotFoundException("견적을 찾을 수 없습니다: " + estNo));
+                .orElseThrow(() -> new BaseException(BaseResponseStatus.ESTIMATE_NOT_EXIST));
         return new EstimateResponseDto(estimate);
     }
 
     @Transactional
     public EstimateResponseDto updateEstimate(Long estNo, EstimateRequestDto estimateRequestDto) {
         Estimate estimate = estimateRepository.findById(estNo)
-                .orElseThrow(() -> new EntityNotFoundException("견적을 찾을 수 없습니다: " + estNo));
+                .orElseThrow(() -> new BaseException(BaseResponseStatus.ESTIMATE_NOT_EXIST));
 
         estimate.setName(estimateRequestDto.getName());
         estimate.setEstDate(estimateRequestDto.getEstDate());
@@ -94,7 +95,7 @@ public class EstimateService {
     @Transactional
     public void deleteEstimate(Long estNo) {
         Estimate estimate = estimateRepository.findById(estNo)
-                .orElseThrow(() -> new EntityNotFoundException("견적을 찾을 수 없습니다: " + estNo));
+                .orElseThrow(() -> new BaseException(BaseResponseStatus.ESTIMATE_NOT_EXIST));
 
         estimateRepository.delete(estimate);
     }
