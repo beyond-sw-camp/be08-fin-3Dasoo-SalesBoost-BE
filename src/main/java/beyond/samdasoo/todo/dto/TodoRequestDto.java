@@ -32,5 +32,8 @@ public class TodoRequestDto {
 
     @Schema(description = "사용자 번호", defaultValue = "1")
     private Long userNo;
+    
+    @Schema(description = "일정 번호", defaultValue = "1")
+    private Long planNo;
 
 }

@@ -3,7 +3,6 @@ package beyond.samdasoo.todo.controller;
 import beyond.samdasoo.common.exception.BaseException;
 import beyond.samdasoo.common.response.BaseResponse;
 import beyond.samdasoo.common.response.BaseResponseStatus;
-import beyond.samdasoo.plan.dto.PlanResponseDto;
 import beyond.samdasoo.todo.dto.TodoRequestDto;
 import beyond.samdasoo.todo.dto.TodoResponseDto;
 import beyond.samdasoo.todo.dto.TodoUpdateDto;
@@ -14,8 +13,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
-import static beyond.samdasoo.common.response.BaseResponseStatus.TODO_NOT_EXIST;
 
 @RestController
 @RequestMapping("/api/todos")
