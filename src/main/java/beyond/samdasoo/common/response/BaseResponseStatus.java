@@ -29,6 +29,49 @@ public enum BaseResponseStatus {
     EMAIL_OR_PWD_NOT_FOUND(false,HttpStatus.BAD_REQUEST.value(), "이메일/비밀번호를 확인해주세요"),
     USER_NOT_EXIST(false, HttpStatus.BAD_REQUEST.value(), "존재하지 않는 회원입니다"),
 
+    /**
+     * product 관련
+     */
+    PRODUCT_ALREADY_EXIST(false, HttpStatus.BAD_REQUEST.value(), "이미 등록된 제품입니다."),
+    Product_NOT_EXIST(false, HttpStatus.BAD_REQUEST.value(), "존재하지 않는 제품입니다."),
+
+    /**
+     * process 관련
+     */
+    PROCESS_ALREADY_EXIST(false, HttpStatus.BAD_REQUEST.value(),"이미 등록된 프로세스 입니다."),
+    PROCESS_NOT_EXIST(false, HttpStatus.BAD_REQUEST.value(), "등록되지 않은 프로세스입니다."),
+    /**
+     * subprocess 관련
+     */
+    SUBPROCESS_ALREADY_EXIST(false, HttpStatus.BAD_REQUEST.value(), "이미 등록된 하위 프로세스 입니다."),
+    SUBPROCESS_NOT_EXIST(false, HttpStatus.BAD_REQUEST.value(), "등록되지 않은 하위 프로세스 입니다."),
+
+    /**
+     * act 관련
+     */
+    ACT_NOT_EXIST(false, HttpStatus.NOT_FOUND.value(), "존재하지 않는 영업활동입니다."),
+
+    /**
+     * plan 관련
+     */
+    PLAN_NOT_EXIST(false, HttpStatus.NOT_FOUND.value(), "존재하지 않는 일정입니다."),
+
+    /**
+     * todo 관련
+     */
+    TODO_NOT_EXIST(false, HttpStatus.NOT_FOUND.value(), "존재하지 않는 할 일입니다."),
+
+    /**
+     * proposal 관련
+     */
+    PROPOSAL_ALREADY_EXIST(false, HttpStatus.BAD_REQUEST.value(), "이미 등록된 제안입니다."),
+    PROPOSAL_NOT_EXIST(false, HttpStatus.BAD_REQUEST.value(), "등록되지 않은 제안입니다."),
+
+    /**
+     * estimate 관련
+     */
+    ESTIMATE_ALREADY_EXIST(false, HttpStatus.BAD_REQUEST.value(), "이미 등록된 견적입니다."),
+    ESTIMATE_NOT_EXIST(false, HttpStatus.BAD_REQUEST.value(), "등록되지 않은 견적입니다."),
 
     /**
      * 500 :  Database, Server 오류

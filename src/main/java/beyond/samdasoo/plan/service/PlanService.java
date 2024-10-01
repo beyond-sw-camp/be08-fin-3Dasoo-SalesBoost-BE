@@ -1,19 +1,20 @@
 package beyond.samdasoo.plan.service;
 
+import beyond.samdasoo.common.exception.BaseException;
 import beyond.samdasoo.plan.dto.PlanRequestDto;
 import beyond.samdasoo.plan.dto.PlanResponseDto;
 import beyond.samdasoo.plan.dto.PlanUpdateDto;
 import beyond.samdasoo.plan.entity.Plan;
 import beyond.samdasoo.plan.repository.PlanRepository;
-import beyond.samdasoo.todo.dto.TodoResponseDto;
-import beyond.samdasoo.todo.entity.Todo;
 import beyond.samdasoo.user.entity.User;
 import beyond.samdasoo.user.repository.UserRepository;
-import jakarta.persistence.EntityNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Optional;
+
+import static beyond.samdasoo.common.response.BaseResponseStatus.PLAN_NOT_EXIST;
+import static beyond.samdasoo.common.response.BaseResponseStatus.USER_NOT_EXIST;
 
 @Service
 public class PlanService {
@@ -29,14 +30,14 @@ public class PlanService {
 
     private Plan findPlanById(Long id) {
         return planRepository.findById(id)
-                .orElseThrow(() -> new EntityNotFoundException("일정을 찾을 수 없습니다: " + id));
+                .orElseThrow(() -> new BaseException(PLAN_NOT_EXIST));
     }
 
     @Transactional
     public PlanResponseDto createPlan(PlanRequestDto planRequestDto) {
 
-        User user = userRepository.findById(planRequestDto.getUserNo())
-                .orElseThrow(() -> new EntityNotFoundException("회원 ID 조회 불가: " + planRequestDto.getUserNo()));
+        User user = userRepository.findById(planRequestDto.getUser())
+                .orElseThrow(() -> new BaseException(USER_NOT_EXIST));
 
         Plan plan = Plan.builder()
                 .personalYn(planRequestDto.getPersonalYn())
@@ -46,7 +47,7 @@ public class PlanService {
                 .startTime(planRequestDto.getStartTime())
                 .endTime(planRequestDto.getEndTime())
                 .content(planRequestDto.getContent())
-                .userNo(user)
+                .user(user)
                 .build();
 
         plan = planRepository.save(plan);

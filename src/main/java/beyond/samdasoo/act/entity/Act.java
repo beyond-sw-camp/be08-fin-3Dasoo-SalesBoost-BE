@@ -18,12 +18,12 @@ public class Act {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long no;
+    private Long actNo;
 
 //    TODO: 영업기회 엔티티 완성 후 주석 해제 예정-ENTITY
 //    @ManyToOne(fetch = FetchType.LAZY)
 //    @JoinColumn(name = "lead_no", nullable = false)
-//    private Lead leadNo;
+//    private Lead lead;
 
     @Column(name = "name", nullable = false)
     private String name;

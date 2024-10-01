@@ -4,5 +4,5 @@ import beyond.samdasoo.proposal.entity.Proposal;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface ProposalRepository extends JpaRepository<Proposal, Long>{
-    boolean existsById(Long propNo); //checking the existence of a record
+    boolean existsById(Long propNo);
 }

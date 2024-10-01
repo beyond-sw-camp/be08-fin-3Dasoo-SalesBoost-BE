@@ -58,11 +58,8 @@
 
 ## 📑 테이블 명세서
 
-[테이블 명세서](https://docs.google.com/spreadsheets/d/1TyRsbSeW4v-V-AyeoBwzd_29XmxtEqnAE0FZL05jrjU/edit?gid=373256007#gid=373256007)
+[테이블 명세서](https://docs.google.com/spreadsheets/d/19Nf7w0QSlVX1VOPbxbSS61pFMHorlVDw/edit?gid=77757089#gid=77757089)
 
-<!-- <br><br>
-![image](https://github.com/user-attachments/assets/6eb4ab10-2447-4313-b490-b61016f71e04)
-![image](https://github.com/user-attachments/assets/3a491183-09f0-4455-97c7-7eabb61381e5) -->
 
 <br>
 
@@ -72,9 +69,9 @@
 
 <br>
 
-## 📑 화면 정의서
+## 📑 화면 설계서
 
-[화면 정의서](https://www.figma.com/design/3eVoEOIHFVwVvohUklm3Zy/3dsaoo?node-id=0-1)
+[화면 설계서](https://www.figma.com/design/3eVoEOIHFVwVvohUklm3Zy/3dsaoo?node-id=0-1)
 
 <br>
 

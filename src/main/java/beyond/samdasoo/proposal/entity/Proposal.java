@@ -1,14 +1,21 @@
 package beyond.samdasoo.proposal.entity;
 
 import beyond.samdasoo.common.entity.BaseEntity;
+import beyond.samdasoo.lead.Lead;
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.time.LocalDate;
 
 @Table(name="tb_proposal")
-@Entity
 @Data
+@Entity
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
 public class Proposal extends BaseEntity {
 
     @Id
