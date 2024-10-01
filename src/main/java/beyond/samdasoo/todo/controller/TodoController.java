@@ -1,6 +1,9 @@
 package beyond.samdasoo.todo.controller;
 
+import beyond.samdasoo.common.exception.BaseException;
 import beyond.samdasoo.common.response.BaseResponse;
+import beyond.samdasoo.common.response.BaseResponseStatus;
+import beyond.samdasoo.plan.dto.PlanResponseDto;
 import beyond.samdasoo.todo.dto.TodoRequestDto;
 import beyond.samdasoo.todo.dto.TodoResponseDto;
 import beyond.samdasoo.todo.dto.TodoUpdateDto;
@@ -8,12 +11,15 @@ import beyond.samdasoo.todo.service.TodoService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-@Tag(name="todo", description = "할 일 API")
+import static beyond.samdasoo.common.response.BaseResponseStatus.TODO_NOT_EXIST;
+
 @RestController
-@RequestMapping("/api/todo")
+@RequestMapping("/api/todos")
+@Tag(name="Todo APIs", description = "할 일 API")
 public class TodoController {
     private final TodoService todoService;
 
@@ -23,30 +29,45 @@ public class TodoController {
     }
 
     @PostMapping
-    @Operation(summary = "할일 등록", description = "새로운 할 일 등록")
-    public BaseResponse<TodoResponseDto> createTodo(@RequestBody TodoRequestDto todoRequestDto) {
+    @Operation(summary = "할 일 등록", description = "새로운 할 일 등록")
+    public ResponseEntity<BaseResponse<TodoResponseDto>> createTodo(@RequestBody TodoRequestDto todoRequestDto) {
         TodoResponseDto responseDto = todoService.createTodo(todoRequestDto);
-        return new BaseResponse<>(responseDto);
+        return ResponseEntity.status(HttpStatus.CREATED).body(new BaseResponse<>(responseDto));
     }
 
     @GetMapping("/{no}")
-    @Operation(summary = "할일 조회", description = "특정 할 일 조회")
-    public ResponseEntity<TodoResponseDto> getTodoById(@PathVariable("no") Long no) {
-        TodoResponseDto responseDto = todoService.getTodoById(no);
-        return ResponseEntity.ok(responseDto);
+    @Operation(summary = "할 일 조회", description = "특정 할 일 조회")
+    public ResponseEntity<BaseResponse<TodoResponseDto>> getTodoById(@PathVariable("no") Long no) {
+        try{
+            TodoResponseDto responseDto = todoService.getTodoById(no);
+            return ResponseEntity.ok(new BaseResponse<>(responseDto));
+        }catch (BaseException ex) {
+            BaseResponseStatus status = ex.getStatus();
+            return new ResponseEntity<>(new BaseResponse<>(status), HttpStatus.valueOf(status.getCode()));
+        }
     }
 
     @PatchMapping("/{no}")
-    @Operation(summary = "할일 수정", description = "특정 할 일 수정")
-    public ResponseEntity<Void> patchUpdateTodo(@PathVariable("no") Long no, @RequestBody TodoUpdateDto todoUpdateDto) {
-        todoService.updateTodo(no, todoUpdateDto);
-        return ResponseEntity.noContent().build();
+    @Operation(summary = "할 일 수정", description = "특정 할 일 수정")
+    public ResponseEntity<BaseResponse<String>> patchUpdateTodo(@PathVariable("no") Long no, @RequestBody TodoUpdateDto todoUpdateDto) {
+        try{
+            todoService.updateTodo(no, todoUpdateDto);
+            return ResponseEntity.ok(new BaseResponse<>("할 일을 수정하였습니다"));
+        }catch (BaseException ex) {
+            BaseResponseStatus status = ex.getStatus();
+            return new ResponseEntity<>(new BaseResponse<>(status), HttpStatus.valueOf(status.getCode()));
+        }
     }
 
     @DeleteMapping("/{no}")
     @Operation(summary = "할일 삭제", description = "특정 할 일 삭제")
-    public ResponseEntity<Void> deleteTodo(@PathVariable("no") Long no) {
-        todoService.deleteTodo(no);
-        return ResponseEntity.noContent().build();
+    public ResponseEntity<BaseResponse<String>> deleteTodo(@PathVariable("no") Long no) {
+        try{
+            todoService.deleteTodo(no);
+            return ResponseEntity.ok(new BaseResponse<>("할 일 삭제에 성공했습니다."));
+        } catch (BaseException ex) {
+            BaseResponseStatus status = ex.getStatus();
+            return new ResponseEntity<>(new BaseResponse<>(status), HttpStatus.valueOf(status.getCode()));
+        }
     }
 }

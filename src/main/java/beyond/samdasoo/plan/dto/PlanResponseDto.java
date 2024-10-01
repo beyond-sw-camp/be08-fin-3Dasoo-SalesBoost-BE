@@ -9,7 +9,7 @@ import java.time.LocalDate;
 @Data
 public class PlanResponseDto {
 
-    private Long no ;
+    private Long planNo;
     private Long userNo;
     private String personalYn;
     private PlanStatus planCls;
@@ -20,8 +20,8 @@ public class PlanResponseDto {
     private String content;
 
     public PlanResponseDto(Plan plan) {
-        this.no = plan.getNo();
-        this.userNo = plan.getUserNo().getId();
+        this.planNo = plan.getPlanNo();
+        this.userNo = plan.getUser().getId();
         this.personalYn = plan.getPersonalYn();
         this.planCls = plan.getPlanCls();
         this.planDate = plan.getPlanDate();
