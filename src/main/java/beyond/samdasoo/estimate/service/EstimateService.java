@@ -34,7 +34,7 @@ public class EstimateService {
     @Transactional
     public EstimateResponseDto createEstimate(EstimateRequestDto estimateRequestDto) {
 
-       Product product = productRepository.findById(estimateRequestDto.getProdNo())
+        Product product = productRepository.findById(estimateRequestDto.getProdNo())
                 .orElseThrow(() -> new BaseException(BaseResponseStatus.Product_NOT_EXIST));
 
         Proposal proposal = proposalRepository.findById(estimateRequestDto.getPropNo())
