@@ -4,11 +4,18 @@ import beyond.samdasoo.common.entity.BaseEntity;
 import beyond.samdasoo.common.response.BaseResponse;
 import beyond.samdasoo.user.entity.User;
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
 import java.util.NoSuchElementException;
 
+@AllArgsConstructor
+@NoArgsConstructor
+@Getter
+@Builder
 @Table(name = "TB_CONTACT_HISTORY")
 @Entity
 public class ContactHistory extends BaseEntity {

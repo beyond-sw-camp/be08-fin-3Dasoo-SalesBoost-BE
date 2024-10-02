@@ -1,10 +1,7 @@
 package beyond.samdasoo.potentialcustomer.controller;
 
 import beyond.samdasoo.common.response.BaseResponse;
-import beyond.samdasoo.potentialcustomer.dto.CreatePotentialCustomerReq;
-import beyond.samdasoo.potentialcustomer.dto.PotentialCustomerDto;
-import beyond.samdasoo.potentialcustomer.dto.PotentialCustomerListDto;
-import beyond.samdasoo.potentialcustomer.dto.UpdatePotentialCustomerReq;
+import beyond.samdasoo.potentialcustomer.dto.*;
 import beyond.samdasoo.potentialcustomer.entity.PotentialCustomer;
 import beyond.samdasoo.potentialcustomer.service.PotentialCustomerService;
 import jakarta.validation.Valid;
@@ -59,5 +56,22 @@ public class PotentialCustomerController {
         List<PotentialCustomerListDto> result = potentialCustomerService.getAllPotentialCustomer();
         return new BaseResponse<>(result);
     }
+
+    /**
+        접촉 이력 생성 API
+     */
+    @PostMapping("/{id}/history")
+    public BaseResponse<String> insertContactHistory(@PathVariable Long id,@RequestBody @Valid CreateContactHistoryReq request){
+        potentialCustomerService.insertContactHistory(id,request);
+        return new BaseResponse<>("접촉 이력을 생성했습니다.");
+    }
+
+    /**
+        접촉 이력 목록 조회 API -> 목록 조회시 pk 값도 응답값에 추가
+     */
+
+    /**
+        접촉 이력 삭제 API
+     */
 
 }

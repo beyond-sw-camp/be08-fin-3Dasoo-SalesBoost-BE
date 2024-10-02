@@ -2,12 +2,14 @@ package beyond.samdasoo.potentialcustomer.service;
 
 import beyond.samdasoo.common.exception.BaseException;
 import beyond.samdasoo.common.response.BaseResponse;
-import beyond.samdasoo.potentialcustomer.dto.CreatePotentialCustomerReq;
-import beyond.samdasoo.potentialcustomer.dto.PotentialCustomerDto;
-import beyond.samdasoo.potentialcustomer.dto.PotentialCustomerListDto;
-import beyond.samdasoo.potentialcustomer.dto.UpdatePotentialCustomerReq;
+import beyond.samdasoo.common.utils.UserUtil;
+import beyond.samdasoo.potentialcustomer.dto.*;
+import beyond.samdasoo.potentialcustomer.entity.ContactHistory;
 import beyond.samdasoo.potentialcustomer.entity.PotentialCustomer;
+import beyond.samdasoo.potentialcustomer.repository.ContactHistoryRepository;
 import beyond.samdasoo.potentialcustomer.repository.PotentialCustomerRepository;
+import beyond.samdasoo.user.entity.User;
+import beyond.samdasoo.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -16,12 +18,15 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 import static beyond.samdasoo.common.response.BaseResponseStatus.POTENTIAL_CUSTOMER_NOT_EXIST;
+import static beyond.samdasoo.common.response.BaseResponseStatus.USER_NOT_EXIST;
 
 @RequiredArgsConstructor
 @Service
 public class PotentialCustomerService {
 
     private final PotentialCustomerRepository potentialCustomerRepository;
+    private final UserRepository userRepository;
+    private final ContactHistoryRepository contactHistoryRepository;
 
     public void create(CreatePotentialCustomerReq request) {
         potentialCustomerRepository.save(request.toPotentialCustomer());
@@ -84,5 +89,18 @@ public class PotentialCustomerService {
 
         return PotentialCustomerDto.builder().name(request.getName()).build();
 
+    }
+
+    public void insertContactHistory(Long pCustomerId, CreateContactHistoryReq request) {
+        PotentialCustomer pCustomer =potentialCustomerRepository.findById(pCustomerId)
+                .orElseThrow(()-> new BaseException(POTENTIAL_CUSTOMER_NOT_EXIST));
+
+        String userEmail = UserUtil.getLoginUserEmail();
+        User user = userRepository.findByEmail(userEmail)
+                .orElseThrow(()-> new BaseException(USER_NOT_EXIST));
+
+        ContactHistory contactHistory = request.toContactHistory(user,pCustomer);
+
+        contactHistoryRepository.save(contactHistory);
     }
 }
