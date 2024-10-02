@@ -10,6 +10,7 @@ import beyond.samdasoo.potentialcustomer.repository.ContactHistoryRepository;
 import beyond.samdasoo.potentialcustomer.repository.PotentialCustomerRepository;
 import beyond.samdasoo.user.entity.User;
 import beyond.samdasoo.user.repository.UserRepository;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -70,7 +71,8 @@ public class PotentialCustomerService {
                 .build()).collect(Collectors.toList());
     }
 
-    public PotentialCustomerDto updatePotentialCustomer(Long prospectId, UpdatePotentialCustomerReq request) {
+    @Transactional
+    public void updatePotentialCustomer(Long prospectId, UpdatePotentialCustomerReq request) {
         PotentialCustomer pCustomer =potentialCustomerRepository.findById(prospectId)
                 .orElseThrow(()-> new BaseException(POTENTIAL_CUSTOMER_NOT_EXIST));
 
@@ -84,9 +86,20 @@ public class PotentialCustomerService {
         Optional.ofNullable(request.getPhone()).ifPresent(pCustomer::changePhone);
         Optional.ofNullable(request.getTel()).ifPresent(pCustomer::changeTel);
         Optional.ofNullable(request.getFax()).ifPresent(pCustomer::changeFax);
+        Optional.ofNullable(request.getAddr()).ifPresent(pCustomer::changeAddr);
         Optional.ofNullable(request.getNote()).ifPresent(pCustomer::changeNote);
 
-        return PotentialCustomerDto.builder().name(request.getName()).build();
+//        return PotentialCustomerDto.builder().name(request.getName())
+//                .company(request.getCompany())
+//                .cls(request.getCls())
+//                .status(request.getStatus())
+//                .grade(request.getGrade())
+//                .phone(request.getPhone())
+//                .tel(request.getTel())
+//                .email(request.getEmail())
+//                .fax(request.getFax())
+//                .note(request.getNote())
+//                .build();
 
     }
 
@@ -111,5 +124,13 @@ public class PotentialCustomerService {
         }else{
             throw new BaseException(CONTACT_HISTORY_NOT_EXIST);
         }
+    }
+
+    public void getContactHistoryList(Long prospectId) {
+        PotentialCustomer pCustomer = potentialCustomerRepository.findById(prospectId)
+                .orElseThrow(() -> new BaseException(POTENTIAL_CUSTOMER_NOT_EXIST));
+    //    List<ContactHistory> allByPCustomer = contactHistoryRepository.findByPCustomer(pCustomer);
+
+
     }
 }
