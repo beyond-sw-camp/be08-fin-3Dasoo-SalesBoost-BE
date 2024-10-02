@@ -8,6 +8,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.CreationTimestamp;
 import java.time.LocalDateTime;
+import java.util.NoSuchElementException;
 
 @AllArgsConstructor
 @Builder
@@ -83,7 +84,7 @@ public class PotentialCustomer extends BaseEntity{
                 if(grade.getCode() == code)
                     return grade;
             }
-            throw new IllegalArgumentException("유효하지 않은 등급 번호 입니다.");
+            throw new NoSuchElementException("No such Grade with code " + code);
         }
     }
 
