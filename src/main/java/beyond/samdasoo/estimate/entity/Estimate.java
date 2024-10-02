@@ -1,15 +1,22 @@
 package beyond.samdasoo.estimate.entity;
 
+import beyond.samdasoo.admin.entity.Product;
 import beyond.samdasoo.common.entity.BaseEntity;
 import beyond.samdasoo.proposal.entity.Proposal;
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.time.LocalDate;
 
 @Table(name="tb_estimate")
-@Entity
 @Data
+@Entity
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
 public class Estimate extends BaseEntity {
 
     @Id
@@ -17,9 +24,9 @@ public class Estimate extends BaseEntity {
     @Column(name = "est_no")
     private Long estNo;  // 견적번호 (PK)
 
-//    @ManyToOne(fetch = FetchType.LAZY)
-//    @JoinColumn(name = "prod_no", nullable = false)
-//    private Product product;  // 제품번호 (FK)
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "prod_no", nullable = false)
+    private Product product;  // 제품번호 (FK)
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "prop_no", nullable = false)

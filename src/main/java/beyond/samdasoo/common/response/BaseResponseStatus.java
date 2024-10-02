@@ -53,6 +53,34 @@ public enum BaseResponseStatus {
     DEPARTMENT_NOT_EXIST(false, HttpStatus.BAD_REQUEST.value(), "등록되지 않은 부서입니다."),
     UPPER_DEPARTMENT_NOT_EXIST(false, HttpStatus.BAD_REQUEST.value(), "등록되지 않은 상위 부서입니다."),
 
+
+    /**
+     * act 관련
+     */
+    ACT_NOT_EXIST(false, HttpStatus.NOT_FOUND.value(), "존재하지 않는 영업활동입니다."),
+
+    /**
+     * plan 관련
+     */
+    PLAN_NOT_EXIST(false, HttpStatus.NOT_FOUND.value(), "존재하지 않는 일정입니다."),
+
+    /**
+     * todo 관련
+     */
+    TODO_NOT_EXIST(false, HttpStatus.NOT_FOUND.value(), "존재하지 않는 할 일입니다."),
+
+    /**
+     * proposal 관련
+     */
+    PROPOSAL_ALREADY_EXIST(false, HttpStatus.BAD_REQUEST.value(), "이미 등록된 제안입니다."),
+    PROPOSAL_NOT_EXIST(false, HttpStatus.BAD_REQUEST.value(), "등록되지 않은 제안입니다."),
+
+    /**
+     * estimate 관련
+     */
+    ESTIMATE_ALREADY_EXIST(false, HttpStatus.BAD_REQUEST.value(), "이미 등록된 견적입니다."),
+    ESTIMATE_NOT_EXIST(false, HttpStatus.BAD_REQUEST.value(), "등록되지 않은 견적입니다."),
+
     /**
      * 500 :  Database, Server 오류
      */

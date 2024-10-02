@@ -1,6 +1,7 @@
 package beyond.samdasoo.todo.entity;
 
 import beyond.samdasoo.common.entity.BaseEntity;
+import beyond.samdasoo.plan.entity.Plan;
 import beyond.samdasoo.user.entity.User;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -24,7 +25,11 @@ public class Todo extends BaseEntity {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name="user_no", nullable=false)
-    private User userNo;
+    private User user;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "plan_no")
+    private Plan plan;
 
     @Column(name = "title", nullable = false)
     private String title;
