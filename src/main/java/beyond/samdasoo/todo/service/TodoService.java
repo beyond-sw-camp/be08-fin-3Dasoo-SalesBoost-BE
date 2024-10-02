@@ -1,6 +1,8 @@
 package beyond.samdasoo.todo.service;
 
 import beyond.samdasoo.common.exception.BaseException;
+import beyond.samdasoo.plan.entity.Plan;
+import beyond.samdasoo.plan.repository.PlanRepository;
 import beyond.samdasoo.todo.dto.TodoRequestDto;
 import beyond.samdasoo.todo.dto.TodoResponseDto;
 import beyond.samdasoo.todo.dto.TodoUpdateDto;
@@ -14,20 +16,20 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Optional;
 
-import static beyond.samdasoo.common.response.BaseResponseStatus.TODO_NOT_EXIST;
-import static beyond.samdasoo.common.response.BaseResponseStatus.USER_NOT_EXIST;
+import static beyond.samdasoo.common.response.BaseResponseStatus.*;
 
 @Service
 public class TodoService {
 
     private final TodoRepository todoRepository;
-
     private final UserRepository userRepository;
+    private final PlanRepository planRepository;
 
     @Autowired
-    public TodoService(TodoRepository todoRepository, UserRepository userRepository) {
+    public TodoService(TodoRepository todoRepository, UserRepository userRepository, PlanRepository planRepository) {
         this.todoRepository = todoRepository;
         this.userRepository = userRepository;
+        this.planRepository = planRepository;
     }
 
     private Todo findById(Long no){
@@ -41,6 +43,9 @@ public class TodoService {
         User user = userRepository.findById(todoRequestDto.getUserNo())
                 .orElseThrow(() -> new BaseException(USER_NOT_EXIST));
 
+        Plan plan = todoRequestDto.getPlanNo() != null ? planRepository.findById(todoRequestDto.getPlanNo())
+                .orElseThrow(() -> new BaseException(PLAN_NOT_EXIST)) : null;
+
         Todo todo = Todo.builder()
                 .title(todoRequestDto.getTitle())
                 .todoCls(todoRequestDto.getTodoCls())
@@ -50,6 +55,7 @@ public class TodoService {
                 .privateYn(todoRequestDto.getPrivateYn())
                 .content(todoRequestDto.getContent())
                 .user(user)
+                .plan(plan)
                 .build();
 
         todo = todoRepository.save(todo);

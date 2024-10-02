@@ -1,6 +1,7 @@
 package beyond.samdasoo.plan.entity;
 
 import beyond.samdasoo.common.entity.BaseEntity;
+import beyond.samdasoo.todo.entity.Todo;
 import beyond.samdasoo.user.entity.User;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -9,22 +10,26 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDate;
+import java.util.List;
 
-@Table(name="tb_plan")
-@AllArgsConstructor
-@NoArgsConstructor
-@Builder
-@Entity
 @Data
+@Entity
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
+@Table(name="tb_plan")
 public class Plan extends BaseEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long planNo;
+    private Long no;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_no", nullable = false)
     private User user;
+
+    @OneToMany(mappedBy = "plan", cascade = CascadeType.ALL)
+    private List<Todo> todos;
 
     @Column(name = "personal_yn", nullable = false, length = 1)
     private String personalYn;
