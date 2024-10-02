@@ -32,8 +32,8 @@ public class ContractService {
     }
 
     // 계약 조회 (단일)
-    public ContractResponseDto getContract(Long contractNo) {
-        return contractRepository.findById(contractNo)
+    public ContractResponseDto getContract(Long no) {
+        return contractRepository.findById(no)
                 .map(ContractResponseDto::new)
                 .orElseThrow(() -> new BaseException(BaseResponseStatus.CONTRACT_NOT_EXIST));
     }
@@ -72,8 +72,8 @@ public class ContractService {
 
     // 계약 수정
     @Transactional
-    public ContractResponseDto updateContract(Long contractNo, ContractRequestDto requestDto) {
-        Contract contract = contractRepository.findById(contractNo)
+    public ContractResponseDto updateContract(Long no, ContractRequestDto requestDto) {
+        Contract contract = contractRepository.findById(no)
                 .orElseThrow(() -> new BaseException(BaseResponseStatus.CONTRACT_NOT_EXIST));
         Estimate estimate = estimateRepository.findById(requestDto.getEstimateNo())
                 .orElseThrow(() -> new BaseException(BaseResponseStatus.ESTIMATE_NOT_EXIST));
@@ -106,12 +106,15 @@ public class ContractService {
         return new ContractResponseDto(updatedContract);
     }
 
+    // 삭제를 위한 no 찾기 메소드 생성
+    private Contract findContractId(Long no) {
+        return contractRepository.findById(no)
+                .orElseThrow(() -> new BaseException(BaseResponseStatus.CONTRACT_NOT_EXIST));
+    }
+
     // 계약 삭제
     @Transactional
-    public void deleteContract(Long contractNo) {
-        if(!contractRepository.existsById(contractNo)){
-            new BaseException(BaseResponseStatus.CONTRACT_NOT_EXIST);
-        }
-        contractRepository.deleteById(contractNo);
+    public void deleteContract(Long no) {
+        contractRepository.delete(findContractId(no));
     }
 }

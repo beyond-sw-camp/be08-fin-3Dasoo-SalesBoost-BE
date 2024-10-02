@@ -34,8 +34,8 @@ public class SalesService {
     }
 
     // 단일 매출 조회
-    public SalesResponseDto getSales(Long salesNo) {
-        return salesRepository.findById(salesNo)
+    public SalesResponseDto getSales(Long no) {
+        return salesRepository.findById(no)
                 .map(SalesResponseDto::new)
                 .orElseThrow(() -> new BaseException(BaseResponseStatus.SALES_NOT_EXIST));
     }
@@ -69,8 +69,8 @@ public class SalesService {
 
     // 매출 업데이트
     @Transactional
-    public SalesResponseDto updateSales(Long salesNo, SalesRequestDto requestDto) {
-        Sales sales = salesRepository.findById(salesNo)
+    public SalesResponseDto updateSales(Long no, SalesRequestDto requestDto) {
+        Sales sales = salesRepository.findById(no)
                 .orElseThrow(() -> new BaseException(BaseResponseStatus.SALES_NOT_EXIST));
 
         Contract contract = contractRepository.findById(requestDto.getContractNo())
@@ -98,12 +98,15 @@ public class SalesService {
         return new SalesResponseDto(updatedSales);
     }
 
+    // 삭제를 위한 no 찾기 메소드 생성
+    private Sales findSalesId(Long no) {
+        return salesRepository.findById(no)
+                .orElseThrow(() -> new BaseException(BaseResponseStatus.SALES_NOT_EXIST));
+    }
+
     // 매출 삭제
     @Transactional
     public void deleteSales(@PathVariable("no") Long no) {
-        if (!salesRepository.existsById(no)) {
-            throw new BaseException(BaseResponseStatus.SALES_NOT_EXIST);
-        }
-        salesRepository.deleteById(no);
+        salesRepository.delete(findSalesId(no));
     }
 }
