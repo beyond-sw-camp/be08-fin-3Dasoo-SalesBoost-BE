@@ -1,15 +1,17 @@
 package beyond.samdasoo.sales.service;
 
+import beyond.samdasoo.common.exception.BaseException;
+import beyond.samdasoo.common.response.BaseResponseStatus;
 import beyond.samdasoo.contract.entity.Contract;
 import beyond.samdasoo.contract.repository.ContractRepository;
 import beyond.samdasoo.sales.dto.SalesRequestDto;
 import beyond.samdasoo.sales.dto.SalesResponseDto;
 import beyond.samdasoo.sales.entity.Sales;
 import beyond.samdasoo.sales.repository.SalesRepository;
-import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.bind.annotation.PathVariable;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -32,10 +34,10 @@ public class SalesService {
     }
 
     // 단일 매출 조회
-    public SalesResponseDto getSales(Long salesNo) {
-        return salesRepository.findById(salesNo)
+    public SalesResponseDto getSales(Long no) {
+        return salesRepository.findById(no)
                 .map(SalesResponseDto::new)
-                .orElseThrow(() -> new EntityNotFoundException("해당 매출 조회 불가: " + salesNo));
+                .orElseThrow(() -> new BaseException(BaseResponseStatus.SALES_NOT_EXIST));
     }
 
     // 매출 생성
@@ -43,7 +45,7 @@ public class SalesService {
     public SalesResponseDto createSales(SalesRequestDto requestDto) {
 
         Contract contract = contractRepository.findById(requestDto.getContractNo())
-                .orElseThrow(() -> new EntityNotFoundException("해당 계약 정보 조회 불가: " + requestDto.getContractNo()));
+                .orElseThrow(() -> new BaseException(BaseResponseStatus.SALES_ALREADY_EXIST));
 
         Sales sales = Sales.builder()
                 .salesCls(requestDto.getSalesCls())
@@ -67,12 +69,12 @@ public class SalesService {
 
     // 매출 업데이트
     @Transactional
-    public SalesResponseDto updateSales(Long salesNo, SalesRequestDto requestDto) {
-        Sales sales = salesRepository.findById(salesNo)
-                .orElseThrow(() -> new EntityNotFoundException("해당 매출 정보 조회 불가: " + salesNo));
+    public SalesResponseDto updateSales(Long no, SalesRequestDto requestDto) {
+        Sales sales = salesRepository.findById(no)
+                .orElseThrow(() -> new BaseException(BaseResponseStatus.SALES_NOT_EXIST));
 
         Contract contract = contractRepository.findById(requestDto.getContractNo())
-                .orElseThrow(() -> new EntityNotFoundException("해당 계약 정보 조회 불가: " + requestDto.getContractNo()));
+                .orElseThrow(() -> new BaseException(BaseResponseStatus.CONTRACT_NOT_EXIST));
 
         // No는 기존 값 사용
         sales = Sales.builder()
@@ -96,9 +98,15 @@ public class SalesService {
         return new SalesResponseDto(updatedSales);
     }
 
+    // 삭제를 위한 no 찾기 메소드 생성
+    private Sales findSalesId(Long no) {
+        return salesRepository.findById(no)
+                .orElseThrow(() -> new BaseException(BaseResponseStatus.SALES_NOT_EXIST));
+    }
+
     // 매출 삭제
     @Transactional
-    public void deleteSales(Long salesNo) {
-        salesRepository.deleteById(salesNo);
+    public void deleteSales(@PathVariable("no") Long no) {
+        salesRepository.delete(findSalesId(no));
     }
 }

@@ -44,7 +44,16 @@ public enum BaseResponseStatus {
      * subprocess 관련
      */
     SUBPROCESS_ALREADY_EXIST(false, HttpStatus.BAD_REQUEST.value(), "이미 등록된 하위 프로세스 입니다."),
+
     SUBPROCESS_NOT_EXIST(false, HttpStatus.BAD_REQUEST.value(), "등록되지 않은 하위 프로세스 입니다."),
+
+    /**
+     * department 관련
+     */
+    DEPARTMENT_ALREADY_EXIST(false, HttpStatus.BAD_REQUEST.value(), "이미 등록된 부서입니다."),
+    DEPARTMENT_NOT_EXIST(false, HttpStatus.BAD_REQUEST.value(), "등록되지 않은 부서입니다."),
+    UPPER_DEPARTMENT_NOT_EXIST(false, HttpStatus.BAD_REQUEST.value(), "등록되지 않은 상위 부서입니다."),
+
 
     /**
      * act 관련
@@ -73,8 +82,19 @@ public enum BaseResponseStatus {
     ESTIMATE_ALREADY_EXIST(false, HttpStatus.BAD_REQUEST.value(), "이미 등록된 견적입니다."),
     ESTIMATE_NOT_EXIST(false, HttpStatus.BAD_REQUEST.value(), "등록되지 않은 견적입니다."),
 
+    /**
+     *  Contract 관련
+     */
+    CONTRACT_ALREADY_EXIST(false, HttpStatus.BAD_REQUEST.value(), "이미 등록된 계약입니다."),
+    CONTRACT_NOT_EXIST(false, HttpStatus.BAD_REQUEST.value(), "등록되지 않은 계약입니다."),
 
     /**
+     *  Sales 관련
+     */
+    SALES_ALREADY_EXIST(false, HttpStatus.BAD_REQUEST.value(), "이미 등록된 매출입니다."),
+    SALES_NOT_EXIST(false, HttpStatus.BAD_REQUEST.value(), "등록되지 않은 매출입니다."),
+
+      /**
      * potentialCustomer(잠재고객) 관련
      */
     POTENTIAL_CUSTOMER_NOT_EXIST(false, HttpStatus.BAD_REQUEST.value(), "등록되지 않은 잠재고객입니다."),

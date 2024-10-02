@@ -13,8 +13,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import static beyond.samdasoo.common.response.BaseResponseStatus.ACT_NOT_EXIST;
-
 @RestController
 @RequestMapping("/api/acts")
 @Tag(name="Act APIs", description = "영업활동 API")
