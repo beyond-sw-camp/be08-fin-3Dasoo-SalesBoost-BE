@@ -40,9 +40,9 @@ public class PotentialCustomerController {
     /**
      * 특정 잠재고객 정보 조회 API
      */
-    @GetMapping("/{no}")
-    public BaseResponse<PotentialCustomerDto> getPotentialCustomer(@PathVariable Long no) {
-        PotentialCustomerDto result = potentialCustomerService.getPotentialCustomer(no);
+    @GetMapping("/{prospectId}")
+    public BaseResponse<PotentialCustomerDto> getPotentialCustomer(@PathVariable Long prospectId) {
+        PotentialCustomerDto result = potentialCustomerService.getPotentialCustomer(prospectId);
         System.out.println(result);
         return new BaseResponse<>(result);
     }
@@ -60,9 +60,9 @@ public class PotentialCustomerController {
     /**
         접촉 이력 생성 API
      */
-    @PostMapping("/{id}/history")
-    public BaseResponse<String> insertContactHistory(@PathVariable Long id,@RequestBody @Valid CreateContactHistoryReq request){
-        potentialCustomerService.insertContactHistory(id,request);
+    @PostMapping("/{prospectId}/history")
+    public BaseResponse<String> insertContactHistory(@PathVariable Long prospectId,@RequestBody @Valid CreateContactHistoryReq request){
+        potentialCustomerService.insertContactHistory(prospectId,request);
         return new BaseResponse<>("접촉 이력을 생성했습니다.");
     }
 
@@ -73,5 +73,12 @@ public class PotentialCustomerController {
     /**
         접촉 이력 삭제 API
      */
+    @DeleteMapping("/history/{historyId}")
+    public BaseResponse<String> deleteContactHistory(@PathVariable Long historyId) {
+
+        potentialCustomerService.deleteContactHistory(historyId);
+
+        return new BaseResponse<>("해당 내용을 삭제했습니다.");
+    }
 
 }

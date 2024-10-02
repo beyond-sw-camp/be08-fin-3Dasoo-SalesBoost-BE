@@ -17,8 +17,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
-import static beyond.samdasoo.common.response.BaseResponseStatus.POTENTIAL_CUSTOMER_NOT_EXIST;
-import static beyond.samdasoo.common.response.BaseResponseStatus.USER_NOT_EXIST;
+import static beyond.samdasoo.common.response.BaseResponseStatus.*;
 
 @RequiredArgsConstructor
 @Service
@@ -102,5 +101,15 @@ public class PotentialCustomerService {
         ContactHistory contactHistory = request.toContactHistory(user,pCustomer);
 
         contactHistoryRepository.save(contactHistory);
+    }
+
+    public void deleteContactHistory(Long historyId) {
+
+        boolean isExist = contactHistoryRepository.existsById(historyId);
+        if(isExist){
+            contactHistoryRepository.deleteById(historyId);
+        }else{
+            throw new BaseException(CONTACT_HISTORY_NOT_EXIST);
+        }
     }
 }
