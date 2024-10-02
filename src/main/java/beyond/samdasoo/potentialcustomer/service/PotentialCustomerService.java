@@ -8,6 +8,7 @@ import beyond.samdasoo.potentialcustomer.entity.ContactHistory;
 import beyond.samdasoo.potentialcustomer.entity.PotentialCustomer;
 import beyond.samdasoo.potentialcustomer.repository.ContactHistoryRepository;
 import beyond.samdasoo.potentialcustomer.repository.PotentialCustomerRepository;
+import beyond.samdasoo.user.dto.UserRole;
 import beyond.samdasoo.user.entity.User;
 import beyond.samdasoo.user.repository.UserRepository;
 import jakarta.transaction.Transactional;
@@ -107,11 +108,15 @@ public class PotentialCustomerService {
         PotentialCustomer pCustomer =potentialCustomerRepository.findById(pCustomerId)
                 .orElseThrow(()-> new BaseException(POTENTIAL_CUSTOMER_NOT_EXIST));
 
-        String userEmail = UserUtil.getLoginUserEmail();
-        User user = userRepository.findByEmail(userEmail)
-                .orElseThrow(()-> new BaseException(USER_NOT_EXIST));
+//        String userEmail = UserUtil.getLoginUserEmail();
+//        User user = userRepository.findByEmail(userEmail)
+//                .orElseThrow(()-> new BaseException(USER_NOT_EXIST));
 
-        ContactHistory contactHistory = request.toContactHistory(user,pCustomer);
+        // 임시 유저 (테스트용)
+        User tempUser = User.builder().name("홍길동").email("hong@naver.com").password("1234").role(UserRole.USER).build();
+        User saveUser = userRepository.save(tempUser);
+
+        ContactHistory contactHistory = request.toContactHistory(saveUser,pCustomer);
 
         contactHistoryRepository.save(contactHistory);
     }
@@ -126,10 +131,14 @@ public class PotentialCustomerService {
         }
     }
 
-    public void getContactHistoryList(Long prospectId) {
+    public List<ContactHistoryDto> getContactHistoryList(Long prospectId) {
         PotentialCustomer pCustomer = potentialCustomerRepository.findById(prospectId)
                 .orElseThrow(() -> new BaseException(POTENTIAL_CUSTOMER_NOT_EXIST));
-    //    List<ContactHistory> allByPCustomer = contactHistoryRepository.findByPCustomer(pCustomer);
+        List<ContactHistory> pCustomerList = contactHistoryRepository.findAllByPcustomer(pCustomer);
+
+        return pCustomerList.stream().map(p->ContactHistoryDto.builder().contactDate(p.getContactDate())
+                        .cls(p.getCls().getCode()).content(p.getContent()).build())
+                .collect(Collectors.toList());
 
 
     }

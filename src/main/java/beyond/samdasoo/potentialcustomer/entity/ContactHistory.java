@@ -9,6 +9,7 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.NoSuchElementException;
 
@@ -25,7 +26,7 @@ public class ContactHistory extends BaseEntity {
     private Long id;
 
     @Column(name = "contact_date",nullable = false)
-    private LocalDateTime contactDate; // 접촉 날짜
+    private LocalDate contactDate; // 접촉 날짜
 
     @Enumerated(EnumType.STRING)
     private CLS cls; // 접촉 구분
@@ -39,7 +40,7 @@ public class ContactHistory extends BaseEntity {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "p_cust_no",nullable = false)
-    private PotentialCustomer pCustomer;  // 접촉이력 주인 (잠재고객)
+    private PotentialCustomer pcustomer;  // 접촉이력 주인 (잠재고객)
 
     @Getter
     public enum CLS{

@@ -2,6 +2,7 @@ package beyond.samdasoo.potentialcustomer.controller;
 
 import beyond.samdasoo.common.response.BaseResponse;
 import beyond.samdasoo.potentialcustomer.dto.*;
+import beyond.samdasoo.potentialcustomer.entity.ContactHistory;
 import beyond.samdasoo.potentialcustomer.entity.PotentialCustomer;
 import beyond.samdasoo.potentialcustomer.service.PotentialCustomerService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -80,10 +81,10 @@ public class PotentialCustomerController {
      */
     @GetMapping("{prospectId}/history")
     @Operation(summary = "점촉이력 목록 조회", description = "특정 잠재고객에 대한 접촉이력 목록을 조회한다")
-    public BaseResponse<String> getContactHistoryList(@PathVariable Long prospectId){
-        potentialCustomerService.getContactHistoryList(prospectId);
+    public BaseResponse<List<ContactHistoryDto>> getContactHistoryList(@PathVariable Long prospectId){
+        List<ContactHistoryDto> result = potentialCustomerService.getContactHistoryList(prospectId);
 
-        return new BaseResponse<>("good");
+        return new BaseResponse<>(result);
 
     }
 
