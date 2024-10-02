@@ -4,6 +4,7 @@ import beyond.samdasoo.common.response.BaseResponse;
 import beyond.samdasoo.potentialcustomer.dto.CreatePotentialCustomerReq;
 import beyond.samdasoo.potentialcustomer.dto.PotentialCustomerDto;
 import beyond.samdasoo.potentialcustomer.dto.PotentialCustomerListDto;
+import beyond.samdasoo.potentialcustomer.dto.UpdatePotentialCustomerReq;
 import beyond.samdasoo.potentialcustomer.entity.PotentialCustomer;
 import beyond.samdasoo.potentialcustomer.service.PotentialCustomerService;
 import jakarta.validation.Valid;
@@ -31,12 +32,12 @@ public class PotentialCustomerController {
 
 
     /**
-     잠재고객 수정 API
+     잠재고객 정보 수정 API
      */
     @PatchMapping("/{prospectId}")
-    public void updatePotentialCustomer(@PathVariable String prospectId) {
-
-
+    public BaseResponse<PotentialCustomerDto> updatePotentialCustomer(@PathVariable Long prospectId,@RequestBody UpdatePotentialCustomerReq request) {
+        PotentialCustomerDto result = potentialCustomerService.updatePotentialCustomer(prospectId, request);
+        return new BaseResponse<>(result);
     }
 
     /**
@@ -58,6 +59,5 @@ public class PotentialCustomerController {
         List<PotentialCustomerListDto> result = potentialCustomerService.getAllPotentialCustomer();
         return new BaseResponse<>(result);
     }
-
 
 }

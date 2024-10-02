@@ -5,12 +5,14 @@ import beyond.samdasoo.common.response.BaseResponse;
 import beyond.samdasoo.potentialcustomer.dto.CreatePotentialCustomerReq;
 import beyond.samdasoo.potentialcustomer.dto.PotentialCustomerDto;
 import beyond.samdasoo.potentialcustomer.dto.PotentialCustomerListDto;
+import beyond.samdasoo.potentialcustomer.dto.UpdatePotentialCustomerReq;
 import beyond.samdasoo.potentialcustomer.entity.PotentialCustomer;
 import beyond.samdasoo.potentialcustomer.repository.PotentialCustomerRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 import static beyond.samdasoo.common.response.BaseResponseStatus.POTENTIAL_CUSTOMER_NOT_EXIST;
@@ -62,5 +64,25 @@ public class PotentialCustomerService {
                 .email(p.getEmail())
                 .createdDate(p.getCreatedAt())
                 .build()).collect(Collectors.toList());
+    }
+
+    public PotentialCustomerDto updatePotentialCustomer(Long prospectId, UpdatePotentialCustomerReq request) {
+        PotentialCustomer pCustomer =potentialCustomerRepository.findById(prospectId)
+                .orElseThrow(()-> new BaseException(POTENTIAL_CUSTOMER_NOT_EXIST));
+
+        Optional.ofNullable(request.getName()).ifPresent(pCustomer::changeName);
+        Optional.ofNullable(request.getCompany()).ifPresent(pCustomer::changeCompany);
+        Optional.ofNullable(request.getPosition()).ifPresent(pCustomer::changePosition);
+        Optional.ofNullable(request.getCls()).ifPresent(pCustomer::changeCls);
+        pCustomer.changeCls(request.getCls());
+        pCustomer.changeStatus(request.getStatus());
+        Optional.ofNullable(request.getGrade()).ifPresent(pCustomer::changeGrade);
+        Optional.ofNullable(request.getPhone()).ifPresent(pCustomer::changePhone);
+        Optional.ofNullable(request.getTel()).ifPresent(pCustomer::changeTel);
+        Optional.ofNullable(request.getFax()).ifPresent(pCustomer::changeFax);
+        Optional.ofNullable(request.getNote()).ifPresent(pCustomer::changeNote);
+
+        return PotentialCustomerDto.builder().name(request.getName()).build();
+
     }
 }

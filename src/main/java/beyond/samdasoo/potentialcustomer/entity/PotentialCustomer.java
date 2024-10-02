@@ -118,9 +118,62 @@ public class PotentialCustomer extends BaseEntity{
     public void changeModifyDate() {
         this.modifyDate = LocalDateTime.now();
     }
+
     // 접촉상태 변경
-    public void changeStatus(Status status){
-        this.status = status;
+    public void changeStatus(int code){
+        this.status = Status.getStatus(code);
+
     }
+
+    public void changeName(String name){
+        this.name = name;
+    }
+    public void changeCompany(String company){
+        this.company = company;
+    }
+    public void changeDept(String dept){
+        this.dept = dept;
+    }
+    public void changePosition(String position){
+        this.position = position;
+    }
+
+    public void changeCls(String cls){
+        this.cls = cls;
+    }
+
+    public void changeGrade(int code){
+        this.grade = Grade.getGrade(code);
+
+    }
+
+    public void changePhone(String phone){
+        this.phone = phone;
+    }
+
+    public void changeTel(String tel){
+        this.tel = tel;
+    }
+
+    public void changeEmail(String email){
+        this.email = email;
+    }
+
+    public void changeFax(String fax){
+        this.fax = fax;
+    }
+
+    public void changeAddr(String addr){
+        this.addr = addr;
+    }
+
+    public void changeNote(String note){
+        this.note = note;
+    }
+
+
+
+
+
 
 }
