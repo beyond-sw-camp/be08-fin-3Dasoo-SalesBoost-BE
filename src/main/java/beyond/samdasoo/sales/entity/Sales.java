@@ -1,5 +1,6 @@
 package beyond.samdasoo.sales.entity;
 
+import beyond.samdasoo.common.entity.BaseEntity;
 import beyond.samdasoo.contract.entity.Contract;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -15,7 +16,7 @@ import java.time.LocalDate;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class Sales {
+public class Sales extends BaseEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

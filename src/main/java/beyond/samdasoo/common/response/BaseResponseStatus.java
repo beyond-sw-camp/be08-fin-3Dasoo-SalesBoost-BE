@@ -44,6 +44,7 @@ public enum BaseResponseStatus {
      * subprocess 관련
      */
     SUBPROCESS_ALREADY_EXIST(false, HttpStatus.BAD_REQUEST.value(), "이미 등록된 하위 프로세스 입니다."),
+
     SUBPROCESS_NOT_EXIST(false, HttpStatus.BAD_REQUEST.value(), "등록되지 않은 하위 프로세스 입니다."),
 
     /**
@@ -80,6 +81,19 @@ public enum BaseResponseStatus {
      */
     ESTIMATE_ALREADY_EXIST(false, HttpStatus.BAD_REQUEST.value(), "이미 등록된 견적입니다."),
     ESTIMATE_NOT_EXIST(false, HttpStatus.BAD_REQUEST.value(), "등록되지 않은 견적입니다."),
+
+
+    /**
+     *  Contract 관련
+     */
+    CONTRACT_ALREADY_EXIST(false, HttpStatus.BAD_REQUEST.value(), "이미 등록된 계약입니다."),
+    CONTRACT_NOT_EXIST(false, HttpStatus.BAD_REQUEST.value(), "등록되지 않은 계약입니다."),
+
+    /**
+     *  Sales 관련
+     */
+    SALES_ALREADY_EXIST(false, HttpStatus.BAD_REQUEST.value(), "이미 등록된 매출입니다."),
+    SALES_NOT_EXIST(false, HttpStatus.BAD_REQUEST.value(), "등록되지 않은 매출입니다."),
 
     /**
      * 500 :  Database, Server 오류
