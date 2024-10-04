@@ -46,6 +46,18 @@ public class PlanController {
         }
     }
 
+    @GetMapping
+    @Operation(summary = "전체 일정 조회", description = "모든 일정 조회")
+    public ResponseEntity<BaseResponse<List<PlanResponseDto>>> getAllPlans() {
+        try {
+            List<PlanResponseDto> plans = planService.getAllPlans();
+            return ResponseEntity.ok(new BaseResponse<>(plans));
+        } catch (BaseException ex) {
+            BaseResponseStatus status = ex.getStatus();
+            return new ResponseEntity<>(new BaseResponse<>(status), HttpStatus.valueOf(status.getCode()));
+        }
+    }
+
     @GetMapping("/{no}/details")
     @Operation(summary = "일정 및 할 일 조회", description = "특정 일정 및 할 일 조회")
     public ResponseEntity<BaseResponse<List<PlanTodoResponseDto>>> getPlansWithTodo(@PathVariable("no") Long no) {
