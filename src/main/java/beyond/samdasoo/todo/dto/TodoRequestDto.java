@@ -9,6 +9,9 @@ import java.time.LocalDate;
 @Data
 public class TodoRequestDto {
 
+    @Schema(description = "캘린더 번호", defaultValue = "1")
+    private Long calendarNo;
+
     @Schema(description = "할 일 제목", defaultValue = "제목")
     private String title;
 
@@ -30,9 +33,6 @@ public class TodoRequestDto {
     @Schema(description = "내용", defaultValue = "할 일 내용")
     private String content;
 
-    @Schema(description = "사용자 번호", defaultValue = "1")
-    private Long userNo;
-    
     @Schema(description = "일정 번호", defaultValue = "1")
     private Long planNo;
 

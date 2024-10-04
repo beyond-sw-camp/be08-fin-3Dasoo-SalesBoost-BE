@@ -4,9 +4,9 @@ import beyond.samdasoo.act.dto.ActRequestDto;
 import beyond.samdasoo.act.dto.ActResponseDto;
 import beyond.samdasoo.act.entity.Act;
 import beyond.samdasoo.act.repository.ActRepository;
+import beyond.samdasoo.calendar.repository.CalendarRepository;
 import beyond.samdasoo.common.exception.BaseException;
 import beyond.samdasoo.lead.repository.LeadRepository;
-import beyond.samdasoo.todo.dto.TodoResponseDto;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -20,12 +20,13 @@ import static beyond.samdasoo.common.response.BaseResponseStatus.ACT_NOT_EXIST;
 public class ActService {
 
     private final ActRepository actRepository;
-
     private final LeadRepository leadRepository;
+    private final CalendarRepository calendarRepository;
 
-    public ActService(ActRepository actRepository, LeadRepository leadRepository) {
+    public ActService(ActRepository actRepository, LeadRepository leadRepository, CalendarRepository calendarRepository) {
         this.actRepository = actRepository;
         this.leadRepository = leadRepository;
+        this.calendarRepository = calendarRepository;
     }
 
     public Act findActById(Long no) {
@@ -52,6 +53,7 @@ public class ActService {
                 .name(actRequestDto.getName())
 //                  TODO: 영업기회 엔티티 완성 후 주석 해제 예정-createAct
 //                .leadNo(findLeadById(actRequestDto.getLeadNo()))
+                .calendar(calendarRepository.findCalendarById(actRequestDto.getCalendarNo()))
                 .cls(actRequestDto.getCls())
                 .purpose(actRequestDto.getPurpose())
                 .actDate(actRequestDto.getActDate())
@@ -76,6 +78,7 @@ public class ActService {
         Optional.ofNullable(actRequestDto.getName()).ifPresent(act::setName);
 //        TODO: 영업기회 엔티티 완성 후 주석 해제 예정-updateAct
 //        act.setLeadNo(findLeadById(actRequestDto.getLeadNo()));
+        act.setCalendar(calendarRepository.findCalendarById(actRequestDto.getCalendarNo()));
         Optional.ofNullable(actRequestDto.getCls()).ifPresent(act::setCls);
         Optional.ofNullable(actRequestDto.getPurpose()).ifPresent(act::setPurpose);
         Optional.ofNullable(actRequestDto.getActDate()).ifPresent(act::setActDate);
@@ -84,6 +87,7 @@ public class ActService {
         Optional.ofNullable(actRequestDto.getCompleteYn()).ifPresent(act::setCompleteYn);
         Optional.ofNullable(actRequestDto.getPlanContent()).ifPresent(act::setPlanCont);
         Optional.ofNullable(actRequestDto.getActContent()).ifPresent(act::setActCont);
+
     }
 
     public void deleteAct(Long no) {actRepository.delete(findActById(no));}

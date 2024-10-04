@@ -9,8 +9,7 @@ import java.time.LocalDate;
 @Data
 public class TodoResponseDto {
     private Long todoNo;
-    private Long userNo;
-    private Long planNo;
+    private Long calendarNo;
     private String title;
     private String todoCls;
     private String priority;
@@ -21,8 +20,7 @@ public class TodoResponseDto {
 
     public TodoResponseDto(Todo todo) {
         this.todoNo = todo.getNo();
-        this.userNo = todo.getUser().getId();
-        this.planNo = todo.getPlan() != null ? todo.getPlan().getNo() : null;
+        this.calendarNo = todo.getCalendar().getNo();
         this.title = todo.getTitle();
         this.todoCls = todo.getTodoCls();
         this.priority = todo.getPriority();
