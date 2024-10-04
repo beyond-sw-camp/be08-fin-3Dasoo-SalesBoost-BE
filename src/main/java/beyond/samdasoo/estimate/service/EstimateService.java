@@ -2,6 +2,7 @@ package beyond.samdasoo.estimate.service;
 
 import beyond.samdasoo.admin.entity.Product;
 import beyond.samdasoo.admin.repository.ProductRepository;
+import beyond.samdasoo.common.exception.BaseException;
 import beyond.samdasoo.common.response.BaseResponseStatus;
 import beyond.samdasoo.estimate.dto.EstimateRequestDto;
 import beyond.samdasoo.estimate.dto.EstimateResponseDto;
@@ -9,11 +10,9 @@ import beyond.samdasoo.estimate.entity.Estimate;
 import beyond.samdasoo.estimate.repository.EstimateRepository;
 import beyond.samdasoo.proposal.entity.Proposal;
 import beyond.samdasoo.proposal.repository.ProposalRepository;
-import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import beyond.samdasoo.common.exception.BaseException;
 
 import java.util.List;
 import java.util.stream.Collectors;

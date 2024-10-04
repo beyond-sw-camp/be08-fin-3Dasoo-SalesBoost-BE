@@ -13,6 +13,7 @@ import java.util.List;
 
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
+@Table(name = "TB_USER")
 @Entity
 public class User extends BaseEntity {
 
@@ -20,11 +21,13 @@ public class User extends BaseEntity {
     @Column(name = "USER_NO")
     private Long id;
 
+    @Column(nullable = false)
     private String name;
 
-    @Column(unique = true)
+    @Column(unique = true, nullable = false)
     private String email;
 
+    @Column(nullable = false)
     private String password;
 
     @Enumerated(EnumType.STRING)
