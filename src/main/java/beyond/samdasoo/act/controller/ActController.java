@@ -6,7 +6,6 @@ import beyond.samdasoo.act.service.ActService;
 import beyond.samdasoo.common.exception.BaseException;
 import beyond.samdasoo.common.response.BaseResponse;
 import beyond.samdasoo.common.response.BaseResponseStatus;
-import beyond.samdasoo.todo.dto.TodoResponseDto;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
