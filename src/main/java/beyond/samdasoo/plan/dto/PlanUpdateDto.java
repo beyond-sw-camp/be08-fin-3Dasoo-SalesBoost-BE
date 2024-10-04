@@ -5,12 +5,16 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
 
 import java.time.LocalDate;
+import java.util.List;
 
 @Data
 public class PlanUpdateDto {
 
     @Schema(description = "개인일정 여부(Y:개인일정)", defaultValue = "Y")
     private String personalYn;
+
+    @Schema(description = "캘린더 번호", defaultValue = "1")
+    private Long calendarNo;
 
     @Schema(description = "일정 분류", defaultValue = "PERSONAL")
     private PlanStatus planCls;
