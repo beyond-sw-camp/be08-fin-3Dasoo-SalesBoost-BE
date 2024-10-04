@@ -1,6 +1,7 @@
 package beyond.samdasoo.todo.service;
 
 import beyond.samdasoo.common.exception.BaseException;
+import beyond.samdasoo.plan.dto.PlanResponseDto;
 import beyond.samdasoo.plan.entity.Plan;
 import beyond.samdasoo.plan.repository.PlanRepository;
 import beyond.samdasoo.todo.dto.TodoRequestDto;
@@ -14,7 +15,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 import static beyond.samdasoo.common.response.BaseResponseStatus.*;
 
@@ -35,6 +38,12 @@ public class TodoService {
     private Todo findById(Long no){
         return todoRepository.findById(no)
                 .orElseThrow(() -> new BaseException(TODO_NOT_EXIST));
+    }
+
+    public List<TodoResponseDto> getAllTodos() throws BaseException {
+        return todoRepository.findAll().stream()
+                .map(todo -> new TodoResponseDto(todo))
+                .collect(Collectors.toList());
     }
 
     @Transactional

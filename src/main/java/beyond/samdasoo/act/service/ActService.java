@@ -6,10 +6,13 @@ import beyond.samdasoo.act.entity.Act;
 import beyond.samdasoo.act.repository.ActRepository;
 import beyond.samdasoo.common.exception.BaseException;
 import beyond.samdasoo.lead.repository.LeadRepository;
+import beyond.samdasoo.todo.dto.TodoResponseDto;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 import static beyond.samdasoo.common.response.BaseResponseStatus.ACT_NOT_EXIST;
 
@@ -25,9 +28,15 @@ public class ActService {
         this.leadRepository = leadRepository;
     }
 
-    private Act findActById(Long no) {
+    public Act findActById(Long no) {
         return actRepository.findById(no)
                 .orElseThrow(() -> new BaseException(ACT_NOT_EXIST));
+    }
+
+    public List<ActResponseDto> getAllActs() throws BaseException {
+        return actRepository.findAll().stream()
+                .map(act -> new ActResponseDto(act))
+                .collect(Collectors.toList());
     }
 
 //     TODO: 영업기회 엔티티 완성 후 주석 해제 예정
