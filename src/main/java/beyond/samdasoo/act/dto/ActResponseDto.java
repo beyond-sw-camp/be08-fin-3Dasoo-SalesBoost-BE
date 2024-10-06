@@ -12,6 +12,7 @@ public class ActResponseDto {
     private Long actNo;
     private Long leadNo;
     private Long calendarNo;
+    private String name;
     private ActStatus cls;
     private String purpose;
     private LocalDate actDate;
@@ -26,6 +27,7 @@ public class ActResponseDto {
 //        TODO: 영업기회 엔티티 완성 후 주석 해제 예정-ActResponseDto
 //        this.leadNo = act.getLeadNo().getNo();
         this.calendarNo = act.getCalendar().getNo();
+        this.name = act.getName();
         this.cls = act.getCls();
         this.purpose = act.getPurpose();
         this.actDate = act.getActDate();
