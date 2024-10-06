@@ -1,5 +1,6 @@
 package beyond.samdasoo.todo.entity;
 
+import beyond.samdasoo.calendar.entity.Calendar;
 import beyond.samdasoo.common.entity.BaseEntity;
 import beyond.samdasoo.plan.entity.Plan;
 import beyond.samdasoo.user.entity.User;
@@ -21,15 +22,12 @@ public class Todo extends BaseEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name="todo_no")
     private Long no;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name="user_no", nullable=false)
-    private User user;
-
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "plan_no")
-    private Plan plan;
+    @JoinColumn(name = "calendar_no", nullable = false)
+    private Calendar calendar;
 
     @Column(name = "title", nullable = false)
     private String title;

@@ -15,6 +15,9 @@ public class ActRequestDto {
     @Schema(description = "영업기회 번호", defaultValue = "1")
     private Long leadNo;
 
+    @Schema(description = "캘린더 번호", defaultValue = "1")
+    private Long calendarNo;
+
     @Schema(description = "영업활동 제목", defaultValue = "PRODUCT_INTRO")
     private ActStatus cls;
 
