@@ -30,6 +30,7 @@ dependencies {
 
     // db
     runtimeOnly 'org.mariadb.jdbc:mariadb-java-client'
+    runtimeOnly 'com.h2database:h2'
 
     // security
     implementation 'org.springframework.boot:spring-boot-starter-security'

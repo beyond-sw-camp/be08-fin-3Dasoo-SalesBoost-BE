@@ -8,6 +8,9 @@ import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.CreationTimestamp;
+
+import java.time.LocalDate;
 
 import java.util.List;
 
@@ -18,7 +21,7 @@ import java.util.List;
 public class User extends BaseEntity {
 
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "USER_NO")
+    @Column(name = "user_no")
     private Long id;
 
     @Column(nullable = false)
@@ -30,8 +33,18 @@ public class User extends BaseEntity {
     @Column(nullable = false)
     private String password;
 
+    @Column(nullable = false,name="employee_id")
+    private String employeeId; // 사번
+
+    @Column(nullable = false)
+    private String dept; //  부서 -> todo : 추후 부서 테이블과 연결
+
     @Enumerated(EnumType.STRING)
     private UserRole role;
+
+    @CreationTimestamp
+    @Column(name = "join_date",updatable = false)
+    private LocalDate joinDate; // 가입일
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     private List<TargetSale> targetSales;
@@ -45,10 +58,12 @@ public class User extends BaseEntity {
     }
 
     @Builder
-    public User(String name, String email, String password, UserRole role) {
+    public User(String name, String email, String password,String employeeId,String dept, UserRole role) {
         this.name = name;
         this.email = email;
         this.password = password;
+        this.employeeId = employeeId;
+        this.dept = dept;
         this.role = role;
     }
 }

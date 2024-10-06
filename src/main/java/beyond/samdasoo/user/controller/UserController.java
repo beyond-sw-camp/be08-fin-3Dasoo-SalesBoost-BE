@@ -23,7 +23,6 @@ public class UserController {
 
     private final UserService userService;
 
-
     /**
      * 회원가입 API
      */
@@ -60,6 +59,16 @@ public class UserController {
 
         return new BaseResponse<>(result);
     }
+
+    /**
+     * 유저 정보 수정 API
+     */
+//    @PatchMapping("/my-info")
+//    public BaseResponse<String> updateUserInfo(){
+//        String loginUserEmail = getLoginUserEmail();
+//        userService.updateUserInfo(loginUserEmail);
+//        return new BaseResponse<>("유저 정보 수정 성공");
+//    }
 
 
 
