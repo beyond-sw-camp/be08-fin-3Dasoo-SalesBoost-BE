@@ -10,8 +10,8 @@ import lombok.Getter;
 @Getter
 public class JoinUserReq {
 
-    @NotNull(message = "email cannot be null")
-    private String username;
+    @NotNull(message = "name cannot be null")
+    private String name;
 
     @NotNull(message = "email cannot be null")
     private String email;
@@ -20,12 +20,17 @@ public class JoinUserReq {
     @Size(min = 4,message = "Password must be greater than 4 characters")
     private String password;
 
-    public User toUser(String encryptedPassword) {
+    @NotNull(message = "Dept cannot be null")
+    private String dept;
+
+    public User toUser(String encryptedPassword, String employeeId) {
         return User
                 .builder()
-                .name(this.username)
+                .name(this.name)
                 .email(this.email)
                 .password(encryptedPassword)
+                .employeeId(employeeId)
+                .dept(this.dept)
                 .role(UserRole.USER)
                 .build();
     }
