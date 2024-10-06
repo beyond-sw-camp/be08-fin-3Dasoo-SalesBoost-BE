@@ -50,6 +50,7 @@ public class PlanController {
     public ResponseEntity<BaseResponse<List<PlanResponseDto>>> getAllPlans() {
         try {
             List<PlanResponseDto> plans = planService.getAllPlans();
+
             return ResponseEntity.ok(new BaseResponse<>(plans));
         } catch (BaseException ex) {
             BaseResponseStatus status = ex.getStatus();

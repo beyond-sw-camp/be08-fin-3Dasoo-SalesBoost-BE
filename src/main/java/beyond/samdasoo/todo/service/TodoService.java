@@ -40,6 +40,7 @@ public class TodoService {
     @Transactional(readOnly = true)
     public TodoResponseDto getTodoById(Long no) { return new TodoResponseDto(findById(no)); }
 
+    @Transactional(readOnly = true)
     public List<TodoResponseDto> getAllTodos() throws BaseException {
         return todoRepository.findAll().stream()
                 .map(todo -> new TodoResponseDto(todo))
