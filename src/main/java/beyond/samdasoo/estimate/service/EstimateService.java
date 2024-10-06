@@ -21,21 +21,16 @@ import java.util.stream.Collectors;
 public class EstimateService {
 
     private final EstimateRepository estimateRepository;
-    private final ProductRepository productRepository;
     private final ProposalRepository proposalRepository;
 
     @Autowired
-    public EstimateService(EstimateRepository estimateRepository, ProductRepository productRepository, ProposalRepository proposalRepository) {
+    public EstimateService(EstimateRepository estimateRepository, ProposalRepository proposalRepository) {
         this.estimateRepository = estimateRepository;
-        this.productRepository = productRepository;
         this.proposalRepository = proposalRepository;
     }
 
     @Transactional
     public EstimateResponseDto createEstimate(EstimateRequestDto estimateRequestDto) {
-
-        Product product = productRepository.findById(estimateRequestDto.getProdNo())
-                .orElseThrow(() -> new BaseException(BaseResponseStatus.Product_NOT_EXIST));
 
         Proposal proposal = proposalRepository.findById(estimateRequestDto.getPropNo())
                 .orElseThrow(() -> new BaseException(BaseResponseStatus.PROPOSAL_NOT_EXIST));
@@ -50,7 +45,6 @@ public class EstimateService {
         estimate.setTax(estimateRequestDto.getTax());
         estimate.setTotalPrice(estimateRequestDto.getTotalPrice());
         estimate.setNote(estimateRequestDto.getNote());
-        estimate.setProduct(product);
         estimate.setProposal(proposal);
 
         estimate = estimateRepository.save(estimate);

@@ -49,9 +49,9 @@ public class UserService {
 
         boolean matches = encoder.matches(loginUserReq.getPassword(), findUser.getPassword());
 
-        if(!matches){
-            throw new BaseException(EMAIL_ALREADY_EXIST);
-        }
+//        if(!matches){
+//            throw new BaseException(EMAIL_ALREADY_EXIST);
+//        }
 
         String accessToken = jwtTokenProvider.createToken(findUser.getEmail(), findUser.getRole().toString(),"ACCESS");
 
