@@ -1,16 +1,18 @@
 package beyond.samdasoo.plan.dto;
 
+import beyond.samdasoo.act.dto.ActResponseDto;
 import beyond.samdasoo.plan.entity.Plan;
 import beyond.samdasoo.plan.entity.PlanStatus;
 import lombok.Data;
 
 import java.time.LocalDate;
+import java.util.List;
 
 @Data
 public class PlanResponseDto {
 
     private Long planNo;
-    private Long userNo;
+    private Long calendarNo;
     private String personalYn;
     private PlanStatus planCls;
     private LocalDate planDate;
@@ -21,7 +23,7 @@ public class PlanResponseDto {
 
     public PlanResponseDto(Plan plan) {
         this.planNo = plan.getNo();
-        this.userNo = plan.getUser().getId();
+        this.calendarNo = plan.getCalendar().getNo();
         this.personalYn = plan.getPersonalYn();
         this.planCls = plan.getPlanCls();
         this.planDate = plan.getPlanDate();

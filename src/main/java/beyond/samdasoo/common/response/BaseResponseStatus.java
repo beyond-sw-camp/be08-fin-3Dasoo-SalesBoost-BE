@@ -71,6 +71,13 @@ public enum BaseResponseStatus {
     TODO_NOT_EXIST(false, HttpStatus.NOT_FOUND.value(), "존재하지 않는 할 일입니다."),
 
     /**
+     * calendar 관련
+     */
+    CALENDAR_NOT_EXIST(false, HttpStatus.NOT_FOUND.value(), "존재하지 않는 캘린더입니다."),
+
+
+
+    /**
      * proposal 관련
      */
     PROPOSAL_ALREADY_EXIST(false, HttpStatus.BAD_REQUEST.value(), "이미 등록된 제안입니다."),

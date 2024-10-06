@@ -63,4 +63,7 @@ public class Product extends BaseEntity {
 
     @OneToMany(mappedBy = "product", cascade = CascadeType.ALL)
     private List<Estimate> estimates;
+
+    @OneToMany(mappedBy = "product", cascade = CascadeType.ALL)
+    private List<TargetSale> targetSales;      // 목표 매출
 }

@@ -5,7 +5,6 @@ import beyond.samdasoo.common.response.BaseResponse;
 import beyond.samdasoo.common.response.BaseResponseStatus;
 import beyond.samdasoo.plan.dto.PlanRequestDto;
 import beyond.samdasoo.plan.dto.PlanResponseDto;
-import beyond.samdasoo.plan.dto.PlanTodoResponseDto;
 import beyond.samdasoo.plan.dto.PlanUpdateDto;
 import beyond.samdasoo.plan.service.PlanService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -46,13 +45,14 @@ public class PlanController {
         }
     }
 
-    @GetMapping("/{no}/details")
-    @Operation(summary = "일정 및 할 일 조회", description = "특정 일정 및 할 일 조회")
-    public ResponseEntity<BaseResponse<List<PlanTodoResponseDto>>> getPlansWithTodo(@PathVariable("no") Long no) {
-        try{
-            List<PlanTodoResponseDto> plans = planService.getPlansWithTodo(no);
+    @GetMapping
+    @Operation(summary = "전체 일정 조회", description = "모든 일정 조회")
+    public ResponseEntity<BaseResponse<List<PlanResponseDto>>> getAllPlans() {
+        try {
+            List<PlanResponseDto> plans = planService.getAllPlans();
+
             return ResponseEntity.ok(new BaseResponse<>(plans));
-        }catch (BaseException ex) {
+        } catch (BaseException ex) {
             BaseResponseStatus status = ex.getStatus();
             return new ResponseEntity<>(new BaseResponse<>(status), HttpStatus.valueOf(status.getCode()));
         }

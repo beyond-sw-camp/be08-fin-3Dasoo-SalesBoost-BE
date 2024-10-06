@@ -1,5 +1,6 @@
 package beyond.samdasoo.user.entity;
 
+import beyond.samdasoo.admin.entity.TargetSale;
 import beyond.samdasoo.common.entity.BaseEntity;
 import beyond.samdasoo.user.dto.UserRole;
 import jakarta.persistence.*;
@@ -10,6 +11,8 @@ import lombok.NoArgsConstructor;
 import org.hibernate.annotations.CreationTimestamp;
 
 import java.time.LocalDate;
+
+import java.util.List;
 
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
@@ -43,6 +46,8 @@ public class User extends BaseEntity {
     @Column(name = "join_date",updatable = false)
     private LocalDate joinDate; // 가입일
 
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+    private List<TargetSale> targetSales;
 
     public void RoleChangeToAdmin(){
         this.role = UserRole.ADMIN;

@@ -6,12 +6,15 @@ import beyond.samdasoo.act.service.ActService;
 import beyond.samdasoo.common.exception.BaseException;
 import beyond.samdasoo.common.response.BaseResponse;
 import beyond.samdasoo.common.response.BaseResponseStatus;
+import beyond.samdasoo.todo.dto.TodoResponseDto;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/api/acts")
@@ -36,6 +39,18 @@ public class ActController {
         try {
             ActResponseDto responseDto = actService.getActById(no);
             return ResponseEntity.ok(new BaseResponse<>(responseDto));
+        } catch (BaseException ex) {
+            BaseResponseStatus status = ex.getStatus();
+            return new ResponseEntity<>(new BaseResponse<>(status), HttpStatus.valueOf(status.getCode()));
+        }
+    }
+
+    @GetMapping
+    @Operation(summary = "전체 영업활동 조회", description = "모든 영업활동 조회")
+    public ResponseEntity<BaseResponse<List<ActResponseDto>>> getAllActs() {
+        try {
+            List<ActResponseDto> acts = actService.getAllActs();
+            return ResponseEntity.ok(new BaseResponse<>(acts));
         } catch (BaseException ex) {
             BaseResponseStatus status = ex.getStatus();
             return new ResponseEntity<>(new BaseResponse<>(status), HttpStatus.valueOf(status.getCode()));
