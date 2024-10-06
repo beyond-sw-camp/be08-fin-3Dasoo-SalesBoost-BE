@@ -9,6 +9,9 @@ import java.time.LocalDate;
 @Data
 public class TodoUpdateDto {
 
+    @Schema(description = "캘린더 번호", defaultValue = "1")
+    private Long calendarNo;
+
     @Schema(description = "할 일 제목", defaultValue = "기본 제목 수정")
     private String title;
 
