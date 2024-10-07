@@ -57,6 +57,11 @@ dependencies {
     // Excel
     implementation group: 'org.apache.poi', name: 'poi', version: '5.2.3'
     implementation group: 'org.apache.poi', name: 'poi-ooxml', version: '5.2.3'
+
+    // REPORT
+    implementation group: 'com.lowagie', name: 'itext', version: '2.1.7'
+    implementation group: 'net.sf.jasperreports', name: 'jasperreports', version: '6.20.0'
+    implementation files('src/main/resources/lib/font-extension.jar')
 }
 
 tasks.named('test') {

@@ -1,7 +1,7 @@
 package beyond.samdasoo.admin.entity;
 
 import beyond.samdasoo.common.entity.BaseEntity;
-import beyond.samdasoo.estimate.entity.Estimate;
+import beyond.samdasoo.estimate.entity.EstProduct;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -16,7 +16,7 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-@Table(name="tb_product")
+@Table(name = "tb_product")
 public class Product extends BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -62,7 +62,7 @@ public class Product extends BaseEntity {
     private int price;              // 가격
 
     @OneToMany(mappedBy = "product", cascade = CascadeType.ALL)
-    private List<Estimate> estimates;
+    private List<EstProduct> estProducts;
 
     @OneToMany(mappedBy = "product", cascade = CascadeType.ALL)
     private List<TargetSale> targetSales;      // 목표 매출

@@ -89,6 +89,11 @@ public enum BaseResponseStatus {
     ESTIMATE_ALREADY_EXIST(false, HttpStatus.BAD_REQUEST.value(), "이미 등록된 견적입니다."),
     ESTIMATE_NOT_EXIST(false, HttpStatus.BAD_REQUEST.value(), "등록되지 않은 견적입니다."),
 
+    /*
+        estProduct 관련
+     */
+    EST_PRODUCT_NOT_EXIST(false, HttpStatus.BAD_REQUEST.value(), "등록되지 않은 견적 내 물품입니다."),
+    
     /**
      *  Contract 관련
      */
@@ -106,6 +111,12 @@ public enum BaseResponseStatus {
      */
     POTENTIAL_CUSTOMER_NOT_EXIST(false, HttpStatus.BAD_REQUEST.value(), "등록되지 않은 잠재고객입니다."),
     CONTACT_HISTORY_NOT_EXIST(false, HttpStatus.BAD_REQUEST.value(), "없는 접촉 이력 정보입니다."),
+
+    /*
+        report(PDF) 관련
+     */
+    IO_ERROR(false, HttpStatus.INTERNAL_SERVER_ERROR.value(), "REPORT 입출력 에러입니다."),
+    JRE_ERROR(false, HttpStatus.INTERNAL_SERVER_ERROR.value(), "REPORT 양식 에러입니다."),
 
     /**
      * 500 :  Database, Server 오류
