@@ -47,9 +47,18 @@ public class UserService {
     }
 
     public LoginUserRes login(LoginUserReq loginUserReq){
+        int type = loginUserReq.getType();
 
-        User findUser = userRepository.findByEmail(loginUserReq.getEmail())
-                .orElseThrow(()->new BaseException(EMAIL_OR_PWD_NOT_FOUND));
+        User findUser = null;
+
+        if(type==1){ // 이메일 로그인
+             findUser = userRepository.findByEmail(loginUserReq.getEmail())
+                    .orElseThrow(()->new BaseException(EMAIL_OR_PWD_NOT_FOUND));
+        }else{
+            findUser = userRepository.findByEmployeeId(loginUserReq.getEmployeeId())
+                    .orElseThrow(()->new BaseException(DEPARTMENT_NOT_EXIST));
+        }
+
 
         boolean matches = encoder.matches(loginUserReq.getPassword(), findUser.getPassword());
 
