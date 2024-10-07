@@ -1,6 +1,7 @@
 package beyond.samdasoo.admin.entity;
 
 import beyond.samdasoo.common.entity.BaseEntity;
+import beyond.samdasoo.user.entity.User;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
@@ -25,7 +26,7 @@ public class Department extends BaseEntity {
     @Column(name = "dept_no", nullable = false)
     private Long deptNo;        // 부서 식별 번호
 
-    @Column(name = "dept_code", nullable = false)
+    @Column(name = "dept_code", nullable = false, unique = true)
     private String deptCode;    // 부서 코드
 
     @Column(name = "dept_name", nullable = false)
@@ -47,5 +48,14 @@ public class Department extends BaseEntity {
     @JsonManagedReference
     @OneToMany(mappedBy = "parent", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Department> children = new ArrayList<>();
+
+
+//    @OneToMany(mappedBy = "department")
+//    private ArrayList<User> users = new ArrayList<>();
+//
+//
+//    public void addUser(User user){
+//        users.add(user);
+//    }
 
 }

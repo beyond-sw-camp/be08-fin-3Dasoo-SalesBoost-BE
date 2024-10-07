@@ -1,5 +1,6 @@
 package beyond.samdasoo.user.entity;
 
+import beyond.samdasoo.admin.entity.Department;
 import beyond.samdasoo.admin.entity.TargetSale;
 import beyond.samdasoo.common.entity.BaseEntity;
 import beyond.samdasoo.user.dto.UserRole;
@@ -33,11 +34,12 @@ public class User extends BaseEntity {
     @Column(nullable = false)
     private String password;
 
-    @Column(nullable = false,name="employee_id")
+    @Column(nullable = false,name="employee_id",unique = true)
     private String employeeId; // 사번
 
-    @Column(nullable = false)
-    private String dept; //  부서 -> todo : 추후 부서 테이블과 연결
+    @JoinColumn(name = "dept_id",nullable = false)
+    @ManyToOne
+    private Department department;
 
     @Enumerated(EnumType.STRING)
     private UserRole role;
@@ -58,12 +60,12 @@ public class User extends BaseEntity {
     }
 
     @Builder
-    public User(String name, String email, String password,String employeeId,String dept, UserRole role) {
+    public User(String name, String email, String password,String employeeId,Department department, UserRole role) {
         this.name = name;
         this.email = email;
         this.password = password;
         this.employeeId = employeeId;
-        this.dept = dept;
+        this.department = department;
         this.role = role;
     }
 }
