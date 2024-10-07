@@ -1,11 +1,10 @@
 package beyond.samdasoo.user.service;
 
+import beyond.samdasoo.admin.entity.Department;
+import beyond.samdasoo.admin.repository.DepartmentRepository;
 import beyond.samdasoo.common.exception.BaseException;
 import beyond.samdasoo.common.jwt.JwtTokenProvider;
-import beyond.samdasoo.user.dto.JoinUserReq;
-import beyond.samdasoo.user.dto.LoginUserReq;
-import beyond.samdasoo.user.dto.LoginUserRes;
-import beyond.samdasoo.user.dto.UserDto;
+import beyond.samdasoo.user.dto.*;
 import beyond.samdasoo.user.entity.User;
 import beyond.samdasoo.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
@@ -27,19 +26,24 @@ public class UserService {
     private final BCryptPasswordEncoder encoder;
     private final UserRepository userRepository;
     private final JwtTokenProvider jwtTokenProvider;
+    private final DepartmentRepository departmentRepository;
 
 
-    public void join(JoinUserReq joinUserReq){
+    public JoinUserRes join(JoinUserReq joinUserReq){
+
         Optional<User> byEmail = userRepository.findByEmail(joinUserReq.getEmail());
         if(byEmail.isPresent()){
             throw new BaseException(EMAIL_ALREADY_EXIST);
         }
 
+        Department department = departmentRepository.findByDeptCode(joinUserReq.getDeptCode())
+                .orElseThrow(() -> new BaseException(DEPARTMENT_NOT_EXIST));
 
-       User newUser = joinUserReq.toUser(encoder.encode(joinUserReq.getPassword()),generateEmployeeId());
+        User newUser = joinUserReq.toUser(encoder.encode(joinUserReq.getPassword()),generateEmployeeId(),department);
 
-       userRepository.save(newUser);
+        User saveUser = userRepository.save(newUser);
 
+        return new JoinUserRes(saveUser.getEmployeeId());
     }
 
     public LoginUserRes login(LoginUserReq loginUserReq){

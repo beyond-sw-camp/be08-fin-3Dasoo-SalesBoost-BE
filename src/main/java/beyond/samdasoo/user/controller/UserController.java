@@ -1,9 +1,6 @@
 package beyond.samdasoo.user.controller;
 import beyond.samdasoo.common.response.BaseResponse;
-import beyond.samdasoo.user.dto.JoinUserReq;
-import beyond.samdasoo.user.dto.LoginUserReq;
-import beyond.samdasoo.user.dto.LoginUserRes;
-import beyond.samdasoo.user.dto.UserDto;
+import beyond.samdasoo.user.dto.*;
 import beyond.samdasoo.user.service.UserService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -28,9 +25,9 @@ public class UserController {
      */
     @Operation(summary = "회원가입",description = "유저 정보를 받아 회원가입을 진행한다")
     @PostMapping("/join")
-    public BaseResponse<String> join(@RequestBody @Valid JoinUserReq joinUserReq){
-          userService.join(joinUserReq);
-          return new BaseResponse<>("회원가입을 완료했습니다");
+    public BaseResponse<JoinUserRes> join(@RequestBody @Valid JoinUserReq joinUserReq){
+        JoinUserRes result = userService.join(joinUserReq);
+        return new BaseResponse<>(result);
     }
 
     /**
