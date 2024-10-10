@@ -8,8 +8,8 @@ import lombok.Getter;
 @Getter
 public class LoginUserReq {
 
-    @Schema(description = "로그인 타입(1:이메일,2:사번)",defaultValue = "1")
-    private int type;
+    @Schema(description = "로그인 타입(email,employeeId)",defaultValue = "email")
+    private String loginType;
 
     @Schema(description = "이메일", defaultValue = "test@gmail.com")
     private String email;

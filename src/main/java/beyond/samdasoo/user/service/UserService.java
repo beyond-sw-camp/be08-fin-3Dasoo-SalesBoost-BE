@@ -36,7 +36,7 @@ public class UserService {
             throw new BaseException(EMAIL_ALREADY_EXIST);
         }
 
-        Department department = departmentRepository.findByDeptCode(joinUserReq.getDeptCode())
+        Department department = departmentRepository.findByDeptName(joinUserReq.getDeptName())
                 .orElseThrow(() -> new BaseException(DEPARTMENT_NOT_EXIST));
 
         User newUser = joinUserReq.toUser(encoder.encode(joinUserReq.getPassword()),generateEmployeeId(),department);
@@ -47,23 +47,25 @@ public class UserService {
     }
 
     public LoginUserRes login(LoginUserReq loginUserReq){
-        int type = loginUserReq.getType();
+        String type = loginUserReq.getLoginType();
 
         User findUser = null;
 
-        if(type==1){ // 이메일 로그인
+        if(type.equals("email")){ // 이메일 로그인
              findUser = userRepository.findByEmail(loginUserReq.getEmail())
                     .orElseThrow(()->new BaseException(EMAIL_OR_PWD_NOT_FOUND));
-        }else{
+        }else if(type.equals("employeeId")){
             findUser = userRepository.findByEmployeeId(loginUserReq.getEmployeeId())
-                    .orElseThrow(()->new BaseException(DEPARTMENT_NOT_EXIST));
+                    .orElseThrow(()->new BaseException(EMPLOYEE_ID_NOT_VALID));
+        }else{
+            throw new BaseException(LOGIN_TYPE_NOT_VALID);
         }
 
 
         boolean matches = encoder.matches(loginUserReq.getPassword(), findUser.getPassword());
 
         if(!matches){
-            throw new BaseException(EMAIL_ALREADY_EXIST);
+            throw new BaseException(EMAIL_OR_PWD_NOT_FOUND);
         }
 
         String accessToken = jwtTokenProvider.createToken(findUser.getEmail(), findUser.getRole().toString(),"ACCESS");
