@@ -25,8 +25,8 @@ public class JoinUserReq {
     private String password;
 
     @NotNull(message = "Dept cannot be null")
-    @Schema(description = "부서코드", defaultValue = "001")
-    private String deptCode;   // 부서코드
+    @Schema(description = "부서이름", defaultValue = "영업부")
+    private String deptName;   // 부서명
 
     public User toUser(String encryptedPassword, String employeeId, Department department) {
         return User
