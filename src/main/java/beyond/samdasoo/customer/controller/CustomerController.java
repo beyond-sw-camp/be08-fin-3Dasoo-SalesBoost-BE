@@ -2,12 +2,15 @@ package beyond.samdasoo.customer.controller;
 
 import beyond.samdasoo.common.response.BaseResponse;
 import beyond.samdasoo.customer.dto.CustomerCreateReq;
+import beyond.samdasoo.customer.dto.CustomerGetRes;
 import beyond.samdasoo.customer.entity.Customer;
 import beyond.samdasoo.customer.service.CustomerService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @Tag(name="Customer APIs", description = "고객 API")
 @RequiredArgsConstructor
@@ -30,8 +33,6 @@ public class CustomerController {
     }
 
 
-
-
     /*
     고객 수정 API
      */
@@ -51,7 +52,8 @@ public class CustomerController {
     고객 목록 조회 API
      */
     @GetMapping
-    public void getCustomers(){
-
+    public BaseResponse<List<CustomerGetRes>> getCustomers(){
+        List<CustomerGetRes> result = customerService.getList();
+        return new BaseResponse<>(result);
     }
 }
