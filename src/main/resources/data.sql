@@ -50,6 +50,6 @@ WHERE NOT EXISTS (SELECT 1 FROM tb_customer WHERE customer_no=5);
 
 INSERT INTO `tb_customer` (customer_no,name,company,dept,position,email,phone,tel,grade,is_keyman,user_no,created_at,updated_at)
 SELECT 6, '장현준', 'NC','개발팀','과장','nc@gmail.com','01011112222','02888999','A',false,1,now(),now()
-WHERE NOT EXISTS (SELECT 1 FROM tb_customer WHERE customer_no=5);
+WHERE NOT EXISTS (SELECT 1 FROM tb_customer WHERE customer_no=6);
 
 
