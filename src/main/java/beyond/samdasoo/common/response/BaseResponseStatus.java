@@ -113,12 +113,18 @@ public enum BaseResponseStatus {
      */
     POTENTIAL_CUSTOMER_NOT_EXIST(false, HttpStatus.BAD_REQUEST.value(), "등록되지 않은 잠재고객입니다."),
     CONTACT_HISTORY_NOT_EXIST(false, HttpStatus.BAD_REQUEST.value(), "없는 접촉 이력 정보입니다."),
+    /**
+     * Customer 관련
+     */
+    CUSTOMER_NOT_EXIST(false, HttpStatus.BAD_REQUEST.value(), "등록되지 않은 고객입니다."),
 
     /*
         report(PDF) 관련
      */
     IO_ERROR(false, HttpStatus.INTERNAL_SERVER_ERROR.value(), "REPORT 입출력 에러입니다."),
     JRE_ERROR(false, HttpStatus.INTERNAL_SERVER_ERROR.value(), "REPORT 양식 에러입니다."),
+
+
 
     /**
      * 500 :  Database, Server 오류

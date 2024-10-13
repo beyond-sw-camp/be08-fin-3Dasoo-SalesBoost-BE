@@ -3,7 +3,7 @@ package beyond.samdasoo.customer.controller;
 import beyond.samdasoo.common.response.BaseResponse;
 import beyond.samdasoo.customer.dto.CustomerCreateReq;
 import beyond.samdasoo.customer.dto.CustomerGetRes;
-import beyond.samdasoo.customer.entity.Customer;
+import beyond.samdasoo.customer.dto.CustomersGetRes;
 import beyond.samdasoo.customer.service.CustomerService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -31,6 +31,16 @@ public class CustomerController {
         return new BaseResponse<>("고객 등록을 완료했습니다");
 
     }
+    /*
+     고객 조회 API
+     */
+    @GetMapping("/{id}")
+    public BaseResponse<CustomerGetRes> getCustomer(@PathVariable("id") Long id){
+        CustomerGetRes result= customerService.getCustomer(id);
+        return new BaseResponse<>(result);
+
+    }
+
 
 
     /*
@@ -52,8 +62,8 @@ public class CustomerController {
     고객 목록 조회 API
      */
     @GetMapping
-    public BaseResponse<List<CustomerGetRes>> getCustomers(){
-        List<CustomerGetRes> result = customerService.getList();
+    public BaseResponse<List<CustomersGetRes>> getCustomers(){
+        List<CustomersGetRes> result = customerService.getList();
         return new BaseResponse<>(result);
     }
 }

@@ -1,27 +1,31 @@
 package beyond.samdasoo.customer.dto;
 
 import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.Getter;
 
 @AllArgsConstructor
 @Getter
 public class CustomerGetRes {
 
-    private Long id;
 
-    private String name;
+        private Long id;
 
-    private String position;
+        private String name;
 
-    private String company;
+        private String position;
 
-    private String email;
+        private String company;
 
-    private String phone;
+        private String email;
 
-    private String tel;
+        private String phone;
 
-    private String randomImage;
+        private String tel;
 
-}
+        private String grade;
+
+        private boolean isKeyMan;
+
+        private String dept;
+
+    }
