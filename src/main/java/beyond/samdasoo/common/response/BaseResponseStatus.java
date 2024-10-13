@@ -15,9 +15,9 @@ public enum BaseResponseStatus {
      * 400 : Request, Response 오류
      */
     /**
-     *  jwt 관련
+     * jwt 관련
      */
-    JWT_AUTH_EMPTY(false, HttpStatus.UNAUTHORIZED.value(),"권한 정보가 없는 토큰입니다."),
+    JWT_AUTH_EMPTY(false, HttpStatus.UNAUTHORIZED.value(), "권한 정보가 없는 토큰입니다."),
     JWT_EXPIRED_ACCESS_TOKEN(false, HttpStatus.UNAUTHORIZED.value(), "만료된 액세스 토큰입니다"),
     JWT_INVALID_ACCESS_TOKEN(false, HttpStatus.UNAUTHORIZED.value(), "유효하지 않은 액세스 토큰입니다"),
     JWT_INVALID_REFRESH_TOKEN(false, HttpStatus.UNAUTHORIZED.value(), "유효하지 않은 리프레시 토큰입니다"),
@@ -25,8 +25,8 @@ public enum BaseResponseStatus {
      * user 관련
      */
 
-    EMAIL_ALREADY_EXIST(false,HttpStatus.BAD_REQUEST.value(), "이미 사용중인 이메일입니다"),
-    EMAIL_OR_PWD_NOT_FOUND(false,HttpStatus.BAD_REQUEST.value(), "이메일 또는 비밀번호를 확인해주세요"),
+    EMAIL_ALREADY_EXIST(false, HttpStatus.BAD_REQUEST.value(), "이미 사용중인 이메일입니다"),
+    EMAIL_OR_PWD_NOT_FOUND(false, HttpStatus.BAD_REQUEST.value(), "이메일 또는 비밀번호를 확인해주세요"),
     USER_NOT_EXIST(false, HttpStatus.BAD_REQUEST.value(), "존재하지 않는 회원입니다"),
     LOGIN_TYPE_NOT_VALID(false, HttpStatus.BAD_REQUEST.value(), "로그인 타입은 이메일 또는 사번만 유효합니다"),
     EMPLOYEE_ID_NOT_VALID(false, HttpStatus.BAD_REQUEST.value(), "사원번호 또는 비밀번호를 확인해주세요"),
@@ -40,7 +40,7 @@ public enum BaseResponseStatus {
     /**
      * process 관련
      */
-    PROCESS_ALREADY_EXIST(false, HttpStatus.BAD_REQUEST.value(),"이미 등록된 프로세스 입니다."),
+    PROCESS_ALREADY_EXIST(false, HttpStatus.BAD_REQUEST.value(), "이미 등록된 프로세스 입니다."),
     PROCESS_NOT_EXIST(false, HttpStatus.BAD_REQUEST.value(), "등록되지 않은 프로세스입니다."),
     /**
      * subprocess 관련
@@ -55,7 +55,6 @@ public enum BaseResponseStatus {
     DEPARTMENT_ALREADY_EXIST(false, HttpStatus.BAD_REQUEST.value(), "이미 등록된 부서입니다."),
     DEPARTMENT_NOT_EXIST(false, HttpStatus.BAD_REQUEST.value(), "등록되지 않은 부서입니다."),
     UPPER_DEPARTMENT_NOT_EXIST(false, HttpStatus.BAD_REQUEST.value(), "등록되지 않은 상위 부서입니다."),
-
 
     /**
      * act 관련
@@ -77,7 +76,10 @@ public enum BaseResponseStatus {
      */
     CALENDAR_NOT_EXIST(false, HttpStatus.NOT_FOUND.value(), "존재하지 않는 캘린더입니다."),
 
-
+    /*
+        lead 관련
+     */
+    LEAD_NOT_EXIST(false, HttpStatus.BAD_REQUEST.value(), "존재하지 않는 영업기회입니다."),
 
     /**
      * proposal 관련
@@ -95,20 +97,20 @@ public enum BaseResponseStatus {
         estProduct 관련
      */
     EST_PRODUCT_NOT_EXIST(false, HttpStatus.BAD_REQUEST.value(), "등록되지 않은 견적 내 물품입니다."),
-    
+
     /**
-     *  Contract 관련
+     * Contract 관련
      */
     CONTRACT_ALREADY_EXIST(false, HttpStatus.BAD_REQUEST.value(), "이미 등록된 계약입니다."),
     CONTRACT_NOT_EXIST(false, HttpStatus.BAD_REQUEST.value(), "등록되지 않은 계약입니다."),
 
     /**
-     *  Sales 관련
+     * Sales 관련
      */
     SALES_ALREADY_EXIST(false, HttpStatus.BAD_REQUEST.value(), "이미 등록된 매출입니다."),
     SALES_NOT_EXIST(false, HttpStatus.BAD_REQUEST.value(), "등록되지 않은 매출입니다."),
 
-      /**
+    /**
      * potentialCustomer(잠재고객) 관련
      */
     POTENTIAL_CUSTOMER_NOT_EXIST(false, HttpStatus.BAD_REQUEST.value(), "등록되지 않은 잠재고객입니다."),
@@ -123,7 +125,6 @@ public enum BaseResponseStatus {
      */
     IO_ERROR(false, HttpStatus.INTERNAL_SERVER_ERROR.value(), "REPORT 입출력 에러입니다."),
     JRE_ERROR(false, HttpStatus.INTERNAL_SERVER_ERROR.value(), "REPORT 양식 에러입니다."),
-
 
 
     /**
