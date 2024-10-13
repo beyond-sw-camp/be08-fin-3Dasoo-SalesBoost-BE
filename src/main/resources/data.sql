@@ -24,7 +24,7 @@ SELECT 6,'006','전산,IT부','dept_IT',now(),now()
 WHERE NOT EXISTS (SELECT 1 FROM tb_department WHERE dept_no = 6);
 
 INSERT INTO `tb_user` (user_no,name,email,password,employee_id,dept_id,role,created_at,updated_at,join_date)
-SELECT 1,'테스트','test@naver.com','abcd','2024101101','001','USER',now(),now(),now()
+SELECT 1,'테스트','test@naver.com','$2a$10$NQ5nj6.3UnFxec0idKxma.pn2mq5L5qIjouO4oueMRzjH/5tPX84e','20241011001','001','USER',now(),now(),now()
 WHERE NOT EXISTS (SELECT 1 FROM tb_user WHERE email = 'test@naver.com');
 
 
