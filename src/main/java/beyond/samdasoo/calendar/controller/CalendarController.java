@@ -75,7 +75,7 @@ public class CalendarController {
 //    }
 
     @GetMapping("/user/{userId}/exists")
-    @Operation(summary = "캘린더 존재 여부 확인", description = "사용자가 이미 캘린더를 가지고 있는지 확인합니다.")
+    @Operation(summary = "캘린더 존재 여부 확인", description = "캘린더 보유 여부 조회")
     public ResponseEntity<BaseResponse<Boolean>> checkCalendarExists(@PathVariable Long userId) {
         boolean exists = calendarService.existsByUserId(userId);
         return ResponseEntity.ok(new BaseResponse<>(exists));
