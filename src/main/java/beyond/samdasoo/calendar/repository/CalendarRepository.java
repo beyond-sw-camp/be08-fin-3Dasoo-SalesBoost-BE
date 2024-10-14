@@ -10,4 +10,5 @@ public interface CalendarRepository extends JpaRepository<Calendar, Long> {
     default Calendar findCalendarById(Long id) {
         return findById(id).orElseThrow(() -> new BaseException(CALENDAR_NOT_EXIST));
     }
+    boolean existsByUser_Id(Long id);
 }

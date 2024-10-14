@@ -5,5 +5,6 @@ public enum PlanStatus {
     COMPANY,
     PROPOSAL,
     ESTIMATE,
+    SALES,
     CONTRACT
 }
