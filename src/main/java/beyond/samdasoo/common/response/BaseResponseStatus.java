@@ -76,8 +76,7 @@ public enum BaseResponseStatus {
      * calendar 관련
      */
     CALENDAR_NOT_EXIST(false, HttpStatus.NOT_FOUND.value(), "존재하지 않는 캘린더입니다."),
-
-
+    CALENDAR_ALREADY_EXIST(false, HttpStatus.NOT_FOUND.value(), "이미 존재하는 캘린더입니다."),
 
     /**
      * proposal 관련
