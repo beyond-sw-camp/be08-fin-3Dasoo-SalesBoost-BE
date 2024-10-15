@@ -25,10 +25,6 @@ public class Calendar {
         @GeneratedValue(strategy = GenerationType.IDENTITY)
         private Long no;
 
-        @Enumerated(EnumType.STRING)
-        @Column(name="calendar_type", nullable = false)
-        private CalendarType type;
-
         @ManyToOne(fetch = FetchType.LAZY)
         @JoinColumn(name="user_no", nullable=false)
         private User user;
