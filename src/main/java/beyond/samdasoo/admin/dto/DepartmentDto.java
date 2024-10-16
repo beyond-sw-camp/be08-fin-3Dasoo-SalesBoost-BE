@@ -12,13 +12,29 @@ import java.util.List;
 @AllArgsConstructor
 public class DepartmentDto {
     private Long no;
+
     private String name;
+
+    private String deptCode;
+
+    private String engName;
+
+    private String deptHead;
+
 
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<DepartmentDto> children;
 
-    public DepartmentDto(Long no, String name) {
+    public DepartmentDto(Long no, String name, String deptCode, String engName, String deptHead) {
         this.no = no;
+
         this.name = name;
+
+        this.deptCode = deptCode;
+
+        this.engName = engName;
+
+        this.deptHead = deptHead;
+
     }
 }
