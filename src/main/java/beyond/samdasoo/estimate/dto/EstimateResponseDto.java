@@ -19,6 +19,7 @@ public class EstimateResponseDto {
     private int totalPrice;  // 합계금액
     private String note;  // 비고 (optional)
     private Long propNo;  // 제안번호 (FK)
+    private String propName;
 
     public EstimateResponseDto(Estimate estimate) {
         this.estNo = estimate.getEstNo();
@@ -32,5 +33,6 @@ public class EstimateResponseDto {
         this.totalPrice = estimate.getTotalPrice();
         this.note = estimate.getNote();
         this.propNo = estimate.getProposal().getPropNo();
+        this.propName = estimate.getProposal() != null ? estimate.getProposal().getName() : null;
     }
 }
