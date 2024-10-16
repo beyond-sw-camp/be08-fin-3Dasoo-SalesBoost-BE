@@ -1,7 +1,8 @@
 package beyond.samdasoo.proposal.entity;
 
 import beyond.samdasoo.common.entity.BaseEntity;
-import beyond.samdasoo.lead.Lead;
+import beyond.samdasoo.estimate.entity.Estimate;
+import beyond.samdasoo.lead.Entity.Lead;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -9,8 +10,9 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDate;
+import java.util.List;
 
-@Table(name="tb_proposal")
+@Table(name = "tb_proposal")
 @Data
 @Entity
 @Builder
@@ -22,9 +24,9 @@ public class Proposal extends BaseEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long propNo; //제안번호 (PK)
 
-//    @ManyToOne(fetch = FetchType.LAZY)
-//    @JoinColumn(name="lead_No", nullable = false);
-//    private Lead leadNo;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "lead_no", nullable = false)
+    private Lead lead;
 
     @Column(name = "name", nullable = false)
     private String name;  // 제안명
@@ -50,5 +52,6 @@ public class Proposal extends BaseEntity {
     @Column(name = "note")
     private String note;  // 비고
 
-
+    @OneToMany(mappedBy = "proposal", cascade = CascadeType.ALL)
+    private List<Estimate> estimates;
 }

@@ -46,5 +46,4 @@ public class EstProduct extends BaseEntity {
 
     @Column(name = "total_amt", nullable = false)
     private int totalAmt;  // 합계금액
-
 }
