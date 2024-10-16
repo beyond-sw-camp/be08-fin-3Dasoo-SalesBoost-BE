@@ -19,21 +19,35 @@ public class CookieUtil {
     private boolean secure;
 
     public Cookie getCookie(HttpServletRequest req, String cookieName){
-        //쿠키가 없는 경우
-        if(req.getCookies() == null){
-            return null;
-        }
 
-        final List<Cookie> cookies = Arrays.stream(req.getCookies()).toList();
-        Cookie cookieRes = cookies.stream().filter(cookie -> cookie.getName().equals(cookieName)).findFirst().get();
-        return cookieRes;
+        Cookie[] cookies = req.getCookies();
+        if (cookies != null) {
+            for (Cookie cookie : cookies) {
+                if (cookieName.equals(cookie.getName())) {
+                    String refreshToken = cookie.getValue();
+                    System.out.println(refreshToken);
+                    return cookie;
+                }
+            }
+        }
+        return null;
     }
 
     public Cookie createCookie(String key, String value, int maxAge){
             Cookie cookie = new Cookie(key,value);
             cookie.setHttpOnly(true);
+            cookie.setSecure(false);
             cookie.setMaxAge(maxAge);
             cookie.setPath("/");
             return cookie;
+    }
+
+    public ResponseCookie createCookie2(String key, String value, int maxAge){
+        ResponseCookie cookie = ResponseCookie.from(key, value)
+        .httpOnly(true).secure(false).maxAge(maxAge).sameSite("None").build();
+
+        //   cookie.setSame("None");
+//            cookie.setPath("/");
+        return cookie;
     }
 }

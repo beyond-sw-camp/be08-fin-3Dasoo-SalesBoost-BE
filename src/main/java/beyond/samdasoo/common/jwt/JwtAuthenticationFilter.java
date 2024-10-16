@@ -48,15 +48,10 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter { // JWT 검�
             if(authorizationHeader.startsWith("Bearer")){
                 jwtToken = authorizationHeader.substring(7);
                 if(jwtTokenProvider.validateToken(jwtToken,request)){ // 토큰 유효성 검사
-//                    if(jwtTokenProvider.isExpiredToken(jwtToken)){ // 만료 검사
-//                        request.setAttribute("exception",BaseResponseStatus.JWT_EXPIRED_ACCESS_TOKEN);
-//                        filterChain.doFilter(request,response);
-//                        return;
-//                    }
+                    getAuthentication(jwtToken);
                     filterChain.doFilter(request,response);
                     return;
                 }else {
-                 //   request.setAttribute("exception", BaseResponseStatus.JWT_INVALID_ACCESS_TOKEN); // 실패
                     filterChain.doFilter(request, response);
                     return;
                 }
@@ -64,7 +59,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter { // JWT 검�
             }
         }
 
-        getAuthentication(jwtToken);
+
         filterChain.doFilter(request,response);
 
     }

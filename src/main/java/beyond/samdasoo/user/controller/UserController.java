@@ -1,4 +1,5 @@
 package beyond.samdasoo.user.controller;
+import beyond.samdasoo.common.exception.BaseException;
 import beyond.samdasoo.common.response.BaseResponse;
 import beyond.samdasoo.common.utils.CookieUtil;
 import beyond.samdasoo.common.utils.JwtUtil;
@@ -17,6 +18,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
+import static beyond.samdasoo.common.response.BaseResponseStatus.JWT_INVALID_REFRESH_TOKEN;
 import static beyond.samdasoo.common.utils.UserUtil.getLoginUserEmail;
 
 @Tag(name="User APIs",description = "유저 관련 API")
@@ -48,10 +50,11 @@ public class UserController {
         TokenResult tokenResult = userService.login(loginUserReq);
 
         // 쿠키에 refresh token 저장
-        Cookie cookie = cookieUtil.createCookie(JwtUtil.REFRESH_TOKEN_COOKIE_NAME, tokenResult.getAccessToken(), JwtUtil.refreshTokenExpireDuration/1000);
-       // response.setHeader(HttpHeaders.SET_COOKIE, cookie.toString());
-        response.addCookie(cookie);
+        Cookie cookie = cookieUtil.createCookie(JwtUtil.REFRESH_TOKEN_COOKIE_NAME, tokenResult.getRefreshToken(), JwtUtil.refreshTokenExpireDuration/1000);
+          response.addCookie(cookie);
 
+//        ResponseCookie responseCookie = cookieUtil.createCookie2(JwtUtil.REFRESH_TOKEN_COOKIE_NAME, tokenResult.getRefreshToken(), JwtUtil.refreshTokenExpireDuration/1000);
+//        response.setHeader(HttpHeaders.SET_COOKIE, responseCookie.toString());
         // 로그인 응답객체 생성
         LoginUserRes result = new LoginUserRes(tokenResult.getName(),tokenResult.getEmail(),tokenResult.getRole(),tokenResult.getDept(),tokenResult.getAccessToken());
 
@@ -84,13 +87,17 @@ public class UserController {
      * Access Token 재발급
      */
     @PostMapping("/reissue")
-    public void reissue(HttpServletRequest request, HttpServletResponse response){
-        // 1. 리프레시 토큰 쿠키를 넘겨 토큰 재발급
-        Cookie refreshTokenCookie = cookieUtil.getCookie(request, JwtUtil.REFRESH_TOKEN_COOKIE_NAME);
-         userService.reissue(refreshTokenCookie,request);
+    public BaseResponse<String> reissue(HttpServletRequest request, HttpServletResponse response){
+        System.out.println("--------access token 재발급 요청---------");
+        Cookie cookie = cookieUtil.getCookie(request, JwtUtil.REFRESH_TOKEN_COOKIE_NAME);
+        if(cookie==null){
+            throw new BaseException(JWT_INVALID_REFRESH_TOKEN);
+        }
+        ReIssueResult reissue = userService.reissue(cookie, request);
+        Cookie newCookie = cookieUtil.createCookie(JwtUtil.REFRESH_TOKEN_COOKIE_NAME, reissue.getRefreshToken(), JwtUtil.refreshTokenExpireDuration/1000);
+        response.addCookie(newCookie);
 
+        return new BaseResponse<>(reissue.getAccessToken());
     }
-
-
 
 }

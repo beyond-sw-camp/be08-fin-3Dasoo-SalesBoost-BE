@@ -24,7 +24,7 @@ public class CustomerController {
     고객 등록 API
      */
     @Operation(summary = "고객 등록", description = "새로운 고객 등록")
-    @PostMapping("")
+    @PostMapping("/add")
     public BaseResponse<String> createCustomer(@RequestBody CustomerCreateReq req){
         customerService.create(req);
 

@@ -33,7 +33,7 @@ public class GlobalExceptionHandler {
 
         }else{
             log.warn("Unknown Authentication Exception. error message: {}", e.getMessage());
-            status = BaseResponseStatus.EMAIL_ALREADY_EXIST;
+            status = BaseResponseStatus.JWT_AUTH_EMPTY;
         }
 
         return new ResponseEntity<>(new BaseResponse<>(status), HttpStatus.UNAUTHORIZED);
