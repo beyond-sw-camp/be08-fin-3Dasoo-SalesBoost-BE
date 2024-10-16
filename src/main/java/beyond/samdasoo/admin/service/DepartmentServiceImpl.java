@@ -65,14 +65,17 @@ public class DepartmentServiceImpl implements DepartmentService{
     }
 
     private DepartmentDto departmentTree(Department department) {
+
         if (!department.getChildren().isEmpty()) {
             List<DepartmentDto> childDtos = new ArrayList<>();
             for (Department child : department.getChildren()) {
                 childDtos.add(departmentTree(child));
             }
-            return new DepartmentDto(department.getDeptNo(), department.getDeptName(), childDtos);
+            return new DepartmentDto(department.getDeptNo(), department.getDeptName(),
+                    department.getDeptCode(), department.getEngName(), department.getDeptHead(), childDtos);
         } else {
-            return new DepartmentDto(department.getDeptNo(), department.getDeptName());
+            return new DepartmentDto(department.getDeptNo(), department.getDeptName(),
+                    department.getDeptCode(), department.getEngName(), department.getDeptHead());
         }
     }
 

@@ -44,6 +44,7 @@ public class ProductResponseDto {
         this.prodCode = product.getProdCode();
         this.name = product.getName();
         this.engName = product.getEngName();
+        this.abbrName = product.getAbbrName();
         this.uppGroup = product.getField();
         this.releaseDate = product.getReleaseDate();
         this.dept = product.getDept();

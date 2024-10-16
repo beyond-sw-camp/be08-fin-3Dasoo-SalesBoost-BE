@@ -2,7 +2,6 @@ package beyond.samdasoo.calendar.dto;
 
 import beyond.samdasoo.act.dto.ActResponseDto;
 import beyond.samdasoo.calendar.entity.Calendar;
-import beyond.samdasoo.calendar.entity.CalendarType;
 import beyond.samdasoo.plan.dto.PlanResponseDto;
 import beyond.samdasoo.todo.dto.TodoResponseDto;
 import lombok.Data;
@@ -16,7 +15,6 @@ public class CalendarResponseDto {
 
     private Long calendarNo;
     private String userName;
-    private CalendarType type;
     private List<PlanResponseDto> plans;
     private List<TodoResponseDto> todos;
     private List<ActResponseDto> acts;
@@ -24,7 +22,6 @@ public class CalendarResponseDto {
     public CalendarResponseDto(Calendar calendar) {
         this.calendarNo = calendar.getNo();
         this.userName = calendar.getUser().getName();
-        this.type = calendar.getType();
 
         this.plans = (calendar.getPlans() != null) ?
                 calendar.getPlans().stream().map(PlanResponseDto::new).collect(Collectors.toList()) :
