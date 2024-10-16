@@ -2,7 +2,6 @@ package beyond.samdasoo.proposal.service;
 
 import beyond.samdasoo.common.exception.BaseException;
 import beyond.samdasoo.common.response.BaseResponseStatus;
-import beyond.samdasoo.lead.Lead;
 import beyond.samdasoo.lead.repository.LeadRepository;
 import beyond.samdasoo.proposal.dto.ProposalRequestDto;
 import beyond.samdasoo.proposal.dto.ProposalResponseDto;
