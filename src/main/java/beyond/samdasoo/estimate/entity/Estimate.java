@@ -1,6 +1,7 @@
 package beyond.samdasoo.estimate.entity;
 
 import beyond.samdasoo.common.entity.BaseEntity;
+import beyond.samdasoo.contract.entity.Contract;
 import beyond.samdasoo.proposal.entity.Proposal;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -9,6 +10,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDate;
+import java.util.List;
 
 @Table(name = "tb_estimate")
 @Data
@@ -53,4 +55,7 @@ public class Estimate extends BaseEntity {
 
     @Column(name = "note")
     private String note;  // 비고 (optional)
+
+    @OneToMany(mappedBy = "estimate", cascade = CascadeType.ALL)
+    private List<EstProduct> estProducts;
 }
