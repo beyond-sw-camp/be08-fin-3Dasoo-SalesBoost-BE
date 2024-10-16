@@ -49,9 +49,9 @@ public class UserController {
 
         TokenResult tokenResult = userService.login(loginUserReq);
 
-        // 쿠키에 refresh token 저장
+             // 쿠키에 refresh token 저장
         Cookie cookie = cookieUtil.createCookie(JwtUtil.REFRESH_TOKEN_COOKIE_NAME, tokenResult.getRefreshToken(), JwtUtil.refreshTokenExpireDuration/1000);
-          response.addCookie(cookie);
+        response.addCookie(cookie);
 
 //        ResponseCookie responseCookie = cookieUtil.createCookie2(JwtUtil.REFRESH_TOKEN_COOKIE_NAME, tokenResult.getRefreshToken(), JwtUtil.refreshTokenExpireDuration/1000);
 //        response.setHeader(HttpHeaders.SET_COOKIE, responseCookie.toString());
@@ -100,4 +100,20 @@ public class UserController {
         return new BaseResponse<>(reissue.getAccessToken());
     }
 
+    /**
+     *  로그아웃
+     */
+    @PostMapping("/logout")
+    public BaseResponse<String> logout(HttpServletRequest request,HttpServletResponse response){
+        Cookie refreshCookie = cookieUtil.getCookie(request, JwtUtil.REFRESH_TOKEN_COOKIE_NAME);
+
+        String message = userService.logout(refreshCookie);
+
+        // 쿠키 제거
+        Cookie cookie = cookieUtil.createCookie(JwtUtil.REFRESH_TOKEN_COOKIE_NAME, null, 0);
+        response.addCookie(cookie);
+
+        return new BaseResponse<>(message);
+
+    }
 }
