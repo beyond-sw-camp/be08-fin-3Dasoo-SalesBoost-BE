@@ -112,17 +112,27 @@ public class UserService {
         String refreshToken = refreshTokenCookie.getValue();
         ReIssueResult reIssueResult = null;
 
-        // 1. 리프레시 토큰이 유효한 경우 액세스토큰, 리프레시 토큰 모두 재발급
+        //  리프레시 토큰이 유효한 경우 액세스토큰, 리프레시 토큰 모두 재발급
         if(jwtTokenProvider.validateToken(refreshToken,request)) {
+
             String userEmail = jwtTokenProvider.getEmail(refreshToken);
             String role = jwtTokenProvider.getRole(refreshToken);
+
+            boolean exists = refreshTokenService.existsByEmailAndToken(userEmail, refreshToken);
+            if(!exists){
+                throw new BaseException(JWT_INVALID_REFRESH_TOKEN);
+            }
+
+            refreshTokenService.deleteByEmailAndToken(userEmail,refreshToken);
+            refreshTokenService.saveToken(userEmail,refreshToken);
 
             String refresh = jwtTokenProvider.createToken(userEmail, role, "REFRESH");
             String access = jwtTokenProvider.createToken(userEmail, role, "ACCESS");
 
+
+
             return new ReIssueResult(access,refresh);
 
-            // todo : redis 연결
         }
         throw new BaseException(JWT_INVALID_REFRESH_TOKEN);
     }
