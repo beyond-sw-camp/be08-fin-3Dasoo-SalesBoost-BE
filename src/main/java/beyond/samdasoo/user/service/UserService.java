@@ -6,6 +6,7 @@ import beyond.samdasoo.common.exception.BaseException;
 import beyond.samdasoo.common.jwt.JwtTokenProvider;
 import beyond.samdasoo.common.jwt.RefreshTokenRepository;
 import beyond.samdasoo.common.jwt.entity.RefreshToken;
+import beyond.samdasoo.common.jwt.service.RefreshTokenService;
 import beyond.samdasoo.user.dto.*;
 import beyond.samdasoo.user.entity.User;
 import beyond.samdasoo.user.repository.UserRepository;
@@ -34,7 +35,7 @@ public class UserService {
     private final UserRepository userRepository;
     private final JwtTokenProvider jwtTokenProvider;
     private final DepartmentRepository departmentRepository;
-    private final RefreshTokenRepository refreshTokenRepository;
+    private final RefreshTokenService refreshTokenService;
 
 
     public JoinUserRes join(JoinUserReq joinUserReq){
@@ -79,7 +80,7 @@ public class UserService {
         String accessToken = jwtTokenProvider.createToken(findUser.getEmail(), findUser.getRole().toString(),"ACCESS");
         String refreshToken = jwtTokenProvider.createToken(findUser.getEmail(),findUser.getRole().toString(),"REFRESH");
 
-        // todo : 재 로그인시 redis에 refresh token 값 갱신
+        refreshTokenService.saveToken(findUser.getEmail(), refreshToken);
 
         return new TokenResult(accessToken,refreshToken, findUser.getName(), findUser.getEmail(), findUser.getRole(),findUser.getDepartment().getDeptName());
     }

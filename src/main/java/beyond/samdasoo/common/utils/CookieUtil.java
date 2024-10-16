@@ -12,11 +12,11 @@ import java.util.List;
 @Service
 public class CookieUtil {
 
-    @Value("${backend.domain}")
-    private String domain;
-
-    @Value("${backend.secure}")
-    private boolean secure;
+//    @Value("${backend.domain}")
+//    private String domain;
+//
+//    @Value("${backend.secure}")
+//    private boolean secure;
 
     public Cookie getCookie(HttpServletRequest req, String cookieName){
 
@@ -36,18 +36,10 @@ public class CookieUtil {
     public Cookie createCookie(String key, String value, int maxAge){
             Cookie cookie = new Cookie(key,value);
             cookie.setHttpOnly(true);
-            cookie.setSecure(false);
+            cookie.setSecure(false); // https 적용시 변경
             cookie.setMaxAge(maxAge);
             cookie.setPath("/");
             return cookie;
     }
 
-    public ResponseCookie createCookie2(String key, String value, int maxAge){
-        ResponseCookie cookie = ResponseCookie.from(key, value)
-        .httpOnly(true).secure(false).maxAge(maxAge).sameSite("None").build();
-
-        //   cookie.setSame("None");
-//            cookie.setPath("/");
-        return cookie;
-    }
 }
