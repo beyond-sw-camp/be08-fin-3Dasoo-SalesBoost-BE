@@ -12,20 +12,14 @@ import java.util.List;
 @Service
 public class CookieUtil {
 
-//    @Value("${backend.domain}")
-//    private String domain;
-//
-//    @Value("${backend.secure}")
-//    private boolean secure;
-
     public Cookie getCookie(HttpServletRequest req, String cookieName){
 
         Cookie[] cookies = req.getCookies();
         if (cookies != null) {
             for (Cookie cookie : cookies) {
                 if (cookieName.equals(cookie.getName())) {
-                    String refreshToken = cookie.getValue();
-                    System.out.println(refreshToken);
+//                    String refreshToken = cookie.getValue();
+//                    System.out.println(refreshToken);
                     return cookie;
                 }
             }

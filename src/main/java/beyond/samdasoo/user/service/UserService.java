@@ -36,7 +36,6 @@ public class UserService {
     private final JwtTokenProvider jwtTokenProvider;
     private final DepartmentRepository departmentRepository;
     private final RefreshTokenService refreshTokenService;
-    private final RefreshTokenRepository refreshTokenRepository;
 
 
     public JoinUserRes join(JoinUserReq joinUserReq){
