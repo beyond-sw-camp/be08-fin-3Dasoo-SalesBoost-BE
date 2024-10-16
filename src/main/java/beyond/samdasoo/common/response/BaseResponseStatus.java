@@ -31,6 +31,13 @@ public enum BaseResponseStatus {
     USER_NOT_EXIST(false, HttpStatus.BAD_REQUEST.value(), "존재하지 않는 회원입니다"),
     LOGIN_TYPE_NOT_VALID(false, HttpStatus.BAD_REQUEST.value(), "로그인 타입은 이메일 또는 사번만 유효합니다"),
     EMPLOYEE_ID_NOT_VALID(false, HttpStatus.BAD_REQUEST.value(), "사원번호 또는 비밀번호를 확인해주세요"),
+    EMAIL_OR_CODE_NOT_FOUND(false,HttpStatus.BAD_REQUEST.value(), "이메일 또는 인증번호를 다시 확인해주세요."),
+    EMAIL_REGEX_ERROR(false,HttpStatus.BAD_REQUEST.value(), "이메일 형식으로 입력해주세요."),
+
+  EMAIL_EMPTY(false,HttpStatus.BAD_REQUEST.value(), "이메일을 입력해 주세요."),
+  NAME_EMPTY(false,HttpStatus.BAD_REQUEST.value(), "이름을 입력해 주세요."),
+  PASSWORD_EMPTY(false,HttpStatus.BAD_REQUEST.value(), "비밀번호를 입력해 주세요."),
+  DEPT_EMPTY(false,HttpStatus.BAD_REQUEST.value(), "부서를 선택해 주세요."),
 
     /**
      * product 관련

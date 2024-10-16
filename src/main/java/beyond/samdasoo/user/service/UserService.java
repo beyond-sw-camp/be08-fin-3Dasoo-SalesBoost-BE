@@ -4,6 +4,7 @@ import beyond.samdasoo.admin.entity.Department;
 import beyond.samdasoo.admin.repository.DepartmentRepository;
 import beyond.samdasoo.common.email.CertificationNumber;
 import beyond.samdasoo.common.email.EmailProvider;
+import beyond.samdasoo.common.email.EmailRepository;
 import beyond.samdasoo.common.exception.BaseException;
 import beyond.samdasoo.common.jwt.JwtTokenProvider;
 import beyond.samdasoo.common.jwt.RefreshTokenRepository;
@@ -39,6 +40,7 @@ public class UserService {
     private final DepartmentRepository departmentRepository;
     private final RefreshTokenService refreshTokenService;
     private final EmailProvider emailProvider;
+    private final EmailRepository emailRepository;
 
 
     public JoinUserRes join(JoinUserReq joinUserReq){
@@ -170,6 +172,20 @@ public class UserService {
             throw new BaseException(FAIL_SEND_CODE);
         }
 
-        // todo : Redis 연결
+        emailRepository.saveEmailCode(email,certificationNumber);
+    }
+
+
+    public boolean emailCodeVerification(EmailCodeCheckReq req){
+       // 발급한 인증코드와 동일한지 검증
+        boolean exist = emailRepository.checkEmailCertificationNumber(req.getEmail(), req.getCode());
+
+        if(!exist){
+            throw new BaseException(EMAIL_OR_CODE_NOT_FOUND);
+        }
+
+        emailRepository.deleteEmailCode(req.getEmail());
+
+        return true;
     }
 }
