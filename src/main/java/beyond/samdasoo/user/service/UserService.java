@@ -6,6 +6,7 @@ import beyond.samdasoo.common.exception.BaseException;
 import beyond.samdasoo.common.jwt.JwtTokenProvider;
 import beyond.samdasoo.common.jwt.RefreshTokenRepository;
 import beyond.samdasoo.common.jwt.entity.RefreshToken;
+import beyond.samdasoo.common.jwt.service.RefreshTokenService;
 import beyond.samdasoo.user.dto.*;
 import beyond.samdasoo.user.entity.User;
 import beyond.samdasoo.user.repository.UserRepository;
@@ -34,7 +35,7 @@ public class UserService {
     private final UserRepository userRepository;
     private final JwtTokenProvider jwtTokenProvider;
     private final DepartmentRepository departmentRepository;
-    private final RefreshTokenRepository refreshTokenRepository;
+    private final RefreshTokenService refreshTokenService;
 
 
     public JoinUserRes join(JoinUserReq joinUserReq){
@@ -79,7 +80,7 @@ public class UserService {
         String accessToken = jwtTokenProvider.createToken(findUser.getEmail(), findUser.getRole().toString(),"ACCESS");
         String refreshToken = jwtTokenProvider.createToken(findUser.getEmail(),findUser.getRole().toString(),"REFRESH");
 
-        // todo : 재 로그인시 redis에 refresh token 값 갱신
+        refreshTokenService.saveToken(findUser.getEmail(), refreshToken);
 
         return new TokenResult(accessToken,refreshToken, findUser.getName(), findUser.getEmail(), findUser.getRole(),findUser.getDepartment().getDeptName());
     }
@@ -109,20 +110,46 @@ public class UserService {
     // 토큰 재발급
     public ReIssueResult reissue(Cookie refreshTokenCookie, HttpServletRequest request){
         String refreshToken = refreshTokenCookie.getValue();
-        ReIssueResult reIssueResult = null;
 
-        // 1. 리프레시 토큰이 유효한 경우 액세스토큰, 리프레시 토큰 모두 재발급
+        //  리프레시 토큰이 유효한 경우 액세스토큰, 리프레시 토큰 모두 재발급
         if(jwtTokenProvider.validateToken(refreshToken,request)) {
+
             String userEmail = jwtTokenProvider.getEmail(refreshToken);
             String role = jwtTokenProvider.getRole(refreshToken);
+
+            boolean exists = refreshTokenService.existsByEmailAndToken(userEmail, refreshToken);
+            if(!exists){
+                throw new BaseException(JWT_INVALID_REFRESH_TOKEN);
+            }
+
+            refreshTokenService.deleteByEmailAndToken(userEmail,refreshToken);
+            refreshTokenService.saveToken(userEmail,refreshToken);
 
             String refresh = jwtTokenProvider.createToken(userEmail, role, "REFRESH");
             String access = jwtTokenProvider.createToken(userEmail, role, "ACCESS");
 
+
             return new ReIssueResult(access,refresh);
 
-            // todo : redis 연결
         }
         throw new BaseException(JWT_INVALID_REFRESH_TOKEN);
+    }
+
+    public String logout(Cookie refreshCookie){
+        final String  LOGOUT_RESULT = "로그아웃 완료";
+
+        if(refreshCookie==null){
+            return LOGOUT_RESULT;
+        }
+
+        String refreshToken = refreshCookie.getValue();
+
+        String userEmail = jwtTokenProvider.getEmail(refreshToken);
+
+        // 캐시에서 토큰 제거
+        refreshTokenService.deleteByEmailAndToken(userEmail,refreshToken);
+
+        return LOGOUT_RESULT;
+
     }
 }

@@ -51,10 +51,8 @@ public class UserController {
 
         // 쿠키에 refresh token 저장
         Cookie cookie = cookieUtil.createCookie(JwtUtil.REFRESH_TOKEN_COOKIE_NAME, tokenResult.getRefreshToken(), JwtUtil.refreshTokenExpireDuration/1000);
-          response.addCookie(cookie);
+        response.addCookie(cookie);
 
-//        ResponseCookie responseCookie = cookieUtil.createCookie2(JwtUtil.REFRESH_TOKEN_COOKIE_NAME, tokenResult.getRefreshToken(), JwtUtil.refreshTokenExpireDuration/1000);
-//        response.setHeader(HttpHeaders.SET_COOKIE, responseCookie.toString());
         // 로그인 응답객체 생성
         LoginUserRes result = new LoginUserRes(tokenResult.getName(),tokenResult.getEmail(),tokenResult.getRole(),tokenResult.getDept(),tokenResult.getAccessToken());
 
@@ -67,6 +65,7 @@ public class UserController {
     @Operation(summary = "유저 정보 조회", description = "현재 로그인한 유저 정보를 조회한다")
     @GetMapping("/my-info")
     public BaseResponse<UserDto> getUser(){
+
         String loginUserEmail = getLoginUserEmail();
         UserDto result = userService.getUser(loginUserEmail);
 
@@ -74,21 +73,10 @@ public class UserController {
     }
 
     /**
-     * 유저 정보 수정 API
-     */
-//    @PatchMapping("/my-info")
-//    public BaseResponse<String> updateUserInfo(){
-//        String loginUserEmail = getLoginUserEmail();
-//        userService.updateUserInfo(loginUserEmail);
-//        return new BaseResponse<>("유저 정보 수정 성공");
-//    }
-
-    /**
      * Access Token 재발급
      */
     @PostMapping("/reissue")
     public BaseResponse<String> reissue(HttpServletRequest request, HttpServletResponse response){
-        System.out.println("--------access token 재발급 요청---------");
         Cookie cookie = cookieUtil.getCookie(request, JwtUtil.REFRESH_TOKEN_COOKIE_NAME);
         if(cookie==null){
             throw new BaseException(JWT_INVALID_REFRESH_TOKEN);
@@ -100,4 +88,20 @@ public class UserController {
         return new BaseResponse<>(reissue.getAccessToken());
     }
 
+    /**
+     *  로그아웃
+     */
+    @PostMapping("/logout")
+    public BaseResponse<String> logout(HttpServletRequest request,HttpServletResponse response){
+        Cookie refreshCookie = cookieUtil.getCookie(request, JwtUtil.REFRESH_TOKEN_COOKIE_NAME);
+
+        String message = userService.logout(refreshCookie);
+
+        // 쿠키 제거
+        Cookie cookie = cookieUtil.createCookie(JwtUtil.REFRESH_TOKEN_COOKIE_NAME, null, 0);
+        response.addCookie(cookie);
+
+        return new BaseResponse<>(message);
+
+    }
 }
