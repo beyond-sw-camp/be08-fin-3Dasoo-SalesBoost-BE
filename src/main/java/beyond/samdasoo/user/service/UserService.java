@@ -4,17 +4,24 @@ import beyond.samdasoo.admin.entity.Department;
 import beyond.samdasoo.admin.repository.DepartmentRepository;
 import beyond.samdasoo.common.exception.BaseException;
 import beyond.samdasoo.common.jwt.JwtTokenProvider;
+import beyond.samdasoo.common.jwt.RefreshTokenRepository;
+import beyond.samdasoo.common.jwt.entity.RefreshToken;
 import beyond.samdasoo.user.dto.*;
 import beyond.samdasoo.user.entity.User;
 import beyond.samdasoo.user.repository.UserRepository;
+import jakarta.servlet.http.Cookie;
+import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.util.Map;
 import java.util.Optional;
 
 import static beyond.samdasoo.common.response.BaseResponseStatus.*;
@@ -27,6 +34,7 @@ public class UserService {
     private final UserRepository userRepository;
     private final JwtTokenProvider jwtTokenProvider;
     private final DepartmentRepository departmentRepository;
+    private final RefreshTokenRepository refreshTokenRepository;
 
 
     public JoinUserRes join(JoinUserReq joinUserReq){
@@ -46,7 +54,7 @@ public class UserService {
         return new JoinUserRes(saveUser.getEmployeeId());
     }
 
-    public LoginUserRes login(LoginUserReq loginUserReq){
+    public TokenResult login(LoginUserReq loginUserReq){
         String type = loginUserReq.getLoginType();
 
         User findUser = null;
@@ -69,8 +77,11 @@ public class UserService {
         }
 
         String accessToken = jwtTokenProvider.createToken(findUser.getEmail(), findUser.getRole().toString(),"ACCESS");
+        String refreshToken = jwtTokenProvider.createToken(findUser.getEmail(),findUser.getRole().toString(),"REFRESH");
 
-        return new LoginUserRes(accessToken,findUser.getName(), findUser.getEmail(), findUser.getRole());
+        // todo : 재 로그인시 redis에 refresh token 값 갱신
+
+        return new TokenResult(accessToken,refreshToken, findUser.getName(), findUser.getEmail(), findUser.getRole(),findUser.getDepartment().getDeptName());
     }
 
     public UserDto getUser(String email) {
@@ -92,5 +103,26 @@ public class UserService {
         String employeeId = datePrefix + String.format("%03d", nextSequence);
         log.info("Generated employee id {}", employeeId);
         return employeeId;
+    }
+
+
+    // 토큰 재발급
+    public ReIssueResult reissue(Cookie refreshTokenCookie, HttpServletRequest request){
+        String refreshToken = refreshTokenCookie.getValue();
+        ReIssueResult reIssueResult = null;
+
+        // 1. 리프레시 토큰이 유효한 경우 액세스토큰, 리프레시 토큰 모두 재발급
+        if(jwtTokenProvider.validateToken(refreshToken,request)) {
+            String userEmail = jwtTokenProvider.getEmail(refreshToken);
+            String role = jwtTokenProvider.getRole(refreshToken);
+
+            String refresh = jwtTokenProvider.createToken(userEmail, role, "REFRESH");
+            String access = jwtTokenProvider.createToken(userEmail, role, "ACCESS");
+
+            return new ReIssueResult(access,refresh);
+
+            // todo : redis 연결
+        }
+        throw new BaseException(JWT_INVALID_REFRESH_TOKEN);
     }
 }
