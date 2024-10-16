@@ -2,6 +2,8 @@ package beyond.samdasoo.user.service;
 
 import beyond.samdasoo.admin.entity.Department;
 import beyond.samdasoo.admin.repository.DepartmentRepository;
+import beyond.samdasoo.common.email.CertificationNumber;
+import beyond.samdasoo.common.email.EmailProvider;
 import beyond.samdasoo.common.exception.BaseException;
 import beyond.samdasoo.common.jwt.JwtTokenProvider;
 import beyond.samdasoo.common.jwt.RefreshTokenRepository;
@@ -36,6 +38,7 @@ public class UserService {
     private final JwtTokenProvider jwtTokenProvider;
     private final DepartmentRepository departmentRepository;
     private final RefreshTokenService refreshTokenService;
+    private final EmailProvider emailProvider;
 
 
     public JoinUserRes join(JoinUserReq joinUserReq){
@@ -151,5 +154,22 @@ public class UserService {
 
         return LOGOUT_RESULT;
 
+    }
+
+    public void sendEmailCode(String email) {
+        boolean exists = userRepository.existsByEmail(email);
+
+        if(exists){
+            throw new BaseException(EMAIL_ALREADY_EXIST);
+        }
+
+        String certificationNumber = CertificationNumber.getCertificationNumber();
+        boolean isSucceed = emailProvider.sendCertificationMail(email, certificationNumber);
+
+        if(!isSucceed){
+            throw new BaseException(FAIL_SEND_CODE);
+        }
+
+        // todo : Redis 연결
     }
 }

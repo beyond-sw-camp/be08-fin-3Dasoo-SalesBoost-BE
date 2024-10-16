@@ -133,6 +133,7 @@ public enum BaseResponseStatus {
      * 500 :  Database, Server 오류
      */
 
+    FAIL_SEND_CODE(false,HttpStatus.INTERNAL_SERVER_ERROR.value(), "인증코드 전송을 실패했습니다."),
     UNEXPECTED_ERROR(false, HttpStatus.INTERNAL_SERVER_ERROR.value(), "예상치 못한 에러가 발생했습니다");
 
 

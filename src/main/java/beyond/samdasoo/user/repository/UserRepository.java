@@ -15,4 +15,6 @@ public interface UserRepository extends JpaRepository<User, Long> {
     int countByJoinDate(LocalDate joinDate);
 
     Optional<User> findByEmployeeId(String employeeId);
+
+    boolean existsByEmail(String email);
 }

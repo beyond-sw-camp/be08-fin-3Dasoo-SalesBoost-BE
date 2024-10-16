@@ -104,4 +104,15 @@ public class UserController {
         return new BaseResponse<>(message);
 
     }
+
+    /**
+     * 메일 인증 코드 전송
+     */
+    @PostMapping("/email")
+    public BaseResponse<String> emailCodeRequest(@RequestBody SendEmailCodeReq req){
+        String email = req.getEmail();
+        userService.sendEmailCode(email);
+
+        return new BaseResponse<>("해당 이메일로 인증코드를 전송했습니다.");
+    }
 }
