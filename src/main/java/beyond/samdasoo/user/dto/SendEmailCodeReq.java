@@ -1,2 +1,8 @@
-package beyond.samdasoo.user.dto;public class SendEmailCodeReq {
+package beyond.samdasoo.user.dto;
+
+import lombok.Getter;
+
+@Getter
+public class SendEmailCodeReq {
+    String email;
 }
