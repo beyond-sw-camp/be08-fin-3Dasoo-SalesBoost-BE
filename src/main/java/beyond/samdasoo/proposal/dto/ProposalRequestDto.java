@@ -15,5 +15,6 @@ public class ProposalRequestDto {
     private LocalDate submitDate;
     private LocalDate prDate;
     private String note;
+    private Long leadNo;
 
 }
