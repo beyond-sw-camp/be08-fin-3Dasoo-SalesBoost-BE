@@ -13,8 +13,8 @@ public class LeadRequestDto {
     private int expSales;     // 예상 매출
     private int expMargin;    // 예상 이익률
     private int expProfit;    // 예상 이익금
-    private int process;      // 프로세스
-    private int subProcess;   // 서브 프로세스
+    private Long process;      // 프로세스
+    private Long subProcess;   // 서브 프로세스
     private int successPer;   // 성공 확률
     private LocalDate startDate;  // 시작일
     private LocalDate endDate;    // 종료일
