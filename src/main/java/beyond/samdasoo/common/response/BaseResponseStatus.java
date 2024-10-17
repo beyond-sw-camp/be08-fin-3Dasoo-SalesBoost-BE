@@ -33,6 +33,7 @@ public enum BaseResponseStatus {
     EMPLOYEE_ID_NOT_VALID(false, HttpStatus.BAD_REQUEST.value(), "사원번호 또는 비밀번호를 확인해주세요"),
     EMAIL_OR_CODE_NOT_FOUND(false,HttpStatus.BAD_REQUEST.value(), "이메일 또는 인증번호를 다시 확인해주세요."),
     EMAIL_REGEX_ERROR(false,HttpStatus.BAD_REQUEST.value(), "이메일 형식으로 입력해주세요."),
+    EMAIL_NOT_VERIFICATED(false, HttpStatus.BAD_REQUEST.value(), "이메일 인증이 완료되지 않았습니다. 메일인증 후 다시 시도하세요"),
 
   EMAIL_EMPTY(false,HttpStatus.BAD_REQUEST.value(), "이메일을 입력해 주세요."),
   NAME_EMPTY(false,HttpStatus.BAD_REQUEST.value(), "이름을 입력해 주세요."),
