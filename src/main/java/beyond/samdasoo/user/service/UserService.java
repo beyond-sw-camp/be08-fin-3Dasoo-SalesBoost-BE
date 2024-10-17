@@ -5,6 +5,8 @@ import beyond.samdasoo.admin.repository.DepartmentRepository;
 import beyond.samdasoo.common.email.CertificationNumber;
 import beyond.samdasoo.common.email.EmailProvider;
 import beyond.samdasoo.common.email.EmailRepository;
+import beyond.samdasoo.common.email.EmailVerificationUserRedisRepository;
+import beyond.samdasoo.common.email.dto.EmailVerificationUser;
 import beyond.samdasoo.common.exception.BaseException;
 import beyond.samdasoo.common.jwt.JwtTokenProvider;
 import beyond.samdasoo.common.jwt.RefreshTokenRepository;
@@ -41,9 +43,15 @@ public class UserService {
     private final RefreshTokenService refreshTokenService;
     private final EmailProvider emailProvider;
     private final EmailRepository emailRepository;
+    private final EmailVerificationUserRedisRepository emailVerificationUserRedisRepository;
 
 
     public JoinUserRes join(JoinUserReq joinUserReq){
+
+        Optional<EmailVerificationUser> getEmailVerificationUser = emailVerificationUserRedisRepository.findById(joinUserReq.getEmail());
+        if(!getEmailVerificationUser.isPresent() || ! getEmailVerificationUser.get().getIsVerified()){
+            throw new BaseException(EMAIL_NOT_VERIFICATED);
+        }
 
         Optional<User> byEmail = userRepository.findByEmail(joinUserReq.getEmail());
         if(byEmail.isPresent()){
@@ -177,6 +185,13 @@ public class UserService {
 
 
     public boolean emailCodeVerification(EmailCodeCheckReq req){
+
+        //  이미 인증된 경우에는 통과
+        Optional<EmailVerificationUser> getEmailVerificationUser =emailVerificationUserRedisRepository.findById(req.getEmail());
+        if(getEmailVerificationUser.isPresent() && getEmailVerificationUser.get().getIsVerified()){
+            return true;
+        }
+
        // 발급한 인증코드와 동일한지 검증
         boolean exist = emailRepository.checkEmailCertificationNumber(req.getEmail(), req.getCode());
 
@@ -185,6 +200,13 @@ public class UserService {
         }
 
         emailRepository.deleteEmailCode(req.getEmail());
+
+        EmailVerificationUser emailVerificationUser = EmailVerificationUser.builder()
+                .email(req.getEmail())
+                .isVerified(true)
+                .build();
+
+        emailVerificationUserRedisRepository.save(emailVerificationUser);
 
         return true;
     }
