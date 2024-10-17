@@ -28,8 +28,6 @@ public class ExcelService {
         try (Workbook workbook = new XSSFWorkbook()) {
             Sheet sheet = workbook.createSheet(sheetName);
 
-            //log.info("tableData row cnt {}", tableData.size());
-
             int rowIndex = 0;
             for (Map<String, Object> rowData : tableData) {
                 Row row = sheet.createRow(rowIndex++);
@@ -46,7 +44,6 @@ public class ExcelService {
 
         } catch (IOException e) {
             log.error("엑셀 파일 생성 중에 오류가 발생했습니다.", e);
-//            throw e;
             throw new BaseException(BaseResponseStatus.UNEXPECTED_ERROR);
         } finally {
             if (outputStream != null) {
