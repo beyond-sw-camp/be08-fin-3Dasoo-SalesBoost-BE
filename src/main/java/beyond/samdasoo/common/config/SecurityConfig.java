@@ -56,7 +56,8 @@ public class SecurityConfig {
                 .cors(cors -> cors.configurationSource(corsConfigurationSource()))
                 .authorizeHttpRequests((auth) -> auth
               //  .requestMatchers("/api/**","/swagger-ui/**", "/v3/api-docs/**").permitAll() // 테스트용
-                .requestMatchers("/swagger-ui/**", "/v3/api-docs/**","/api/users/login","/api/users/join","/api/users/reissue","/test/**").permitAll()
+                .requestMatchers("/swagger-ui/**", "/v3/api-docs/**","/test/**","/api/users/login","/api/users/join",
+                        "/api/users/reissue","/api/users/email").permitAll()
                 .anyRequest().authenticated()
           );
 

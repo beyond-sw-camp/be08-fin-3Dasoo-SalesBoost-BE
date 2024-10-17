@@ -18,7 +18,11 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
-import static beyond.samdasoo.common.response.BaseResponseStatus.JWT_INVALID_REFRESH_TOKEN;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+import java.util.stream.BaseStream;
+
+import static beyond.samdasoo.common.response.BaseResponseStatus.*;
 import static beyond.samdasoo.common.utils.UserUtil.getLoginUserEmail;
 
 @Tag(name="User APIs",description = "유저 관련 API")
@@ -36,6 +40,8 @@ public class UserController {
     @Operation(summary = "회원가입",description = "유저 정보를 받아 회원가입을 진행한다")
     @PostMapping("/join")
     public BaseResponse<JoinUserRes> join(@RequestBody @Valid JoinUserReq joinUserReq){
+        validateInputEmptySignup(joinUserReq);
+        validateEmailRegex(joinUserReq.getEmail());
         JoinUserRes result = userService.join(joinUserReq);
         return new BaseResponse<>(result);
     }
@@ -102,6 +108,58 @@ public class UserController {
         response.addCookie(cookie);
 
         return new BaseResponse<>(message);
+
+    }
+
+    /**
+     * 메일 인증 코드 전송
+     */
+    @PostMapping("/email/code-request")
+    public BaseResponse<String> emailCodeRequest(@RequestBody SendEmailCodeReq req){
+        String email = req.getEmail();
+        userService.sendEmailCode(email);
+
+        return new BaseResponse<>("해당 이메일로 인증코드를 전송했습니다.");
+    }
+
+    /**
+     * 메일 인증 코드 검증
+     */
+    @PostMapping("/email/code-check")
+    public
+    BaseResponse<String> emailCodeCheck(@RequestBody EmailCodeCheckReq req){
+
+        validateEmailRegex(req.getEmail());
+
+        userService.emailCodeVerification(req);
+
+        return new BaseResponse<>("메일 인증에 성공하였습니다.");
+    }
+
+
+    private void validateInputEmptySignup(JoinUserReq req) {
+        if (req.getEmail().isEmpty()) {
+            throw new BaseException(EMAIL_EMPTY);
+        }
+        if (req.getPassword().isEmpty()) {
+            throw new BaseException(PASSWORD_EMPTY);
+        }
+        if(req.getName().isEmpty()){
+            throw new BaseException(DEPT_EMPTY);
+        }
+        if(req.getDeptName().isEmpty()){
+            throw new BaseException(NAME_EMPTY);
+        }
+
+    }
+    private void validateEmailRegex(String target) {
+        String regex = "^[A-Z0-9._%+-]+@[A-Z0-9.-]+\\.[A-Z]{2,6}$";
+//        regex = "^[a-zA-Z0-9+-\\_.]+@[a-zA-Z0-9-]+\\.[a-zA-Z0-9-.]+$";
+        Pattern pattern = Pattern.compile(regex, Pattern.CASE_INSENSITIVE);
+        Matcher matcher = pattern.matcher(target);
+        if (!matcher.find()) {
+            throw new BaseException(EMAIL_REGEX_ERROR);
+        }
 
     }
 }
