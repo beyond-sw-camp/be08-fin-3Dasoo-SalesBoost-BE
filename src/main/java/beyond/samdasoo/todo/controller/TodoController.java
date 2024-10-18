@@ -61,11 +61,11 @@ public class TodoController {
 
     @PatchMapping("/{no}")
     @Operation(summary = "할 일 수정", description = "특정 할 일 수정")
-    public ResponseEntity<BaseResponse<String>> patchUpdateTodo(@PathVariable("no") Long no, @RequestBody TodoUpdateDto todoUpdateDto) {
-        try{
-            todoService.updateTodo(no, todoUpdateDto);
-            return ResponseEntity.ok(new BaseResponse<>("할 일을 수정하였습니다"));
-        }catch (BaseException ex) {
+    public ResponseEntity<BaseResponse<TodoResponseDto>> patchUpdateTodo(@PathVariable("no") Long no, @RequestBody TodoUpdateDto todoUpdateDto) {
+        try {
+            TodoResponseDto updatedTodo = todoService.updateTodo(no, todoUpdateDto);
+            return ResponseEntity.ok(new BaseResponse<>(updatedTodo));
+        } catch (BaseException ex) {
             BaseResponseStatus status = ex.getStatus();
             return new ResponseEntity<>(new BaseResponse<>(status), HttpStatus.valueOf(status.getCode()));
         }
