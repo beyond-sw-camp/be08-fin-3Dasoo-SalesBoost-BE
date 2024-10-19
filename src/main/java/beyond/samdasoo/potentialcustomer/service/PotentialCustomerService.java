@@ -46,8 +46,8 @@ public class PotentialCustomerService {
                 .dept(pCustomer.getDept())
                 .position(pCustomer.getPosition())
                 .cls(pCustomer.getCls())
-                .status(pCustomer.getStatus().getCode())
-                .grade(pCustomer.getGrade().getCode())
+                .status(pCustomer.getContactStatus().getMessage())
+                .grade(pCustomer.getGrade().getMessage())
                 .phone(pCustomer.getPhone())
                 .tel(pCustomer.getTel())
                 .email(pCustomer.getEmail())
@@ -65,10 +65,10 @@ public class PotentialCustomerService {
                 .name(p.getName())
                 .company(p.getCompany())
                 .cls(p.getCls())
-                .status(p.getStatus().getCode())
+                .status(p.getContactStatus().getMessage())
                 .phone(p.getPhone())
                 .email(p.getEmail())
-                .createdDate(p.getCreatedAt())
+                .registerDate(p.getRegisterDate())
                 .build()).collect(Collectors.toList());
     }
 
@@ -82,7 +82,7 @@ public class PotentialCustomerService {
         Optional.ofNullable(request.getPosition()).ifPresent(pCustomer::changePosition);
         Optional.ofNullable(request.getCls()).ifPresent(pCustomer::changeCls);
         pCustomer.changeCls(request.getCls());
-        pCustomer.changeStatus(request.getStatus());
+      //  pCustomer.changeStatus(request.getStatus());
         Optional.ofNullable(request.getGrade()).ifPresent(pCustomer::changeGrade);
         Optional.ofNullable(request.getPhone()).ifPresent(pCustomer::changePhone);
         Optional.ofNullable(request.getTel()).ifPresent(pCustomer::changeTel);

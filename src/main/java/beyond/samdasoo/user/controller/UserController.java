@@ -83,6 +83,7 @@ public class UserController {
      */
     @PostMapping("/reissue")
     public BaseResponse<String> reissue(HttpServletRequest request, HttpServletResponse response){
+        System.out.println("Access Token reissue");
         Cookie cookie = cookieUtil.getCookie(request, JwtUtil.REFRESH_TOKEN_COOKIE_NAME);
         if(cookie==null){
             throw new BaseException(JWT_INVALID_REFRESH_TOKEN);

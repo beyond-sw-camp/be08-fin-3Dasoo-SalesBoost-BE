@@ -3,6 +3,7 @@ package beyond.samdasoo.potentialcustomer.dto;
 import lombok.Builder;
 import lombok.Getter;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 @Getter
@@ -17,13 +18,13 @@ public class PotentialCustomerListDto {
 
     private String cls; // 접촉구분
 
-    private int status; // 접촉상태
+    private String status; // 접촉상태
 
     private String phone; // 휴대폰 번호
 
     private String email; // 이메일
 
-    private LocalDateTime createdDate;  // 생성 날짜
+    private LocalDate registerDate;  // 고객 등록일
 
 
 }
