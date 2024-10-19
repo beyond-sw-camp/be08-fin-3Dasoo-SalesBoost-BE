@@ -53,3 +53,6 @@ SELECT 6, '장현준', 'NC','개발팀','과장','nc@gmail.com','01011112222','0
 WHERE NOT EXISTS (SELECT 1 FROM tb_customer WHERE customer_no=6);
 
 
+INSERT INTO `tb_poetntial_customer` (p_cust_no ,created_at, updated_at,register_date, modify_date,  addr, cls, company, dept, email, fax, name, note, phone, position, tel, grade, status)
+SELECT 100, now(),now(),'2020-10-19',null,'서울 송파구','CONTACTING','현대','영업부','hyndai@gmail.com','01-xxx-xxx','김현대','만나기 힘듬','010-1234-6789','팀장','02-7659-1313','A','CONTACTING'
+WHERE NOT EXISTS (SELECT 1 FROM tb_poetntial_customer WHERE p_cust_no=100)

@@ -125,6 +125,8 @@ public enum BaseResponseStatus {
      */
     POTENTIAL_CUSTOMER_NOT_EXIST(false, HttpStatus.BAD_REQUEST.value(), "등록되지 않은 잠재고객입니다."),
     CONTACT_HISTORY_NOT_EXIST(false, HttpStatus.BAD_REQUEST.value(), "없는 접촉 이력 정보입니다."),
+    PC_NAME_EMPTY(false, HttpStatus.BAD_REQUEST.value(), "이름은 필수입니다"),
+    PC_CLS_EMPTY(false, HttpStatus.BAD_REQUEST.value(), "접촉구분 선택은 필수입니다"),
     /**
      * Customer 관련
      */

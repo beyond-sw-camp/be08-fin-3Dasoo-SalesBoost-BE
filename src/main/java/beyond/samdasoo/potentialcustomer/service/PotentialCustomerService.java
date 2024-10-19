@@ -82,7 +82,7 @@ public class PotentialCustomerService {
         Optional.ofNullable(request.getPosition()).ifPresent(pCustomer::changePosition);
         Optional.ofNullable(request.getCls()).ifPresent(pCustomer::changeCls);
         pCustomer.changeCls(request.getCls());
-        pCustomer.changeStatus(request.getStatus());
+      //  pCustomer.changeStatus(request.getStatus());
         Optional.ofNullable(request.getGrade()).ifPresent(pCustomer::changeGrade);
         Optional.ofNullable(request.getPhone()).ifPresent(pCustomer::changePhone);
         Optional.ofNullable(request.getTel()).ifPresent(pCustomer::changeTel);

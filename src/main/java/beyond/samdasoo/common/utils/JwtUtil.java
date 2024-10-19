@@ -7,7 +7,8 @@ public class JwtUtil {
 
     // --- 테스트용 ---
     public static final int accessTokenExpireDuration = 300000; // 액세스 토큰 만료 기간 : 5분
-    public static final int refreshTokenExpireDuration = 600000; // 리프레시 토큰 만료 기간 : 10분
+ //   public static final int refreshTokenExpireDuration = 600000; // 리프레시 토큰 만료 기간 : 10분
+    public static final int refreshTokenExpireDuration = 86400000; // 리프레시 토큰 만료 기간 : 1day
    // public static final int refreshTokenExpireDuration = 60000; // 리프레시 토큰 만료 기간 : 1분
 
     // ----- 배포용 ----
