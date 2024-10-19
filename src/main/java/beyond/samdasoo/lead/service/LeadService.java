@@ -22,6 +22,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -68,8 +69,9 @@ public class LeadService {
             builder.and(lead.process.eq(searchCond.getProcess()));
         }
 
-        if (searchCond.getProcess() != null && searchCond.getSubProcess() > 0) {
+        if (searchCond.getSubProcess() != null && searchCond.getSubProcess() > 0) {
             builder.and(lead.subProcess.eq(searchCond.getSubProcess()));
+
         }
 
         if (searchCond.getStartDate() != null) {
@@ -120,22 +122,7 @@ public class LeadService {
         Lead savedLead = leadRepository.save(lead);
 
         // 단계 생성
-        Process process = processRepository.findById(leadRequestDto.getProcess())
-                .orElseThrow(() -> new BaseException(PROCESS_NOT_EXIST));
-        List<SubProcess> subProcesses = subProcessRepository.findByProcess(process);
-
-        int level = 0;
-
-        for (SubProcess subProcess : subProcesses) {
-            Step step = Step.builder()
-                    .level(level++)
-                    .completeYn("N")
-                    .lead(savedLead)
-                    .subProcess(subProcess)
-                    .build();
-
-            stepRepository.save(step);
-        }
+        createSteps(leadRequestDto.getProcess(), leadRequestDto.getSubProcess(), savedLead);
 
         return new LeadResponseDto(savedLead);
     }
@@ -144,6 +131,9 @@ public class LeadService {
     public void updateLead(Long no, LeadRequestDto leadRequestDto) {
         Lead lead = findLeadById(no);
         Customer customer = findCustomerById(leadRequestDto.getCustNo());
+
+        Long orgProcess = lead.getProcess();
+        Long orgSubProcess = lead.getSubProcess();
 
         lead.setCustomer(customer);
         Optional.ofNullable(leadRequestDto.getName()).ifPresent(lead::setName);
@@ -157,9 +147,41 @@ public class LeadService {
         Optional.ofNullable(leadRequestDto.getEndDate()).ifPresent(lead::setEndDate);
         Optional.ofNullable(leadRequestDto.getAwarePath()).ifPresent(lead::setAwarePath);
         Optional.ofNullable(leadRequestDto.getNote()).ifPresent(lead::setNote);
+
+        // 프로세스 번호를 수정하면 그전 step 데이터 삭제후 그 프로세스에 맞게 재생성
+        if (leadRequestDto.getProcess() != null && !orgProcess.equals(lead.getProcess())) {
+            Optional.of(leadRequestDto.getProcess()).ifPresent(lead::setProcess);
+            Optional.of(leadRequestDto.getSubProcess()).ifPresent(lead::setSubProcess);
+
+            createSteps(leadRequestDto.getProcess(), leadRequestDto.getSubProcess(), lead);
+        }
     }
 
     public void deleteLead(Long no) {
         leadRepository.delete(findLeadById(no));
+    }
+
+    public void createSteps(Long processNo, Long subProcessNo, Lead lead) {
+        Process process = processRepository.findById(processNo)
+                .orElseThrow(() -> new BaseException(PROCESS_NOT_EXIST));
+        List<SubProcess> subProcesses = subProcessRepository.findByProcess(process);
+
+        if (!stepRepository.findByLead(lead).isEmpty()) {
+            stepRepository.deleteByLead(lead);
+        }
+
+        int level = 0;
+
+        for (SubProcess subProcess : subProcesses) {
+            Step step = Step.builder()
+                    .level(level++)
+                    .completeYn(subProcess.getSubProcessNo() <= subProcessNo ? "Y" : "N")
+                    .completeDate(subProcess.getSubProcessNo() <= subProcessNo ? LocalDate.now() : null)
+                    .lead(lead)
+                    .subProcess(subProcess)
+                    .build();
+
+            stepRepository.save(step);
+        }
     }
 }

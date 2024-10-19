@@ -12,7 +12,6 @@ import java.util.stream.Collectors;
 @Data
 public class LeadResponseDto {
     private Long leadNo;       // 리드 번호
-    private String customerName; // 고객 이름
     private String name;       // 리드 이름
     private LeadStatus status; // 리드 상태
     private int expSales;      // 예상 매출
@@ -26,6 +25,8 @@ public class LeadResponseDto {
     private AwarePath awarePath; // 인지 경로
     private String note;       // 메모
     private Long customerNo;   // 고객 번호 (FK)
+    private String customerName; // 고객 이름
+    private String userName;  // 담당자 이름
     private List<StepResponseDto> steps; // 영업단계
 
     public LeadResponseDto(Lead lead) {
@@ -44,6 +45,7 @@ public class LeadResponseDto {
         this.note = lead.getNote();
         this.customerNo = lead.getCustomer().getId();
         this.customerName = lead.getCustomer().getName();
+        this.userName = lead.getCustomer().getUser().getName();
         if (lead.getSteps() != null) {
             this.steps = lead.getSteps().stream()
                     .map(StepResponseDto::new)
