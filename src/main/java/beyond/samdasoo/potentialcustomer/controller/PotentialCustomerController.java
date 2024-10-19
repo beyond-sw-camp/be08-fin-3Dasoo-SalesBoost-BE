@@ -113,6 +113,12 @@ public class PotentialCustomerController {
         if (req.getCls().isEmpty()|| req.getCls()==null) {
             throw new BaseException(PC_CLS_EMPTY);
         }
+        if(req.getContactStatus().isEmpty()||req.getContactStatus()==null){
+            throw new BaseException(PC_STATUS_EMPTY);
+        }
+        if(req.getPhone().isEmpty()||req.getPhone()==null){
+            throw new BaseException(PC_PHONE_EMPTY);
+        }
 
     }
 
