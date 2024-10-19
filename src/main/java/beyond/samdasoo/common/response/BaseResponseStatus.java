@@ -22,6 +22,7 @@ public enum BaseResponseStatus {
     JWT_EXPIRED_ACCESS_TOKEN(false, 425, "만료된 액세스 토큰입니다"),
     JWT_INVALID_ACCESS_TOKEN(false, HttpStatus.UNAUTHORIZED.value(), "유효하지 않은 액세스 토큰입니다"),
     JWT_INVALID_REFRESH_TOKEN(false, HttpStatus.UNAUTHORIZED.value(), "유효하지 않은 리프레시 토큰입니다"),
+    JWT_INVALID_REFRESH_TOKEN_IN_REDIS(false, HttpStatus.UNAUTHORIZED.value(), "레디스에 없는 리프레시 토큰입니다"),
     /**
      * user 관련
      */

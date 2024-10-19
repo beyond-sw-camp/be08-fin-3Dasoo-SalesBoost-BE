@@ -32,7 +32,7 @@ public class CreatePotentialCustomerReq {
     private String contactStatus;
 
     @Schema(description = "가망등급", defaultValue = "3")
-    private int grade;
+    private String grade;
 
     @Schema(description = "휴대폰 번호", defaultValue = "010-1234-5678")
     private String phone;

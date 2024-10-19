@@ -7,8 +7,11 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.CreationTimestamp;
+
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.NoSuchElementException;
+import java.util.Objects;
 
 @AllArgsConstructor
 @Builder
@@ -54,10 +57,10 @@ public class PotentialCustomer extends BaseEntity{
 
     @CreationTimestamp
     @Column(name = "register_date", nullable = false,updatable = false)
-    private LocalDateTime registerDate; // 잠재고객 등록일
+    private LocalDate registerDate; // 잠재고객 등록일
 
     @Column(name = "modify_date")
-    private LocalDateTime modifyDate; // 고객으로 전환일
+    private LocalDate modifyDate; // 고객으로 전환일
 
     public PotentialCustomer() {
 
@@ -79,12 +82,12 @@ public class PotentialCustomer extends BaseEntity{
             this.code = code;
         }
 
-        public static Grade getGrade(int code){
+        public static Grade getGrade(String str){
             for (Grade grade : Grade.values()) {
-                if(grade.getCode() == code)
+                if(Objects.equals(grade.getMessage(), str))
                     return grade;
             }
-            throw new NoSuchElementException("No such Grade with code " + code);
+            throw new NoSuchElementException("No such Grade : " + str);
         }
     }
 
@@ -117,7 +120,7 @@ public class PotentialCustomer extends BaseEntity{
 
     // 고객 전환일
     public void changeModifyDate() {
-        this.modifyDate = LocalDateTime.now();
+        this.modifyDate = LocalDate.now();
     }
 
     // 접촉상태 변경
@@ -143,7 +146,7 @@ public class PotentialCustomer extends BaseEntity{
         this.cls = cls;
     }
 
-    public void changeGrade(int code){
+    public void changeGrade(String code){
         this.grade = Grade.getGrade(code);
 
     }

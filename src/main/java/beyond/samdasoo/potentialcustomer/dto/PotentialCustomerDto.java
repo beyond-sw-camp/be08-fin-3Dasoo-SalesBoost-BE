@@ -21,9 +21,9 @@ public class PotentialCustomerDto {
 
     private String cls; // 접촉구분
 
-    private int status; // 접촉상태
+    private String status; // 접촉상태
 
-    private int grade; // 가망 등급
+    private String grade; // 가망 등급
 
     private String phone; // 휴대폰 번호
 

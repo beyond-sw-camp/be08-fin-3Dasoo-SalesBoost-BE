@@ -15,7 +15,7 @@ import java.util.UUID;
 
 @Getter
 @NoArgsConstructor
-@RedisHash(value = "refreshToken", timeToLive = JwtUtil.refreshTokenExpireDuration/1000)
+@RedisHash(value = "refreshToken", timeToLive = JwtUtil.refreshTokenExpireDuration)
 public class RefreshToken implements Serializable {
 
     @Id

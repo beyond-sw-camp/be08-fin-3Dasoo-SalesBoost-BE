@@ -107,16 +107,16 @@ public class PotentialCustomerController {
     }
 
     private void validateInputEmptyCreate(CreatePotentialCustomerReq req) {
-        if (req.getName().trim().isEmpty()||req.getName()==null) {
+        if (req.getName().trim().isEmpty()||req.getName()==null) { // 이름
             throw new BaseException(NAME_EMPTY);
         }
-        if (req.getCls().isEmpty()|| req.getCls()==null) {
+        if (req.getCls().isEmpty()|| req.getCls()==null) { // 접촉구분
             throw new BaseException(PC_CLS_EMPTY);
         }
-        if(req.getContactStatus().isEmpty()||req.getContactStatus()==null){
+        if(req.getContactStatus().isEmpty()||req.getContactStatus()==null){ // 접촉상태
             throw new BaseException(PC_STATUS_EMPTY);
         }
-        if(req.getPhone().isEmpty()||req.getPhone()==null){
+        if(req.getPhone().isEmpty()||req.getPhone()==null){ // 핸드폰
             throw new BaseException(PC_PHONE_EMPTY);
         }
 

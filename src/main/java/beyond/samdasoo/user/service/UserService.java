@@ -130,10 +130,10 @@ public class UserService {
             String userEmail = jwtTokenProvider.getEmail(refreshToken);
             String role = jwtTokenProvider.getRole(refreshToken);
 
-            boolean exists = refreshTokenService.existsByEmailAndToken(userEmail, refreshToken);
-            if(!exists){
-                throw new BaseException(JWT_INVALID_REFRESH_TOKEN);
-            }
+//            boolean exists = refreshTokenService.existsByEmailAndToken(userEmail, refreshToken);
+//            if(!exists){
+//                throw new BaseException(JWT_INVALID_REFRESH_TOKEN_IN_REDIS);
+//            }
 
             refreshTokenService.deleteByEmailAndToken(userEmail,refreshToken);
             refreshTokenService.saveToken(userEmail,refreshToken);
