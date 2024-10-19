@@ -26,10 +26,10 @@ public class UpdatePotentialCustomerReq {
 
     @Schema(description = "접촉상태", defaultValue = "2")
     @NotNull
-    private int status; // 접촉상태
+    private String status; // 접촉상태
 
-    @Schema(description = "가망등급", defaultValue = "3")
-    private int grade; // 가망 등급
+    @Schema(description = "가망등급", defaultValue = "S등급")
+    private String grade; // 가망 등급
 
     @Schema(description = "휴대폰 번호", defaultValue = "010-1234-5678")
     private String phone;

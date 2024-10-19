@@ -27,12 +27,12 @@ public class CreatePotentialCustomerReq {
     @NotNull
     private String cls;
 
-    @Schema(description = "접촉상태", defaultValue = "2")
+    @Schema(description = "접촉상태", defaultValue = "접촉중")
     @NotNull
-    private int status;
+    private String contactStatus;
 
     @Schema(description = "가망등급", defaultValue = "3")
-    private int grade;
+    private String grade;
 
     @Schema(description = "휴대폰 번호", defaultValue = "010-1234-5678")
     private String phone;
@@ -60,7 +60,7 @@ public class CreatePotentialCustomerReq {
                 .dept(dept)
                 .position(position)
                 .cls(cls)
-                .status(PotentialCustomer.Status.getStatus(status))
+                .contactStatus(PotentialCustomer.ContactStatus.getStatus(contactStatus))
                 .grade(PotentialCustomer.Grade.getGrade(grade))
                 .phone(phone)
                 .tel(tel)

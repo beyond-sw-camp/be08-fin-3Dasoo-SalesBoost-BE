@@ -18,8 +18,8 @@ public class CookieUtil {
         if (cookies != null) {
             for (Cookie cookie : cookies) {
                 if (cookieName.equals(cookie.getName())) {
-//                    String refreshToken = cookie.getValue();
-//                    System.out.println(refreshToken);
+                    String refreshToken = cookie.getValue();
+                    System.out.println(refreshToken);
                     return cookie;
                 }
             }

@@ -22,6 +22,7 @@ public enum BaseResponseStatus {
     JWT_EXPIRED_ACCESS_TOKEN(false, 425, "만료된 액세스 토큰입니다"),
     JWT_INVALID_ACCESS_TOKEN(false, HttpStatus.UNAUTHORIZED.value(), "유효하지 않은 액세스 토큰입니다"),
     JWT_INVALID_REFRESH_TOKEN(false, HttpStatus.UNAUTHORIZED.value(), "유효하지 않은 리프레시 토큰입니다"),
+    JWT_INVALID_REFRESH_TOKEN_IN_REDIS(false, HttpStatus.UNAUTHORIZED.value(), "레디스에 없는 리프레시 토큰입니다"),
     /**
      * user 관련
      */
@@ -125,6 +126,10 @@ public enum BaseResponseStatus {
      */
     POTENTIAL_CUSTOMER_NOT_EXIST(false, HttpStatus.BAD_REQUEST.value(), "등록되지 않은 잠재고객입니다."),
     CONTACT_HISTORY_NOT_EXIST(false, HttpStatus.BAD_REQUEST.value(), "없는 접촉 이력 정보입니다."),
+    PC_NAME_EMPTY(false, HttpStatus.BAD_REQUEST.value(), "이름은 필수입니다"),
+    PC_CLS_EMPTY(false, HttpStatus.BAD_REQUEST.value(), "접촉구분 선택은 필수입니다"),
+    PC_STATUS_EMPTY(false, HttpStatus.BAD_REQUEST.value(), "접촉상태 선택은 필수입니다"),
+    PC_PHONE_EMPTY(false, HttpStatus.BAD_REQUEST.value(), "휴대폰 입력은 필수입니다"),
     /**
      * Customer 관련
      */

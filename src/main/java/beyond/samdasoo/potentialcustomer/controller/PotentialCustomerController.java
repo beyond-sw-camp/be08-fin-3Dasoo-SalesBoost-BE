@@ -1,10 +1,12 @@
 package beyond.samdasoo.potentialcustomer.controller;
 
+import beyond.samdasoo.common.exception.BaseException;
 import beyond.samdasoo.common.response.BaseResponse;
 import beyond.samdasoo.potentialcustomer.dto.*;
 import beyond.samdasoo.potentialcustomer.entity.ContactHistory;
 import beyond.samdasoo.potentialcustomer.entity.PotentialCustomer;
 import beyond.samdasoo.potentialcustomer.service.PotentialCustomerService;
+import beyond.samdasoo.user.dto.JoinUserReq;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
@@ -14,8 +16,11 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+import static beyond.samdasoo.common.response.BaseResponseStatus.*;
+import static beyond.samdasoo.common.response.BaseResponseStatus.NAME_EMPTY;
+
 @RequiredArgsConstructor
-@RequestMapping("/api/sales/prospect")
+@RequestMapping("/api/pcustomers")
 @Tag(name="PotentialCustomer APIs", description = "잠재고객 API")
 @RestController
 public class PotentialCustomerController {
@@ -27,7 +32,8 @@ public class PotentialCustomerController {
      */
     @PostMapping("")
     @Operation(summary = "잠재고객 등록", description = "새로운 잠재고객을 등록한다")
-    public BaseResponse<String> createPotentialCustomer(@RequestBody @Valid CreatePotentialCustomerReq request) {
+    public BaseResponse<String> createPotentialCustomer(@RequestBody CreatePotentialCustomerReq request) {
+        validateInputEmptyCreate(request);
         potentialCustomerService.create(request);
         return new BaseResponse<>("잠재고객 생성을 완료하였습니다.");
 
@@ -98,6 +104,22 @@ public class PotentialCustomerController {
         potentialCustomerService.deleteContactHistory(historyId);
 
         return new BaseResponse<>("해당 내용을 삭제했습니다.");
+    }
+
+    private void validateInputEmptyCreate(CreatePotentialCustomerReq req) {
+        if (req.getName().trim().isEmpty()||req.getName()==null) { // 이름
+            throw new BaseException(NAME_EMPTY);
+        }
+        if (req.getCls().isEmpty()|| req.getCls()==null) { // 접촉구분
+            throw new BaseException(PC_CLS_EMPTY);
+        }
+        if(req.getContactStatus().isEmpty()||req.getContactStatus()==null){ // 접촉상태
+            throw new BaseException(PC_STATUS_EMPTY);
+        }
+        if(req.getPhone().isEmpty()||req.getPhone()==null){ // 핸드폰
+            throw new BaseException(PC_PHONE_EMPTY);
+        }
+
     }
 
 }

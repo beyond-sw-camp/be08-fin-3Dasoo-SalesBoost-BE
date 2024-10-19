@@ -7,8 +7,11 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.CreationTimestamp;
+
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.NoSuchElementException;
+import java.util.Objects;
 
 @AllArgsConstructor
 @Builder
@@ -33,9 +36,9 @@ public class PotentialCustomer extends BaseEntity{
     @Column(nullable = false)
     private String cls; // 접촉구분
 
-    @Column(nullable = false) // 필수
+    @Column(name = "contact_status")
     @Enumerated(EnumType.STRING)
-    private Status status; // 접촉상태
+    private ContactStatus contactStatus; // 접촉단계
 
     @Enumerated(EnumType.STRING)
     private Grade grade; // 가망 등급
@@ -54,10 +57,10 @@ public class PotentialCustomer extends BaseEntity{
 
     @CreationTimestamp
     @Column(name = "register_date", nullable = false,updatable = false)
-    private LocalDateTime registerDate; // 잠재고객 등록일
+    private LocalDate registerDate; // 잠재고객 등록일
 
     @Column(name = "modify_date")
-    private LocalDateTime modifyDate; // 고객으로 전환일
+    private LocalDate modifyDate; // 고객으로 전환일
 
     public PotentialCustomer() {
 
@@ -79,17 +82,17 @@ public class PotentialCustomer extends BaseEntity{
             this.code = code;
         }
 
-        public static Grade getGrade(int code){
+        public static Grade getGrade(String str){
             for (Grade grade : Grade.values()) {
-                if(grade.getCode() == code)
+                if(Objects.equals(grade.getMessage(), str))
                     return grade;
             }
-            throw new NoSuchElementException("No such Grade with code " + code);
+            throw new NoSuchElementException("No such Grade : " + str);
         }
     }
 
     @Getter
-    public enum Status{
+    public enum ContactStatus{
         NO_CONTACT("미접촉",1),
         TRY_CONTACT("접촉시도",2),
         CONTACTING("접촉중",3),
@@ -100,14 +103,14 @@ public class PotentialCustomer extends BaseEntity{
         private final String message;
         private final int code;
 
-        Status(String message,int code){
+        ContactStatus(String message,int code){
             this.message =  message;
             this.code = code;
         }
 
-        public static Status getStatus(int code){
-            for (Status status : Status.values()) {
-                if(status.getCode() == code)
+        public static ContactStatus getStatus(String msg){
+            for (ContactStatus status : ContactStatus.values()) {
+                if(status.getMessage().equals(msg))
                     return status;
             }
             throw new IllegalArgumentException("유효하지 않은 접촉상태 번호 입니다.");
@@ -117,12 +120,12 @@ public class PotentialCustomer extends BaseEntity{
 
     // 고객 전환일
     public void changeModifyDate() {
-        this.modifyDate = LocalDateTime.now();
+        this.modifyDate = LocalDate.now();
     }
 
     // 접촉상태 변경
-    public void changeStatus(int code){
-        this.status = Status.getStatus(code);
+    public void changeStatus(String status){
+        this.contactStatus = ContactStatus.getStatus(status);
 
     }
 
@@ -143,7 +146,7 @@ public class PotentialCustomer extends BaseEntity{
         this.cls = cls;
     }
 
-    public void changeGrade(int code){
+    public void changeGrade(String code){
         this.grade = Grade.getGrade(code);
 
     }
@@ -171,9 +174,6 @@ public class PotentialCustomer extends BaseEntity{
     public void changeNote(String note){
         this.note = note;
     }
-
-
-
 
 
 
