@@ -59,10 +59,10 @@ public class ActController {
 
     @PatchMapping("/{no}")
     @Operation(summary = "영업활동 수정", description = "특정 영업활동 수정")
-    public ResponseEntity<BaseResponse<String>> patchUpdateAct(@PathVariable("no") Long no, @RequestBody ActRequestDto actUpdateDto) {
+    public ResponseEntity<BaseResponse<ActResponseDto>> patchUpdateAct(@PathVariable("no") Long no, @RequestBody ActRequestDto actUpdateDto) {
         try {
-            actService.updateAct(no, actUpdateDto);
-            return ResponseEntity.ok(new BaseResponse<>("영업활동을 수정하였습니다"));
+            ActResponseDto updateAct = actService.updateAct(no, actUpdateDto);
+            return ResponseEntity.ok(new BaseResponse<>(updateAct));
         } catch (BaseException ex) {
             BaseResponseStatus status = ex.getStatus();
             return new ResponseEntity<>(new BaseResponse<>(status), HttpStatus.valueOf(status.getCode()));
