@@ -9,6 +9,7 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -22,7 +23,6 @@ public class LeadController {
 
     @PostMapping
     @Operation(summary = "영업기회 등록", description = "신규 영업기회 등록")
-//    @SecurityRequirement(name = "bearerAuth")
     public BaseResponse<LeadResponseDto> createLead(@RequestBody LeadRequestDto leadRequestDto) {
         LeadResponseDto createdLead = leadService.createLead(leadRequestDto);
         return new BaseResponse<>(createdLead);
