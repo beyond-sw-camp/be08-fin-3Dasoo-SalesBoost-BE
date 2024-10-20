@@ -113,7 +113,7 @@ public class PotentialCustomer extends BaseEntity{
                 if(status.getMessage().equals(msg))
                     return status;
             }
-            throw new IllegalArgumentException("유효하지 않은 접촉상태 번호 입니다.");
+            throw new IllegalArgumentException("유효하지 않은 접촉상태명 입니다 :" + msg);
         }
 
     }

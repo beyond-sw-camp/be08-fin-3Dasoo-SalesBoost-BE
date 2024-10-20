@@ -19,7 +19,7 @@ public class CreateContactHistoryReq {
 
     @NotNull
     @Schema(description = "접촉구분", defaultValue = "5")
-    private int cls;
+    private String cls;
 
     @Schema(description = "접촉내용", defaultValue = "채널톡으로 오후 2시 미팅")
     private String content;
