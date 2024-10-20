@@ -27,6 +27,9 @@ INSERT INTO `tb_user` (user_no,name,email,password,employee_id,dept_id,role,crea
 SELECT 1,'테스트','test@naver.com','$2a$10$NQ5nj6.3UnFxec0idKxma.pn2mq5L5qIjouO4oueMRzjH/5tPX84e','20241011001','001','USER',now(),now(),now()
 WHERE NOT EXISTS (SELECT 1 FROM tb_user WHERE email = 'test@naver.com');
 
+INSERT INTO `tb_user` (user_no,name,email,password,employee_id,dept_id,role,created_at,updated_at,join_date)
+SELECT 2,'삼다수','samdasoo@naver.com','$2a$10$NQ5nj6.3UnFxec0idKxma.pn2mq5L5qIjouO4oueMRzjH/5tPX84e','20241011005','006','USER',now(),now(),now()
+WHERE NOT EXISTS (SELECT 1 FROM tb_user WHERE email = 'samdasoo@naver.com');
 
 INSERT INTO `tb_customer` (customer_no,name,company,dept,position,email,phone,tel,grade,is_keyman,user_no,created_at,updated_at)
 SELECT 1, '김은경', '네이버','개발1팀','과장','abc@naver.com','01012348888','0313445999','S',true,1,now(),now()
@@ -64,3 +67,11 @@ WHERE NOT EXISTS (SELECT 1 FROM tb_poetntial_customer WHERE p_cust_no=200);
 INSERT INTO `tb_poetntial_customer` (p_cust_no ,created_at, updated_at,register_date, modify_date,  addr, cls, company, dept, email, fax, name, note, phone, position, tel, grade, contact_status)
 SELECT 300, now(),now(),'2024-10-13',null,'서울 종로구','채팅','해양수족관','조개류','seashell@gmail.com','01-xxx-xxx','바지락','조개 종류많음','010-5555-5555','조개','02-0000-4422','B','NO_CONTACT'
 WHERE NOT EXISTS (SELECT 1 FROM tb_poetntial_customer WHERE p_cust_no=300);
+
+INSERT INTO `tb_contact_history` (contact_history_no, p_cust_no, user_no, contact_date,cls, content,created_at,updated_at)
+SELECT 100 , 100 , 2 , '2024-10-20','EMAIL','메일 발송',now(),now()
+WHERE NOT EXISTS (SELECT 1 FROM tb_contact_history WHERE contact_history_no=100);
+
+INSERT INTO `tb_contact_history` (contact_history_no, p_cust_no, user_no, contact_date,cls, content,created_at,updated_at)
+SELECT 200 , 100 , 2 , '2024-11-03','VISIT','오후 2시 방문 예정',now(),now()
+WHERE NOT EXISTS (SELECT 1 FROM tb_contact_history WHERE contact_history_no=200);
