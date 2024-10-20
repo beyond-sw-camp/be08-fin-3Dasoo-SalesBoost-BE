@@ -12,6 +12,7 @@ import lombok.NoArgsConstructor;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.NoSuchElementException;
+import java.util.Objects;
 
 @AllArgsConstructor
 @NoArgsConstructor
@@ -60,13 +61,13 @@ public class ContactHistory extends BaseEntity {
             this.code = code;
         }
         
-        public static CLS getCLS(int code){
+        public static CLS getCLS(String msg){
             for(CLS cls: CLS.values()){
-                if(cls.getCode() == code){
+                if(Objects.equals(cls.getMessage(), msg)){
                     return cls;
                 }
             }
-            throw new NoSuchElementException("No such CLS with code " + code);
+            throw new NoSuchElementException("No such CLS name " + msg);
         }
 
     }

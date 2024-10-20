@@ -47,7 +47,7 @@ public class PotentialCustomerController {
     @Operation(summary = "잠재고객 수정", description = "잠재고객 정보를 수정한다")
     public BaseResponse<String> updatePotentialCustomer(@PathVariable Long prospectId,@RequestBody UpdatePotentialCustomerReq request) {
         potentialCustomerService.updatePotentialCustomer(prospectId, request);
-        return new BaseResponse<>("수정을 완료했습니다.");
+        return new BaseResponse<>("고객 정보가 수정되었습니다");
     }
 
     /**
@@ -79,14 +79,14 @@ public class PotentialCustomerController {
     @Operation(summary = "접촉이력 등록", description = "잠재고객에 대한 접촉이력을 등록한다")
     public BaseResponse<String> insertContactHistory(@PathVariable Long prospectId,@RequestBody @Valid CreateContactHistoryReq request){
         potentialCustomerService.insertContactHistory(prospectId,request);
-        return new BaseResponse<>("접촉 이력을 생성했습니다.");
+        return new BaseResponse<>("새 이력을 등록했습니다");
     }
 
     /**
         접촉 이력 목록 조회 API -> 목록 조회시 pk 값도 응답값에 추가
      */
     @GetMapping("{prospectId}/history")
-    @Operation(summary = "점촉이력 목록 조회", description = "특정 잠재고객에 대한 접촉이력 목록을 조회한다")
+    @Operation(summary = "접촉이력 목록 조회", description = "특정 잠재고객에 대한 접촉이력 목록을 조회한다")
     public BaseResponse<List<ContactHistoryDto>> getContactHistoryList(@PathVariable Long prospectId){
         List<ContactHistoryDto> result = potentialCustomerService.getContactHistoryList(prospectId);
 
