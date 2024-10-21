@@ -4,6 +4,7 @@ import beyond.samdasoo.common.response.BaseResponse;
 import beyond.samdasoo.customer.dto.CustomerCreateReq;
 import beyond.samdasoo.customer.dto.CustomerGetRes;
 import beyond.samdasoo.customer.dto.CustomersGetRes;
+import beyond.samdasoo.customer.dto.SearchCriteriaDTO;
 import beyond.samdasoo.customer.service.CustomerService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -58,13 +59,22 @@ public class CustomerController {
     @DeleteMapping
     public void deleteCustomer(){}
 
-
     /*
     고객 목록 조회 API
-     */
+    */
     @GetMapping
     public BaseResponse<List<CustomersGetRes>> getCustomers(){
-        List<CustomersGetRes> result = customerService.getList();
+        List<CustomersGetRes> result = customerService.getLists();
+        return new BaseResponse<>(result);
+    }
+
+    /*
+    고객 목록 조회 by Filter API
+     */
+    @PostMapping
+    public BaseResponse<List<CustomersGetRes>> getCustomersByFilter(@RequestBody SearchCriteriaDTO searchCriteria){
+        System.out.println(searchCriteria);
+        List<CustomersGetRes> result = customerService.getListByFilter(searchCriteria);
         return new BaseResponse<>(result);
     }
 }

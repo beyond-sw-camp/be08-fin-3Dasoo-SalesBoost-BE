@@ -4,6 +4,7 @@ import beyond.samdasoo.common.exception.BaseException;
 import beyond.samdasoo.customer.dto.CustomerCreateReq;
 import beyond.samdasoo.customer.dto.CustomerGetRes;
 import beyond.samdasoo.customer.dto.CustomersGetRes;
+import beyond.samdasoo.customer.dto.SearchCriteriaDTO;
 import beyond.samdasoo.customer.entity.Customer;
 import beyond.samdasoo.customer.repository.CustomerRepository;
 import beyond.samdasoo.user.entity.User;
@@ -42,8 +43,33 @@ public class CustomerService {
         customerRepository.save(customer);
     }
 
-    public List<CustomersGetRes> getList() {
-        List<Customer> customers = customerRepository.findAll();
+    public List<CustomersGetRes> getLists() {
+
+        List<Customer> customers = customerRepository.findAll(); // 전체 검색
+
+        List<CustomersGetRes> result = customers.stream().map(c -> new CustomersGetRes(c.getId(), c.getName(), c.getPosition(), c.getCompany(), c.getEmail(), c.getPhone(), c.getTel())).toList();
+        return result;
+
+    }
+
+    public List<CustomersGetRes> getListByFilter(SearchCriteriaDTO searchCriteria) {
+
+        List<Customer> customers;
+
+        if ((searchCriteria.getSelectedItem() == null || searchCriteria.getSelectedItem().isEmpty()) &&
+                (searchCriteria.getSearchQuery() == null || searchCriteria.getSearchQuery().isEmpty()) &&
+                (searchCriteria.getPersonInCharge() == null || searchCriteria.getPersonInCharge().isEmpty()) &&
+                searchCriteria.getSelectedKey().equals("전체")) {
+
+            customers = customerRepository.findAll(); // 전체 검색
+
+        }else{
+
+            customers = customerRepository.searchByCriteria(searchCriteria.getSelectedItem(),searchCriteria.getSearchQuery(),
+                    searchCriteria.getPersonInCharge(),searchCriteria.getSelectedKey());
+        }
+
+
         List<CustomersGetRes> result = customers.stream().map(c -> new CustomersGetRes(c.getId(), c.getName(), c.getPosition(), c.getCompany(), c.getEmail(), c.getPhone(), c.getTel())).toList();
         return result;
 
