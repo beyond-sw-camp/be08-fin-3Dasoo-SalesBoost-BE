@@ -28,11 +28,11 @@ public class TargetSaleController {
         return  new BaseResponse<>("목표 매출 금액 설정을 완료했습니다.");
     }
 
-    @GetMapping("/{userNo}")
-    @Operation(summary = "목표 매출 금액 조회", description = "관리자 계정에서 특정 영업사원의 특정 년도 목표 매출 금액 조회")
-    public BaseResponse<List<TargetSaleResponseDto>> getTargetSaelByUserId(@PathVariable("userNo") Long userNo, int year) {
+    @GetMapping("/{userName}")
+    @Operation(summary = "목표 매출 금액 조회", description = "특정 영업사원의 특정 년도 목표 매출 금액 조회")
+    public BaseResponse<List<TargetSaleResponseDto>> getTargetSaleByUserName(@PathVariable("userName") String userName, @RequestParam("year") int year) {
 
-        List<TargetSaleResponseDto> response = targetSaleService.getTargetSaleByUserId(userNo, year);
+        List<TargetSaleResponseDto> response = targetSaleService.getTargetSaleByUserName(userName, year);
 
         return new BaseResponse<>(response);
     }

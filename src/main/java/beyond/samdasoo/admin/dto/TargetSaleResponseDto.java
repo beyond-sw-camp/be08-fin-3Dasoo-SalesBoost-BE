@@ -11,7 +11,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @Builder
 public class TargetSaleResponseDto {
-    private Long ProdNo;
+    private String ProdName;
 
     private int month;
 
@@ -20,7 +20,7 @@ public class TargetSaleResponseDto {
     private int year;
 
     public TargetSaleResponseDto(TargetSale targetSale) {
-        this.ProdNo = targetSale.getTargetSaleNo();
+        this.ProdName = targetSale.getProduct().getName();
         this.month = targetSale.getMonth();
         this.monthTarget = targetSale.getMonthTarget();
         this.year = targetSale.getYear();
