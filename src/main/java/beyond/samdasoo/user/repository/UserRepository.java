@@ -18,4 +18,6 @@ public interface UserRepository extends JpaRepository<User, Long>, QuerydslPredi
     Optional<User> findByEmployeeId(String employeeId);
 
     boolean existsByEmail(String email);
+
+    User getUserByName(String userName);
 }

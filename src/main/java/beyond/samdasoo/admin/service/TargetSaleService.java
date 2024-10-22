@@ -10,5 +10,5 @@ public interface TargetSaleService {
 
     void addTargetSale(TargetSaleRequestDto request);
 
-    List<TargetSaleResponseDto> getTargetSaleByUserId(Long userNo, int year);
+    List<TargetSaleResponseDto> getTargetSaleByUserName(String userName, int year);
 }

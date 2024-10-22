@@ -111,10 +111,11 @@ public class TargetSaleServiceImpl implements TargetSaleService{
     }
 
     @Override
-    public List<TargetSaleResponseDto> getTargetSaleByUserId(Long userNo, int year) {
-        User user = userRepository.getReferenceById(userNo);
+    public List<TargetSaleResponseDto> getTargetSaleByUserName(String userName, int year) {
 
-        if(!userRepository.existsById(userNo)){
+        User user = userRepository.getUserByName(userName);
+
+        if(user == null){
             throw new BaseException(USER_NOT_EXIST);
         }
 
