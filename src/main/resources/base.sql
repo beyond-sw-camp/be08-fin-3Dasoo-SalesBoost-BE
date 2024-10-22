@@ -2,7 +2,6 @@
 
 INSERT INTO tb_user (user_no, email, employee_id, join_date, name, password, role, dept_id, created_at, updated_at)
 VALUES
-    (3, 'admin@example.com', 'EMP003', '2024-03-05', '박관리', 'adminpass', 'ADMIN', 3, NOW(), NOW()),
     (4, 'user3@example.com', 'EMP004', '2024-04-10', '최미진', 'password123', 'USER', 4, NOW(), NOW()),
     (5, 'user4@example.com', 'EMP005', '2024-05-15', '정우진', 'password123', 'USER', 5, NOW(), NOW());
 
@@ -26,11 +25,11 @@ VALUES
 
 INSERT INTO tb_act (no, act_cont, act_date, cls, complete_yn, end_time, name, plan_cont, purpose, start_time, calendar_no, lead_no)
 VALUES
-    (1, '화상 회의 플랫폼 논의', '2024-07-01', 'ONLINE', 'N', '15:00', '김철수', '신규 회의 준비', '프로젝트 논의', '13:00', 2, 1),
-    (2, '거래처 방문', '2024-07-03', 'VISIT', 'Y', '17:00', '이영희', '계약 관련 회의', '상담 및 계약 체결', '15:00', 2, 2),
-    (3, '전화 문의 응대', '2024-07-05', 'PHONE', 'N', '11:30', '박관리', '고객 문의 사항 응대', '고객 응대', '10:00', 2, 3),
-    (4, '이메일 발송', '2024-07-07', 'EMAIL', 'Y', '14:00', '최미진', '상품 정보 제공', '상품 홍보 및 고객 안내', '13:00', 2, 4),
-    (5, '온라인 미팅 준비', '2024-07-09', 'OTHER', 'N', '16:00', '정우진', '프로젝트 논의', '프로젝트 진행 상황 점검', '14:00', 2, 5);
+    (1, '화상 회의 플랫폼 논의', '2024-07-01', 'ONLINE', 'N', '15:00', '프로젝트 회의 준비', '신규 회의 준비', '프로젝트 논의', '13:00', 2, 1),
+    (2, '거래처 방문', '2024-07-03', 'VISIT', 'Y', '17:00', '거래처 미팅', '계약 관련 회의', '상담 및 계약 체결', '15:00', 2, 2),
+    (3, '전화 문의 응대', '2024-07-05', 'PHONE', 'N', '11:30', '문의사항 해결', '고객 문의 사항 응대', '고객 응대', '10:00', 2, 3),
+    (4, '이메일 발송', '2024-07-07', 'EMAIL', 'Y', '14:00', '정보 이메일 발송', '상품 정보 제공', '상품 홍보 및 고객 안내', '13:00', 2, 4),
+    (5, '온라인 미팅 준비', '2024-07-09', 'OTHER', 'N', '16:00', '프로젝트 미팅', '프로젝트 논의', '프로젝트 진행 상황 점검', '14:00', 2, 5);
 
 INSERT INTO tb_plan (no, created_at, updated_at, content, end_time, personal_yn, plan_cls, plan_date, start_time, title, calendar_no)
 VALUES
@@ -48,13 +47,13 @@ VALUES
     (4, NOW(), NOW(), '계약서 내용 확인', '2024-07-05', 'HIGH', 'N', 'TODO', '계약서 검토', 'CONTRACT', 2),
     (5, NOW(), NOW(), '이메일 답변 작성', '2024-07-06', 'MEDIUM', 'N', 'TODO', '이메일 답변', 'EMAIL', 2);
 
-INSERT INTO tb_poetntial_customer (p_cust_no, created_at, updated_at, addr, cls, company, dept, email, fax, grade, modify_date, name, note, phone, position, register_date, status, tel)
+INSERT INTO tb_poetntial_customer (p_cust_no, created_at, updated_at, addr, cls, company, dept, email, fax, grade, modify_date, name, note, phone, position, register_date,tel)
 VALUES
-    (1, NOW(), NOW(), '서울시 강남구', 'B2B', 'POC 회사', '영업부', 'poc1@poc.com', '02-111-2222', 'A', NOW(), '홍길동', '잠재 고객 관리 필요', '010-8888-9999', '과장', NOW(), 'CONTACTING', '02-999-8888'),
-    (2, NOW(), NOW(), '서울시 서초구', 'B2C', 'POC2 회사', '개발부', 'poc2@poc.com', '02-222-3333', 'B', NOW(), '이순신', '기술 문의 진행 중', '010-7777-6666', '팀장', NOW(), 'TRY_CONTACT', '02-888-7777'),
-    (3, NOW(), NOW(), '서울시 종로구', 'B2B', 'POC3 회사', '기획부', 'poc3@poc.com', '02-333-4444', 'C', NOW(), '박문수', '견적서 요청 예정', '010-5555-4444', '대리', NOW(), 'NOT_CONTACT', '02-777-6666'),
-    (4, NOW(), NOW(), '서울시 중구', 'B2C', 'POC4 회사', '인사부', 'poc4@poc.com', '02-444-5555', 'A', NOW(), '최영', '고객사 미팅 예정', '010-3333-2222', '사원', NOW(), 'NO_CONTACT', '02-666-5555'),
-    (5, NOW(), NOW(), '서울시 용산구', 'B2B', 'POC5 회사', '총무부', 'poc5@poc.com', '02-555-6666', 'S', NOW(), '정몽주', '계약 준비 중', '010-1111-0000', '부장', NOW(), 'CONVERT_CUSTOMER', '02-555-4444');
+    (1, NOW(), NOW(), '서울시 강남구', 'B2B', 'POC 회사', '영업부', 'poc1@poc.com', '02-111-2222', 'A', NOW(), '홍길동', '잠재 고객 관리 필요', '010-8888-9999', '과장', NOW(), '02-999-8888'),
+    (2, NOW(), NOW(), '서울시 서초구', 'B2C', 'POC2 회사', '개발부', 'poc2@poc.com', '02-222-3333', 'B', NOW(), '이순신', '기술 문의 진행 중', '010-7777-6666', '팀장', NOW(),'02-888-7777'),
+    (3, NOW(), NOW(), '서울시 종로구', 'B2B', 'POC3 회사', '기획부', 'poc3@poc.com', '02-333-4444', 'C', NOW(), '박문수', '견적서 요청 예정', '010-5555-4444', '대리', NOW(),  '02-777-6666'),
+    (4, NOW(), NOW(), '서울시 중구', 'B2C', 'POC4 회사', '인사부', 'poc4@poc.com', '02-444-5555', 'A', NOW(), '최영', '고객사 미팅 예정', '010-3333-2222', '사원', NOW(),'02-666-5555'),
+    (5, NOW(), NOW(), '서울시 용산구', 'B2B', 'POC5 회사', '총무부', 'poc5@poc.com', '02-555-6666', 'S', NOW(), '정몽주', '계약 준비 중', '010-1111-0000', '부장', NOW(), '02-555-4444');
 
 INSERT INTO tb_contact_history (contact_history_no, created_at, updated_at, cls, contact_date, content, p_cust_no, user_no)
 VALUES

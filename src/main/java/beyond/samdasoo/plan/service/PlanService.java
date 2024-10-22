@@ -63,7 +63,7 @@ public class PlanService {
     }
 
     @Transactional
-    public void updatePlan(Long no, PlanUpdateDto planUpdateDto) {
+    public PlanResponseDto updatePlan(Long no, PlanUpdateDto planUpdateDto) {
         Plan plan = findPlanById(no);
 
         plan.setCalendar(calendarRepository.findCalendarById(planUpdateDto.getCalendarNo()));
@@ -74,6 +74,9 @@ public class PlanService {
         Optional.ofNullable(planUpdateDto.getStartTime()).ifPresent(plan::setStartTime);
         Optional.ofNullable(planUpdateDto.getEndTime()).ifPresent(plan::setEndTime);
         Optional.ofNullable(planUpdateDto.getContent()).ifPresent(plan::setContent);
+
+        planRepository.save(plan);
+        return new PlanResponseDto(plan);
     }
 
     public void deletePlan(Long no) {
