@@ -21,7 +21,7 @@ class TestControllerTest {
     MockMvc mockMvc;
 
     @Test
-    @DisplayName("테스트 컨트롤러가 제대로 작동되는지 확인한다")
+    @DisplayName("테스트 컨트롤러의 응답으로 200을 반환한다")
     void test() throws Exception {
         mockMvc.perform(get("/test")).andExpect(status().isOk());
     }
