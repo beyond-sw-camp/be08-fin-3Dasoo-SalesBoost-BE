@@ -78,8 +78,9 @@ public class CustomerService {
     public CustomerGetRes getCustomer(Long id) {
 
         Customer c = customerRepository.findById(id).orElseThrow(() -> new BaseException(CUSTOMER_NOT_EXIST));
-        CustomerGetRes result = new CustomerGetRes(c.getId(), c.getName(), c.getPosition(), c.getCompany(), c.getEmail(), c.getPhone(), c.getTel(),c.getGrade().getMessage(),c.isKeyMan(),c.getDept());
-        return result;
+
+        return new CustomerGetRes(c.getId(), c.getName(), c.getPosition(), c.getCompany(), c.getEmail()
+                , c.getPhone(), c.getTel(),c.getGrade().getMessage(),c.isKeyMan(),c.getDept(),c.getUser().getName());
     }
 }
 

@@ -28,4 +28,6 @@ public class CustomerGetRes {
 
         private String dept;
 
+        private String userName; // 담당자
+
     }
