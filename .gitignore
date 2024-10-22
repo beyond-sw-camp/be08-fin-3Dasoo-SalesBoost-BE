@@ -7,7 +7,8 @@
 
 /src/main/resources/application.yml
 /src/main/resources/application-sercret.yml
-/src/test/resources/test-application.yml
+/src/test/resources/application-test.yml
+/src/test/resources/application-test.properties
 
 # User-specific stuff
 .idea/**/workspace.xml
