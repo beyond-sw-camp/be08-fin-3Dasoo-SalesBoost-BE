@@ -38,7 +38,7 @@ public class Customer extends BaseEntity {
 
     private String tel; // 유선번호
 
-    @Column(name = "grade")
+    @Column(name = "grade",nullable = false)
     @Enumerated(EnumType.STRING)
     private Grade grade;
 
@@ -71,11 +71,11 @@ public class Customer extends BaseEntity {
             this.code = code;
         }
 
-        public static Customer.Grade getGradeByMessage(String message){
+        public static Grade getGradeByMessage(String message){
             if(message == null){
                 return null;
             }
-            for (Customer.Grade grade : Customer.Grade.values()) {
+            for (Grade grade : Grade.values()) {
                 if(Objects.equals(grade.getMessage(), message))
                     return grade;
             }
@@ -91,4 +91,23 @@ public class Customer extends BaseEntity {
             throw new NoSuchElementException("유효하지 않은 등급 코드 : " + code);
         }
     }
+
+    public void changeName(String name){this.name = name;}
+    public void changeCompany(String company){this.company = company;}
+    public void changeDept(String dept){this.dept = dept;};
+    public void changePosition(String position){this.position = position;}
+    public void changePhone(String phone){this.phone = phone;}
+    public void changeTel(String tel){
+        this.tel = tel;
+    }
+    public void changeEmail(String email){
+        this.email = email;
+    }
+    public void changeGrade(String grade){
+        this.grade = Grade.getGradeByMessage(grade);
+    }
+    public void changeKeyman(boolean isKeyMan){
+        this.isKeyMan = isKeyMan;
+    }
+
 }

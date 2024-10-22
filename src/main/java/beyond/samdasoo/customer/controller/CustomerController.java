@@ -1,10 +1,7 @@
 package beyond.samdasoo.customer.controller;
 
 import beyond.samdasoo.common.response.BaseResponse;
-import beyond.samdasoo.customer.dto.CustomerCreateReq;
-import beyond.samdasoo.customer.dto.CustomerGetRes;
-import beyond.samdasoo.customer.dto.CustomersGetRes;
-import beyond.samdasoo.customer.dto.SearchCriteriaDTO;
+import beyond.samdasoo.customer.dto.*;
 import beyond.samdasoo.customer.service.CustomerService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -47,11 +44,12 @@ public class CustomerController {
     /*
     고객 수정 API
      */
-    @PatchMapping()
-    public void patchCustomer(){
-
-
+    @PatchMapping("/{customerId}")
+    public BaseResponse<String> patchCustomer(@PathVariable Long customerId, @RequestBody UpdateCustomerReq request){
+        customerService.updateCustomer(customerId,request);
+        return new BaseResponse<>("고객 정보가 수정되었습니다");
     }
+
 
     /*
     고객 삭제 API
