@@ -9,10 +9,11 @@ import lombok.Getter;
 @AllArgsConstructor
 public class LoginUserRes {
 
-    private String accessToken;
     private String name;
     private String email;
     private UserRole role;
+    private String dept;
+    private String accessToken;
 
 
 }

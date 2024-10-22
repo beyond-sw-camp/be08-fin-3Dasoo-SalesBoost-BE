@@ -10,11 +10,10 @@ import java.time.LocalDate;
 @Builder
 @Getter
 public class ContactHistoryDto {
-
+    private Long id;
     private LocalDate contactDate;
-
-    private int cls;
-
+    private String cls;
     private String content;
+    private String userName;
 
 }

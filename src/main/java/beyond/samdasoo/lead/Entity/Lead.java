@@ -14,11 +14,11 @@ import lombok.NoArgsConstructor;
 import java.time.LocalDate;
 import java.util.List;
 
+@Data
 @Entity
+@Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@Data
-@Builder
 @Table(name = "tb_lead")
 public class Lead extends BaseEntity {
     @Id
@@ -47,13 +47,13 @@ public class Lead extends BaseEntity {
     private int expProfit;  // 예상 이익금액
 
     @Column(name = "process", nullable = false)
-    private int process;    // 프로세스
+    private Long process;    // 프로세스
 
     @Column(name = "sub_process", nullable = false)
-    private int subProcess; // 단계
+    private Long subProcess; // 서브프로세스
 
     @Column(name = "sucess_per")
-    private int sucessPer;  // 성공확률
+    private int successPer;  // 성공확률
 
     @Column(name = "start_date")
     private LocalDate startDate;
@@ -63,10 +63,13 @@ public class Lead extends BaseEntity {
 
     @Column(name = "aware_path")
     @Enumerated(EnumType.STRING)
-    private AwarePath awarePath;
+    private AwarePath awarePath;    // 인지경로
 
     @Column(name = "note")
-    private String note;
+    private String note;    // 노트
+
+    @OneToMany(mappedBy = "lead", cascade = CascadeType.ALL)
+    private List<Step> steps;   // 진행단계
 
     @OneToMany(mappedBy = "lead", cascade = CascadeType.ALL)
     private List<Proposal> proposals;

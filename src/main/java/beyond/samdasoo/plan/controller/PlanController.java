@@ -60,10 +60,10 @@ public class PlanController {
 
     @PatchMapping("/{no}")
     @Operation(summary = "일정 수정", description = "특정 일정 수정")
-    public ResponseEntity<BaseResponse<String>> patchUpdatePlan(@PathVariable("no") Long no, @RequestBody PlanUpdateDto planUpdateDto) {
+    public ResponseEntity<BaseResponse<PlanResponseDto>> patchUpdatePlan(@PathVariable("no") Long no, @RequestBody PlanUpdateDto planUpdateDto) {
         try{
-            planService.updatePlan(no, planUpdateDto);
-            return ResponseEntity.ok(new BaseResponse<>("일정을 수정하였습니다"));
+            PlanResponseDto planResponseDto = planService.updatePlan(no, planUpdateDto);
+            return ResponseEntity.ok(new BaseResponse<>(planResponseDto));
         } catch (BaseException ex) {
             BaseResponseStatus status = ex.getStatus();
             return new ResponseEntity<>(new BaseResponse<>(status), HttpStatus.valueOf(status.getCode()));

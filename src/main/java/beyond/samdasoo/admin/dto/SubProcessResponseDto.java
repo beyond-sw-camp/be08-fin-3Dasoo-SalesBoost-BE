@@ -11,6 +11,8 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Builder
 public class SubProcessResponseDto {
+    private Long subProcessNo;
+
     private String subProcessName;      // 서브 프로세스 이름
 
     private String progressStep;        // 현재 진행 단계
@@ -22,6 +24,7 @@ public class SubProcessResponseDto {
     private Integer expectedDuration;       // 예상 소요 시간
 
     public SubProcessResponseDto(SubProcess subProcess) {
+        this.subProcessNo  = subProcess.getSubProcessNo();
         this.subProcessName = subProcess.getSubProcessName();
         this.progressStep = subProcess.getProgressStep();
         this.successRate = subProcess.getSuccessRate();

@@ -12,6 +12,8 @@ import lombok.NoArgsConstructor;
 @Builder
 public class ProcessResponseDto {
 
+    private Long processNo;
+
     private String processName;     // 프로세스 이름
 
     private Boolean isDefault;      // 기본 프로세스 지정여부
@@ -21,6 +23,7 @@ public class ProcessResponseDto {
     private String description;   // 내용
 
     public ProcessResponseDto(Process process) {
+        this.processNo = process.getProcessNo();
         this.processName = process.getProcessName();
         this.isDefault = process.getIsDefault();
         this.expectedDuration = process.getExpectedDuration();

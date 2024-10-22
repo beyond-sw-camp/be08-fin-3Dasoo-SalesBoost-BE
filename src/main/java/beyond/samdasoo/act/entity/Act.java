@@ -1,6 +1,7 @@
 package beyond.samdasoo.act.entity;
 
 import beyond.samdasoo.calendar.entity.Calendar;
+import beyond.samdasoo.lead.Entity.Lead;
 import beyond.samdasoo.plan.entity.Plan;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -22,10 +23,10 @@ public class Act {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long no;
 
-//    TODO: 영업기회 엔티티 완성 후 주석 해제 예정-ENTITY
-//    @ManyToOne(fetch = FetchType.LAZY)
-//    @JoinColumn(name = "lead_no", nullable = false)
-//    private Lead lead;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "lead_no", nullable = false)
+    private Lead lead;
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "calendar_no", nullable = false)
     private Calendar calendar;

@@ -17,6 +17,8 @@ public class ProposalResponseDto {
     private LocalDate submitDate;
     private LocalDate prDate;
     private String note;
+    private Long leadNo;
+    private String leadName;
 
     public ProposalResponseDto(Proposal proposal) {
         this.propNo = proposal.getPropNo();
@@ -28,5 +30,7 @@ public class ProposalResponseDto {
         this.submitDate = proposal.getSubmitDate();
         this.prDate = proposal.getPrDate();
         this.note = proposal.getNote();
+        this.leadNo = proposal.getLead().getNo();
+        this.leadName = proposal.getLead().getName();
     }
 }

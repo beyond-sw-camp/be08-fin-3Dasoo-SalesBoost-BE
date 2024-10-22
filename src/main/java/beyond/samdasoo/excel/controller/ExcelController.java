@@ -19,7 +19,6 @@ public class ExcelController {
 
     @PostMapping("/export/excel")
     public ResponseEntity<byte[]> exportExcel(@RequestBody ExcelDto excelDto) {
-//    public ResponseEntity<BaseResponse<byte[]>> exportExcel(@RequestBody ExcelDto excelDto) {
         try {
             byte[] excelFile = excelService.generateExcelFile(excelDto);
 
@@ -28,7 +27,6 @@ public class ExcelController {
             headers.add(HttpHeaders.CONTENT_TYPE, "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
 
             return ResponseEntity.ok().headers(headers).body(excelFile);
-//            return new ResponseEntity<>(new BaseResponse<>(excelFile), headers, HttpStatus.OK);
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }

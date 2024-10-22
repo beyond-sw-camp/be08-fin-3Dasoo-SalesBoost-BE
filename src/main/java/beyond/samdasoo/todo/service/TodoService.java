@@ -67,7 +67,7 @@ public class TodoService {
     }
 
     @Transactional
-    public void updateTodo(Long no, TodoUpdateDto todoUpdateDto) {
+    public TodoResponseDto updateTodo(Long no, TodoUpdateDto todoUpdateDto) {
         Todo todo = findById(no);
 
         todo.setCalendar(calendarRepository.findCalendarById(todoUpdateDto.getCalendarNo()));
@@ -78,6 +78,9 @@ public class TodoService {
         Optional.ofNullable(todoUpdateDto.getPrivateYn()).ifPresent(todo::setPrivateYn);
         Optional.ofNullable(todoUpdateDto.getContent()).ifPresent(todo::setContent);
         Optional.ofNullable(todoUpdateDto.getStatus()).ifPresent(todo::setStatus);
+
+        todoRepository.save(todo);
+        return new TodoResponseDto(todo);
     }
 
     public void deleteTodo(Long no) { todoRepository.delete(findById(no)); }
