@@ -1,6 +1,7 @@
 package beyond.samdasoo.sales.controller;
 
 import beyond.samdasoo.common.response.BaseResponse;
+import beyond.samdasoo.sales.dto.SalesPredictionDto;
 import beyond.samdasoo.sales.dto.SalesRequestDto;
 import beyond.samdasoo.sales.dto.SalesResponseDto;
 import beyond.samdasoo.sales.service.SalesService;
@@ -60,6 +61,36 @@ public class SalesController {
         return new BaseResponse<>(sales);
     }
 
+    // 매출 예측 api 호출
+    @GetMapping("/forecast/years")
+    public BaseResponse<List<SalesPredictionDto>> getAnnualSalesForecast() {
+        List<SalesResponseDto> sales = salesService.getAllSales();  // 모든 매출 데이터를 가져옴
+
+        // 매출 데이터를 파이썬 API로 전달하여 예측 데이터 가져옴
+        List<SalesPredictionDto> predictions = salesService.getYearsPredictedSales(sales);  // 년도별 예측된 매출 리스트
+
+        return new BaseResponse<>(predictions);  // 예측된 DTO 리스트 반환
+    }
+
+    @GetMapping("/forecast/month")
+    public BaseResponse<List<SalesPredictionDto>> getMonthlySalesForecast() {
+        List<SalesResponseDto> sales = salesService.getAllSales();  // 모든 매출 데이터를 가져옴
+
+        // 매출 데이터를 파이썬 API로 전달하여 예측 데이터 가져옴
+        List<SalesPredictionDto> predictions = salesService.getMonthlyPredictedSales(sales);  // 월별 예측된 매출 리스트
+
+        return new BaseResponse<>(predictions);  // 예측된 DTO 리스트 반환
+    }
+
+    @GetMapping("/forecast/quarter")
+    public BaseResponse<List<SalesPredictionDto>> getQuarterlySalesForecast() {
+        List<SalesResponseDto> sales = salesService.getAllSales();  // 모든 매출 데이터를 가져옴
+
+        // 매출 데이터를 파이썬 API로 전달하여 예측 데이터 가져옴
+        List<SalesPredictionDto> predictions = salesService.getQuarterlyPredictedSales(sales);  // 분기별 예측된 매출 리스트
+
+        return new BaseResponse<>(predictions);  // 예측된 DTO 리스트 반환
+    }
 
 
 }
