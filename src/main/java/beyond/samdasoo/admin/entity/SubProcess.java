@@ -33,7 +33,7 @@ public class SubProcess extends BaseEntity {
     @Column(name = "success_rate")
     private Integer successRate;            // 성공 확률
 
-    @Column(name = "action", nullable = false)
+    @Column(name = "action", nullable = true)
     private String action;              // 프로세스 변경 액션
 
     @Column(name = "expected_duration")

@@ -58,7 +58,7 @@ public class CustomerService {
 
         if ((searchCriteria.getSelectedItem() == null || searchCriteria.getSelectedItem().isEmpty()) &&
                 (searchCriteria.getSearchQuery() == null || searchCriteria.getSearchQuery().isEmpty()) &&
-                (searchCriteria.getPersonInCharge() == null || searchCriteria.getPersonInCharge().isEmpty()) &&
+                (searchCriteria.getPersonInCharge() == null || searchCriteria.getPersonInCharge()==0) &&
                 searchCriteria.getSelectedKey().equals("전체")) {
 
             customers = customerRepository.findAll(); // 전체 검색
@@ -66,7 +66,7 @@ public class CustomerService {
         }else{
 
             customers = customerRepository.searchByCriteria(searchCriteria.getSelectedItem(),searchCriteria.getSearchQuery(),
-                    searchCriteria.getPersonInCharge(),searchCriteria.getSelectedKey());
+                    searchCriteria.getSelectedKey(),searchCriteria.getPersonInCharge());
         }
 
 

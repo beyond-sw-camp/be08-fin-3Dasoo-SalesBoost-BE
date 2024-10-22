@@ -73,7 +73,7 @@ public class CustomerController {
      */
     @PostMapping
     public BaseResponse<List<CustomersGetRes>> getCustomersByFilter(@RequestBody SearchCriteriaDTO searchCriteria){
-        System.out.println(searchCriteria);
+
         List<CustomersGetRes> result = customerService.getListByFilter(searchCriteria);
         return new BaseResponse<>(result);
     }

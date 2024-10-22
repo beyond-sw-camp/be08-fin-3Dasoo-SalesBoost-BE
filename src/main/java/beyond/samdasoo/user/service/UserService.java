@@ -27,6 +27,7 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
@@ -209,5 +210,12 @@ public class UserService {
         emailVerificationUserRedisRepository.save(emailVerificationUser);
 
         return true;
+    }
+
+    public List<UserDepartmentDto> getUsers() {
+        //        for (UserDepartmentDto dto :users){
+//            System.out.println(dto.getUserName()+" : ("+dto.getUserDeptName()+")");
+//        }
+        return userRepository.findAllUsersWithDepartmentNames();
     }
 }
