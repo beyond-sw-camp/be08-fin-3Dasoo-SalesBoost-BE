@@ -5,6 +5,8 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.List;
+
 
 @Data
 @NoArgsConstructor
@@ -12,18 +14,15 @@ import lombok.NoArgsConstructor;
 @Builder
 public class TargetSaleRequestDto {
 
-    private Long userId;
+    private String userName;
 
-    private Long productNo;
+    private String prodName;
 
     private int sum;
 
-    private int month;
-
-    private int monthTarget;
-
     private int year;
 
+    private List<Integer> monthTargets;
 
 }
 

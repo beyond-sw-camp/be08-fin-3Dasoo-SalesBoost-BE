@@ -31,14 +31,13 @@ public class TargetSaleServiceImpl implements TargetSaleService {
     private final UserRepository userRepository;
     private final ProductRepository productRepository;
 
-
     @Override
     public void addTargetSale(TargetSaleRequestDto request) {
 
-        Product product = productRepository.getByProdNo(request.getProductNo());
-        User user = userRepository.getReferenceById(request.getUserId());
+        Product product = productRepository.getByName(request.getProdName());
+        User user = userRepository.getUserByName(request.getUserName());
 
-        if (!userRepository.existsById(request.getUserId())) {
+        if (user == null) {
             throw new BaseException(USER_NOT_EXIST);
         }
 
@@ -50,41 +49,32 @@ public class TargetSaleServiceImpl implements TargetSaleService {
 
         if (targetSales.isEmpty()) {
             if (request.getSum() != 0) {
-
                 int sum = request.getSum() - (request.getSum() % 12);
 
                 for (int i = 0; i < 12; i++) {
+                    int monthTarget = sum / 12;
+
                     TargetSale targetSale = TargetSale.builder()
                             .user(user)
                             .product(product)
-                            .monthTarget(sum / 12)
+                            .monthTarget(monthTarget)
                             .month(i + 1)
                             .year(request.getYear())
                             .build();
 
                     targetSaleRepository.save(targetSale);
-
                 }
             } else {
                 for (int i = 0; i < 12; i++) {
-                    TargetSale targetSale = null;
-                    if (i + 1 == request.getMonth()) {
-                        targetSale = TargetSale.builder()
-                                .user(user)
-                                .product(product)
-                                .monthTarget(request.getMonthTarget())
-                                .month(i + 1)
-                                .year(request.getYear())
-                                .build();
-                    } else {
-                        targetSale = TargetSale.builder()
-                                .user(user)
-                                .product(product)
-                                .monthTarget(0)
-                                .month(i + 1)
-                                .year(request.getYear())
-                                .build();
-                    }
+                    int monthTarget = request.getMonthTargets().get(i);
+
+                    TargetSale targetSale = TargetSale.builder()
+                            .user(user)
+                            .product(product)
+                            .monthTarget(monthTarget)
+                            .month(i + 1)
+                            .year(request.getYear())
+                            .build();
 
                     targetSaleRepository.save(targetSale);
                 }
@@ -92,23 +82,32 @@ public class TargetSaleServiceImpl implements TargetSaleService {
         } else {
             if (request.getSum() != 0) {
                 int sum = request.getSum() - (request.getSum() % 12);
-
                 for (int i = 0; i < 12; i++) {
-                    targetSales.get(i).setMonthTarget(sum / 12);
+                    int newMonthTarget = sum / 12;
 
-                    targetSaleRepository.save(targetSales.get(i));
+                    if (targetSales.get(i).getMonthTarget() != newMonthTarget) {
+                        targetSales.get(i).setMonthTarget(newMonthTarget);
+                        targetSaleRepository.save(targetSales.get(i));
+                    }
                 }
             } else {
                 for (int i = 0; i < 12; i++) {
-                    if (targetSales.get(i).getMonth() == request.getMonth()) {
-                        targetSales.get(i).setMonthTarget(request.getMonthTarget());
+                    int newMonthTarget = 0;
+                    if (request.getMonthTargets() != null && request.getMonthTargets().size() > i) {
+                        if (request.getMonthTargets().get(i) == null) {
+                            newMonthTarget = 0;
+                        } else {
+                            newMonthTarget = request.getMonthTargets().get(i);
+                        }
 
-                        targetSaleRepository.save(targetSales.get(i));
+                        if (targetSales.get(i).getMonthTarget() != newMonthTarget) {
+                            targetSales.get(i).setMonthTarget(newMonthTarget);
+                            targetSaleRepository.save(targetSales.get(i));
+                        }
                     }
                 }
             }
         }
-
     }
 
     @Override
@@ -116,7 +115,7 @@ public class TargetSaleServiceImpl implements TargetSaleService {
 
         User user = userRepository.getUserByName(userName);
 
-        if (user == null) {
+        if(user == null){
             throw new BaseException(USER_NOT_EXIST);
         }
 
