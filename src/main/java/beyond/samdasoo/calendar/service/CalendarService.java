@@ -15,6 +15,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import static beyond.samdasoo.common.response.BaseResponseStatus.CALENDAR_ALREADY_EXIST;
 import static beyond.samdasoo.common.response.BaseResponseStatus.CALENDAR_NOT_EXIST;
 
 @Service
@@ -28,6 +29,9 @@ public class CalendarService {
     }
 
     public CalendarResponseDto createCalendar(User user) {
+        if (cRepo.existsByUser(user)) {
+            throw new BaseException(CALENDAR_ALREADY_EXIST);
+        }
         Calendar calendar = Calendar.builder()
                 .user(user)
                 .plans(new ArrayList<>())
