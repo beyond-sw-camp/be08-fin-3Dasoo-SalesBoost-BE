@@ -36,4 +36,5 @@ public class TargetSaleController {
 
         return new BaseResponse<>(response);
     }
+
 }
