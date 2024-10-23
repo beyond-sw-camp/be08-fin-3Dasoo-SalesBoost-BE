@@ -59,6 +59,10 @@ public class User extends BaseEntity {
         this.role = UserRole.USER;
     }
 
+    public void setJoinDate(LocalDate joinDate){
+        this.joinDate = joinDate;
+    }
+
     @Builder
     public User(String name, String email, String password,String employeeId,Department department, UserRole role) {
         this.name = name;

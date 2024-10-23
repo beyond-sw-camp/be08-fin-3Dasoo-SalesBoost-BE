@@ -13,6 +13,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.context.annotation.Import;
 import org.springframework.test.context.TestPropertySource;
 
+import java.time.LocalDate;
 import java.util.Optional;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
@@ -77,6 +78,41 @@ public class UserRepositoryTest {
 
         // then
         assertThat(findUser.isPresent()).isTrue();
+    }
+
+    @Test
+    @DisplayName("특정 날짜에 가입한 사람의 수를 반환할 수 있다")
+    void countByJoinDate(){
+        // given
+        LocalDate testDate = LocalDate.now();
+        Department department = Department.builder().deptName("영업부").deptCode("101").engName("sale").deptHead("홍길동").build();
+        Department save = departmentRepository.save(department);
+        User user1 = User.builder()
+                .name("김은경")
+                .email("test@gmail.com")
+                .password("1234")
+                .department(save)
+                .employeeId("20241010020")
+                .role(UserRole.USER)
+                .build();
+
+        User user2 = User.builder()
+                .name("이유진")
+                .email("uuzz@gmail.com")
+                .password("1234")
+                .department(save)
+                .employeeId("20240910020")
+                .role(UserRole.USER)
+                .build();
+
+        userRepository.save(user1);
+        userRepository.save(user2);
+
+        // when
+        int count = userRepository.countByJoinDate(testDate);
+
+        // then
+        assertThat(count).isEqualTo(2);
     }
 
 }
