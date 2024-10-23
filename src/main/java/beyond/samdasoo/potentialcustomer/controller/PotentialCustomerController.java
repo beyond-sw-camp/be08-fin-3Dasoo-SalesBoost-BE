@@ -30,7 +30,7 @@ public class PotentialCustomerController {
     /**
      잠재고객 생성 API
      */
-    @PostMapping("")
+    @PostMapping("/add")
     @Operation(summary = "잠재고객 등록", description = "새로운 잠재고객을 등록한다")
     public BaseResponse<String> createPotentialCustomer(@RequestBody CreatePotentialCustomerReq request) {
         validateInputEmptyCreate(request);
@@ -71,6 +71,12 @@ public class PotentialCustomerController {
         List<PotentialCustomerListDto> result = potentialCustomerService.getAllPotentialCustomer();
         return new BaseResponse<>(result);
     }
+
+    /**
+     * 잠재고객 목록 조회 by Filter API
+     */
+//    @PostMapping
+//    public
 
     /**
         접촉 이력 생성 API
