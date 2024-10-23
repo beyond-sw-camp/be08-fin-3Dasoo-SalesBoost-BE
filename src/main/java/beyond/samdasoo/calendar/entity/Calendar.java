@@ -26,7 +26,7 @@ public class Calendar extends BaseEntity {
         @GeneratedValue(strategy = GenerationType.IDENTITY)
         private Long no;
 
-        @ManyToOne(fetch = FetchType.LAZY)
+        @OneToOne(fetch = FetchType.LAZY)
         @JoinColumn(name="user_no", nullable=false)
         private User user;
 
