@@ -1,21 +1,18 @@
 package beyond.samdasoo.potentialcustomer.service;
 
 import beyond.samdasoo.common.exception.BaseException;
-import beyond.samdasoo.common.response.BaseResponse;
 import beyond.samdasoo.common.utils.UserUtil;
 import beyond.samdasoo.potentialcustomer.dto.*;
 import beyond.samdasoo.potentialcustomer.entity.ContactHistory;
 import beyond.samdasoo.potentialcustomer.entity.PotentialCustomer;
 import beyond.samdasoo.potentialcustomer.repository.ContactHistoryRepository;
 import beyond.samdasoo.potentialcustomer.repository.PotentialCustomerRepository;
-import beyond.samdasoo.user.dto.UserRole;
 import beyond.samdasoo.user.entity.User;
 import beyond.samdasoo.user.repository.UserRepository;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import javax.swing.text.html.Option;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -58,22 +55,6 @@ public class PotentialCustomerService {
                 .build();
     }
 
-
-    public List<PotentialCustomerListDto> getAllPotentialCustomer() {
-        List<PotentialCustomer> pCustomers = potentialCustomerRepository.findAll();
-
-        return pCustomers.stream().map(p -> PotentialCustomerListDto.builder()
-                .id(p.getId())
-                .name(p.getName())
-                .company(p.getCompany())
-                .cls(p.getCls())
-                .status(p.getContactStatus().getMessage())
-                .phone(p.getPhone())
-                .email(p.getEmail())
-                .registerDate(p.getRegisterDate())
-                .build()).collect(Collectors.toList());
-    }
-
     @Transactional
     public void updatePotentialCustomer(Long prospectId, UpdatePotentialCustomerReq request) {
         PotentialCustomer pCustomer =potentialCustomerRepository.findById(prospectId)
@@ -110,7 +91,6 @@ public class PotentialCustomerService {
     }
 
     public void deleteContactHistory(Long historyId) {
-
         boolean isExist = contactHistoryRepository.existsById(historyId);
         if(isExist){
             contactHistoryRepository.deleteById(historyId);
@@ -118,6 +98,55 @@ public class PotentialCustomerService {
             throw new BaseException(CONTACT_HISTORY_NOT_EXIST);
         }
     }
+
+
+
+    public List<PotentialCustomersGetRes> getAllPotentialCustomer() {
+        List<PotentialCustomer> pCustomers = potentialCustomerRepository.findAll();
+
+        return pCustomers.stream().map(p -> PotentialCustomersGetRes.builder()
+                .id(p.getId())
+                .name(p.getName())
+                .company(p.getCompany())
+                .cls(p.getCls())
+                .status(p.getContactStatus().getMessage())
+                .phone(p.getPhone())
+                .email(p.getEmail())
+                .registerDate(p.getRegisterDate())
+                .build()).collect(Collectors.toList());
+    }
+
+    public List<PotentialCustomersGetRes> getListByFilter(SearchCriteriaDTO searchCriteria) {
+        List<PotentialCustomer> potentialCustomers;
+
+        if ((searchCriteria.getSearchQuery() == null || searchCriteria.getSearchQuery().isEmpty()) &&
+                (searchCriteria.getSearchQuery() == null || searchCriteria.getSearchQuery().isEmpty()) &&
+                (searchCriteria.getSelectedContact().equals("전체"))) {
+            potentialCustomers = potentialCustomerRepository.findAll();
+        }else{
+            if(searchCriteria.getSelectedContact().equals("전체")){
+                potentialCustomers = potentialCustomerRepository.searchByCriteria(searchCriteria.getSelectedItem(),
+                        searchCriteria.getSearchQuery(),
+                        null);
+            }else {
+                potentialCustomers = potentialCustomerRepository.searchByCriteria(searchCriteria.getSelectedItem(),
+                        searchCriteria.getSearchQuery(),
+                        PotentialCustomer.ContactStatus.getStatus(searchCriteria.getSelectedContact()));
+            }
+        }
+        return potentialCustomers.stream().map(p -> PotentialCustomersGetRes.builder()
+                .id(p.getId())
+                .name(p.getName())
+                .company(p.getCompany())
+                .cls(p.getCls())
+                .status(p.getContactStatus().getMessage())
+                .phone(p.getPhone())
+                .email(p.getEmail())
+                .registerDate(p.getRegisterDate())
+                .build()).collect(Collectors.toList());
+    }
+
+
 
     public List<ContactHistoryDto> getContactHistoryList(Long prospectId) {
         PotentialCustomer pCustomer = potentialCustomerRepository.findById(prospectId)
@@ -127,7 +156,5 @@ public class PotentialCustomerService {
         return pCustomerList.stream().map(p->ContactHistoryDto.builder().id(p.getId()).contactDate(p.getContactDate())
                         .cls(p.getCls().getMessage()).content(p.getContent()).userName(p.getUser().getName()).build())
                 .collect(Collectors.toList());
-
-
     }
 }

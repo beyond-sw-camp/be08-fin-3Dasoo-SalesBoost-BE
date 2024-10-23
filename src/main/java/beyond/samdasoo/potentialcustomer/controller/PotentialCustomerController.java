@@ -2,16 +2,13 @@ package beyond.samdasoo.potentialcustomer.controller;
 
 import beyond.samdasoo.common.exception.BaseException;
 import beyond.samdasoo.common.response.BaseResponse;
+import beyond.samdasoo.potentialcustomer.dto.SearchCriteriaDTO;
 import beyond.samdasoo.potentialcustomer.dto.*;
-import beyond.samdasoo.potentialcustomer.entity.ContactHistory;
-import beyond.samdasoo.potentialcustomer.entity.PotentialCustomer;
 import beyond.samdasoo.potentialcustomer.service.PotentialCustomerService;
-import beyond.samdasoo.user.dto.JoinUserReq;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
-import org.springframework.boot.task.ThreadPoolTaskExecutorBuilder;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -67,16 +64,19 @@ public class PotentialCustomerController {
      */
     @GetMapping
     @Operation(summary = "잠재고객 목록 조회", description = "잠재고객 목록을 조회한다")
-    public BaseResponse<List<PotentialCustomerListDto>> getAllPotentialCustomer() {
-        List<PotentialCustomerListDto> result = potentialCustomerService.getAllPotentialCustomer();
+    public BaseResponse<List<PotentialCustomersGetRes>> getPotentialCustomers() {
+        List<PotentialCustomersGetRes> result = potentialCustomerService.getAllPotentialCustomer();
         return new BaseResponse<>(result);
     }
 
     /**
      * 잠재고객 목록 조회 by Filter API
      */
-//    @PostMapping
-//    public
+    @PostMapping
+    public BaseResponse<List<PotentialCustomersGetRes>> getPotentialCustomersByFilter(@RequestBody SearchCriteriaDTO searchCriteria){
+        List<PotentialCustomersGetRes> result  = potentialCustomerService.getListByFilter(searchCriteria);
+        return new BaseResponse<>(result);
+    }
 
     /**
         접촉 이력 생성 API
