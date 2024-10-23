@@ -1,6 +1,7 @@
 package beyond.samdasoo.user.service;
 
 import beyond.samdasoo.common.exception.BaseException;
+import beyond.samdasoo.user.CustomUserDetails;
 import beyond.samdasoo.user.entity.User;
 import beyond.samdasoo.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
@@ -29,6 +30,6 @@ public class CustomUserDetailService implements UserDetailsService {
                     .orElseThrow(() -> new BaseException(EMPLOYEE_ID_NOT_VALID));
         }
 
-        return null;
+        return new CustomUserDetails(user);
     }
 }
