@@ -21,4 +21,6 @@ public class CustomersGetRes {
 
     private String tel;
 
+    private String userName;
+
 }

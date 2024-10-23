@@ -124,7 +124,8 @@ public class UserController {
      * 메일 인증 코드 검증
      */
     @PostMapping("/email/code-check")
-    public BaseResponse<String> emailCodeCheck(@RequestBody EmailCodeCheckReq req) {
+    public BaseResponse<String> emailCodeCheck(@RequestBody EmailCodeCheckReq req){
+
 
         validateEmailRegex(req.getEmail());
 
@@ -132,6 +133,17 @@ public class UserController {
 
         return new BaseResponse<>("메일 인증에 성공하였습니다.");
     }
+
+    /**
+     * 유저 (영업사원) 목록 반환
+     */
+    @GetMapping
+    public BaseResponse<List<UserDepartmentDto>> getUsers(){
+        List<UserDepartmentDto> result = userService.getUsers();
+
+        return new BaseResponse<>(result);
+    }
+
 
 
     private void validateInputEmptySignup(JoinUserReq req) {

@@ -5,10 +5,8 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
 
-import java.util.PriorityQueue;
-
 @Getter
-public class CustomerCreateReq {
+public class UpdateCustomerReq {
 
     @Schema(description = "고객 이름", defaultValue = "이몽룡")
     @NotNull
