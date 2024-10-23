@@ -1,6 +1,7 @@
 package beyond.samdasoo.calendar.entity;
 
 import beyond.samdasoo.act.entity.Act;
+import beyond.samdasoo.common.entity.BaseEntity;
 import beyond.samdasoo.plan.entity.Plan;
 import beyond.samdasoo.todo.entity.Todo;
 import beyond.samdasoo.user.entity.User;
@@ -19,7 +20,7 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 @Table(name="tb_calendar")
-public class Calendar {
+public class Calendar extends BaseEntity {
 
         @Id
         @GeneratedValue(strategy = GenerationType.IDENTITY)
