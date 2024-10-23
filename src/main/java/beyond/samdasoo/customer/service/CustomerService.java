@@ -1,10 +1,12 @@
 package beyond.samdasoo.customer.service;
 
+import beyond.samdasoo.common.dto.SearchCond;
 import beyond.samdasoo.common.exception.BaseException;
 import beyond.samdasoo.common.utils.UserUtil;
 import beyond.samdasoo.customer.dto.*;
 import beyond.samdasoo.customer.entity.Customer;
 import beyond.samdasoo.customer.repository.CustomerRepository;
+import beyond.samdasoo.customer.repository.CustomerRepositoryCustom;
 import beyond.samdasoo.user.entity.User;
 import beyond.samdasoo.user.repository.UserRepository;
 import jakarta.transaction.Transactional;
@@ -23,6 +25,7 @@ public class CustomerService {
 
     private final CustomerRepository customerRepository;
     private final UserRepository userRepository;
+    private final CustomerRepositoryCustom customerRepositoryCustom;
 
     public void create(CustomerCreateReq req) {
 
@@ -100,6 +103,10 @@ public class CustomerService {
         Optional.ofNullable(request.getGrade()).ifPresent(customer::changeGrade);
         Optional.of(request.isKeyMan()).ifPresent(customer::changeKeyman);
 
+    }
+
+    public Long getCustomerCount(SearchCond searchCond) {
+        return customerRepositoryCustom.getCustomerCount(searchCond.getSearchDate(), searchCond.getUserNo());
     }
 }
 

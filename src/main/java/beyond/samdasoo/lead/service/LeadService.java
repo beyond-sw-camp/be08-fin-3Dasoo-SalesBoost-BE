@@ -4,6 +4,7 @@ import beyond.samdasoo.admin.entity.Process;
 import beyond.samdasoo.admin.entity.SubProcess;
 import beyond.samdasoo.admin.repository.ProcessRepository;
 import beyond.samdasoo.admin.repository.SubProcessRepository;
+import beyond.samdasoo.common.dto.SearchCond;
 import beyond.samdasoo.common.exception.BaseException;
 import beyond.samdasoo.customer.entity.Customer;
 import beyond.samdasoo.customer.repository.CustomerRepository;
@@ -13,7 +14,9 @@ import beyond.samdasoo.lead.Entity.Step;
 import beyond.samdasoo.lead.dto.LeadRequestDto;
 import beyond.samdasoo.lead.dto.LeadResponseDto;
 import beyond.samdasoo.lead.dto.LeadSearchCond;
+import beyond.samdasoo.lead.dto.LeadStatusDto;
 import beyond.samdasoo.lead.repository.LeadRepository;
+import beyond.samdasoo.lead.repository.LeadRepositoryCustom;
 import beyond.samdasoo.lead.repository.StepRepository;
 import com.querydsl.core.BooleanBuilder;
 import com.querydsl.jpa.impl.JPAQueryFactory;
@@ -35,6 +38,7 @@ import static beyond.samdasoo.common.response.BaseResponseStatus.*;
 public class LeadService {
     private final JPAQueryFactory queryFactory;
     private final LeadRepository leadRepository;
+    private final LeadRepositoryCustom leadRepositoryCustom;
     private final CustomerRepository customerRepository;
     private final ProcessRepository processRepository;
     private final SubProcessRepository subProcessRepository;
@@ -183,5 +187,11 @@ public class LeadService {
 
             stepRepository.save(step);
         }
+    }
+
+    public List<LeadStatusDto> getLeadStatusGroupedByStatus(SearchCond searchCond) {
+        return leadRepositoryCustom.findLeadStatusGroupedByStatus(
+                searchCond.getSearchDate(), searchCond.getUserNo()
+        );
     }
 }

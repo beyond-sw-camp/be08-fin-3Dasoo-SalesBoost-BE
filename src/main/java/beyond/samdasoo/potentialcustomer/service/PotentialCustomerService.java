@@ -1,21 +1,20 @@
 package beyond.samdasoo.potentialcustomer.service;
 
+import beyond.samdasoo.common.dto.SearchCond;
 import beyond.samdasoo.common.exception.BaseException;
-import beyond.samdasoo.common.response.BaseResponse;
 import beyond.samdasoo.common.utils.UserUtil;
 import beyond.samdasoo.potentialcustomer.dto.*;
 import beyond.samdasoo.potentialcustomer.entity.ContactHistory;
 import beyond.samdasoo.potentialcustomer.entity.PotentialCustomer;
 import beyond.samdasoo.potentialcustomer.repository.ContactHistoryRepository;
 import beyond.samdasoo.potentialcustomer.repository.PotentialCustomerRepository;
-import beyond.samdasoo.user.dto.UserRole;
+import beyond.samdasoo.potentialcustomer.repository.PotentialCustomerRepositoryCustom;
 import beyond.samdasoo.user.entity.User;
 import beyond.samdasoo.user.repository.UserRepository;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import javax.swing.text.html.Option;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -29,6 +28,7 @@ public class PotentialCustomerService {
     private final PotentialCustomerRepository potentialCustomerRepository;
     private final UserRepository userRepository;
     private final ContactHistoryRepository contactHistoryRepository;
+    private final PotentialCustomerRepositoryCustom potentialCustomerRepositoryCustom;
 
     public void create(CreatePotentialCustomerReq request) {
         potentialCustomerRepository.save(request.toPotentialCustomer());
@@ -76,8 +76,8 @@ public class PotentialCustomerService {
 
     @Transactional
     public void updatePotentialCustomer(Long prospectId, UpdatePotentialCustomerReq request) {
-        PotentialCustomer pCustomer =potentialCustomerRepository.findById(prospectId)
-                .orElseThrow(()-> new BaseException(POTENTIAL_CUSTOMER_NOT_EXIST));
+        PotentialCustomer pCustomer = potentialCustomerRepository.findById(prospectId)
+                .orElseThrow(() -> new BaseException(POTENTIAL_CUSTOMER_NOT_EXIST));
 
         Optional.ofNullable(request.getName()).ifPresent(pCustomer::changeName);
         Optional.ofNullable(request.getCompany()).ifPresent(pCustomer::changeCompany);
@@ -93,18 +93,18 @@ public class PotentialCustomerService {
     }
 
     public void insertContactHistory(Long pCustomerId, CreateContactHistoryReq request) {
-        PotentialCustomer pCustomer =potentialCustomerRepository.findById(pCustomerId)
-                .orElseThrow(()-> new BaseException(POTENTIAL_CUSTOMER_NOT_EXIST));
+        PotentialCustomer pCustomer = potentialCustomerRepository.findById(pCustomerId)
+                .orElseThrow(() -> new BaseException(POTENTIAL_CUSTOMER_NOT_EXIST));
 
         String userEmail = UserUtil.getLoginUserEmail();
         User user = userRepository.findByEmail(userEmail)
-                .orElseThrow(()-> new BaseException(USER_NOT_EXIST));
+                .orElseThrow(() -> new BaseException(USER_NOT_EXIST));
 
         // 임시 유저 (테스트용)
 //        User tempUser = User.builder().name("홍길동").email("hong@naver.com").password("1234").role(UserRole.USER).build();
 //        User saveUser = userRepository.save(tempUser);
 
-        ContactHistory contactHistory = request.toContactHistory(user,pCustomer);
+        ContactHistory contactHistory = request.toContactHistory(user, pCustomer);
 
         contactHistoryRepository.save(contactHistory);
     }
@@ -112,9 +112,9 @@ public class PotentialCustomerService {
     public void deleteContactHistory(Long historyId) {
 
         boolean isExist = contactHistoryRepository.existsById(historyId);
-        if(isExist){
+        if (isExist) {
             contactHistoryRepository.deleteById(historyId);
-        }else{
+        } else {
             throw new BaseException(CONTACT_HISTORY_NOT_EXIST);
         }
     }
@@ -124,10 +124,14 @@ public class PotentialCustomerService {
                 .orElseThrow(() -> new BaseException(POTENTIAL_CUSTOMER_NOT_EXIST));
         List<ContactHistory> pCustomerList = contactHistoryRepository.findAllByPcustomer(pCustomer);
 
-        return pCustomerList.stream().map(p->ContactHistoryDto.builder().id(p.getId()).contactDate(p.getContactDate())
+        return pCustomerList.stream().map(p -> ContactHistoryDto.builder().id(p.getId()).contactDate(p.getContactDate())
                         .cls(p.getCls().getMessage()).content(p.getContent()).userName(p.getUser().getName()).build())
                 .collect(Collectors.toList());
+    }
 
-
+    public Long getPotentialCustomerCount(SearchCond searchCond) {
+        return potentialCustomerRepositoryCustom.getPotentialCustomerCount(
+                searchCond.getSearchDate(), searchCond.getUserNo()
+        );
     }
 }
