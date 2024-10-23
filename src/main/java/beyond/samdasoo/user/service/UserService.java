@@ -2,6 +2,9 @@ package beyond.samdasoo.user.service;
 
 import beyond.samdasoo.admin.entity.Department;
 import beyond.samdasoo.admin.repository.DepartmentRepository;
+import beyond.samdasoo.calendar.entity.Calendar;
+import beyond.samdasoo.calendar.repository.CalendarRepository;
+import beyond.samdasoo.calendar.service.CalendarService;
 import beyond.samdasoo.common.email.CertificationNumber;
 import beyond.samdasoo.common.email.EmailProvider;
 import beyond.samdasoo.common.email.EmailRepository;
@@ -22,6 +25,7 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -40,6 +44,7 @@ public class UserService {
     private final EmailProvider emailProvider;
     private final EmailRepository emailRepository;
     private final EmailVerificationUserRedisRepository emailVerificationUserRedisRepository;
+    private final CalendarService calendarService;
 
 
     public JoinUserRes join(JoinUserReq joinUserReq) {
@@ -60,6 +65,9 @@ public class UserService {
         User newUser = joinUserReq.toUser(encoder.encode(joinUserReq.getPassword()), generateEmployeeId(), department);
 
         User saveUser = userRepository.save(newUser);
+
+        // 사용자 가입 시 캘린더 생성
+        calendarService.createCalendar(saveUser);
 
         return new JoinUserRes(saveUser.getEmployeeId());
     }

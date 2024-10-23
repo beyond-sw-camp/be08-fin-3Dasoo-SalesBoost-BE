@@ -2,16 +2,19 @@ package beyond.samdasoo.admin.service;
 
 import beyond.samdasoo.admin.dto.TargetSaleRequestDto;
 import beyond.samdasoo.admin.dto.TargetSaleResponseDto;
+import beyond.samdasoo.admin.dto.TargetSalesStatusDto;
 import beyond.samdasoo.admin.entity.Product;
 import beyond.samdasoo.admin.entity.TargetSale;
 import beyond.samdasoo.admin.repository.ProductRepository;
 import beyond.samdasoo.admin.repository.TargetSaleRepository;
+import beyond.samdasoo.common.dto.SearchCond;
 import beyond.samdasoo.common.exception.BaseException;
+import beyond.samdasoo.sales.dto.SalesStatusDto;
 import beyond.samdasoo.user.entity.User;
 import beyond.samdasoo.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -22,14 +25,11 @@ import static beyond.samdasoo.common.response.BaseResponseStatus.USER_NOT_EXIST;
 
 @Service
 @RequiredArgsConstructor
-public class TargetSaleServiceImpl implements TargetSaleService{
-    @Autowired
-    private final TargetSaleRepository targetSaleRepository;
-    @Autowired
-    private final UserRepository userRepository;
-    @Autowired
-    private final ProductRepository productRepository;
+public class TargetSaleServiceImpl implements TargetSaleService {
 
+    private final TargetSaleRepository targetSaleRepository;
+    private final UserRepository userRepository;
+    private final ProductRepository productRepository;
 
     @Override
     public void addTargetSale(TargetSaleRequestDto request) {
@@ -50,8 +50,8 @@ public class TargetSaleServiceImpl implements TargetSaleService{
         if (targetSales.isEmpty()) {
             if (request.getSum() != 0) {
                 int sum = request.getSum() - (request.getSum() % 12);
-                for (int i = 0; i < 12; i++) {
 
+                for (int i = 0; i < 12; i++) {
                     int monthTarget = sum / 12;
 
                     TargetSale targetSale = TargetSale.builder()
@@ -94,9 +94,9 @@ public class TargetSaleServiceImpl implements TargetSaleService{
                 for (int i = 0; i < 12; i++) {
                     int newMonthTarget = 0;
                     if (request.getMonthTargets() != null && request.getMonthTargets().size() > i) {
-                        if(request.getMonthTargets().get(i) == null){
+                        if (request.getMonthTargets().get(i) == null) {
                             newMonthTarget = 0;
-                        }else{
+                        } else {
                             newMonthTarget = request.getMonthTargets().get(i);
                         }
 
@@ -109,7 +109,6 @@ public class TargetSaleServiceImpl implements TargetSaleService{
             }
         }
     }
-
 
     @Override
     public List<TargetSaleResponseDto> getTargetSaleByUserName(String userName, int year) {
@@ -125,5 +124,10 @@ public class TargetSaleServiceImpl implements TargetSaleService{
         return targetSales.stream()
                 .map(targetSale -> new TargetSaleResponseDto(targetSale))
                 .collect(Collectors.toList());
+    }
+
+    @Transactional(readOnly = true)
+    public TargetSalesStatusDto getTargetSalesStatus(SearchCond searchCond) {
+        return targetSaleRepository.findTargetSalesStatus(searchCond);
     }
 }

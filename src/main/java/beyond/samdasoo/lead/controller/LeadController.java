@@ -1,15 +1,17 @@
 package beyond.samdasoo.lead.controller;
 
+import beyond.samdasoo.common.dto.SearchCond;
 import beyond.samdasoo.common.response.BaseResponse;
 import beyond.samdasoo.lead.dto.LeadRequestDto;
 import beyond.samdasoo.lead.dto.LeadResponseDto;
 import beyond.samdasoo.lead.dto.LeadSearchCond;
+import beyond.samdasoo.lead.dto.LeadStatusDto;
 import beyond.samdasoo.lead.service.LeadService;
 import io.swagger.v3.oas.annotations.Operation;
-import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.ResponseEntity;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -19,6 +21,7 @@ import java.util.List;
 @RequestMapping("/api/leads")
 @Tag(name = "Lead APIs", description = "영업기회 API")
 public class LeadController {
+    private static final Logger log = LoggerFactory.getLogger(LeadController.class);
     private final LeadService leadService;
 
     @PostMapping
@@ -61,5 +64,12 @@ public class LeadController {
     public BaseResponse<String> deleteLead(@PathVariable Long no) {
         leadService.deleteLead(no);
         return new BaseResponse<>(no + " 영업기회가 삭제됐습니다.");
+    }
+
+    @PostMapping("/status/main")
+    @Operation(summary = "영업기회 상태별 조회", description = "영업기회 Status group by 조회(검색조건: 시작일자, 고객.담당자번호)")
+    public BaseResponse<List<LeadStatusDto>> getLeadStatusMain(@RequestBody SearchCond searchCond) {
+        List<LeadStatusDto> leadStatus = leadService.getLeadStatusGroupedByStatus(searchCond);
+        return new BaseResponse<>(leadStatus);
     }
 }
