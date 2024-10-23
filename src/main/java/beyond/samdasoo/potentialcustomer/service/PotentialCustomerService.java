@@ -2,6 +2,8 @@ package beyond.samdasoo.potentialcustomer.service;
 
 import beyond.samdasoo.common.exception.BaseException;
 import beyond.samdasoo.common.utils.UserUtil;
+import beyond.samdasoo.customer.entity.Customer;
+import beyond.samdasoo.customer.repository.CustomerRepository;
 import beyond.samdasoo.potentialcustomer.dto.*;
 import beyond.samdasoo.potentialcustomer.entity.ContactHistory;
 import beyond.samdasoo.potentialcustomer.entity.PotentialCustomer;
@@ -14,6 +16,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
@@ -26,6 +29,7 @@ public class PotentialCustomerService {
     private final PotentialCustomerRepository potentialCustomerRepository;
     private final UserRepository userRepository;
     private final ContactHistoryRepository contactHistoryRepository;
+    private final CustomerRepository customerRepository;
 
     public void create(CreatePotentialCustomerReq request) {
         potentialCustomerRepository.save(request.toPotentialCustomer());
@@ -60,6 +64,14 @@ public class PotentialCustomerService {
         PotentialCustomer pCustomer =potentialCustomerRepository.findById(prospectId)
                 .orElseThrow(()-> new BaseException(POTENTIAL_CUSTOMER_NOT_EXIST));
 
+        // 접촉상태가 '고객전환'일 경우 고객으로 전환
+        if(Objects.equals(request.getStatus(), PotentialCustomer.ContactStatus.CONVERT_CUSTOMER.getMessage())){
+            String loginUserEmail = UserUtil.getLoginUserEmail();
+            User user = userRepository.findByEmail(loginUserEmail).get();
+            Customer newCustomer = convertToCustomer(pCustomer,user);
+            customerRepository.save(newCustomer);
+        }
+
         Optional.ofNullable(request.getName()).ifPresent(pCustomer::changeName);
         Optional.ofNullable(request.getCompany()).ifPresent(pCustomer::changeCompany);
         Optional.ofNullable(request.getPosition()).ifPresent(pCustomer::changePosition);
@@ -71,6 +83,26 @@ public class PotentialCustomerService {
         Optional.ofNullable(request.getFax()).ifPresent(pCustomer::changeFax); // 팩스
         Optional.ofNullable(request.getAddr()).ifPresent(pCustomer::changeAddr); // 주소
         Optional.ofNullable(request.getNote()).ifPresent(pCustomer::changeNote); // 비고
+    }
+
+    private Customer convertToCustomer(PotentialCustomer pCustomer,User user) {
+        // 등급이 x 일경우 즉 미선택일 경우는 A 등급으로 넣어주고 아니면 원래 등급으로
+        Customer.Grade grade = Customer.Grade.A;
+        if(pCustomer.getGrade() != PotentialCustomer.Grade.X){
+            grade = Customer.Grade.getGradeByMessage(pCustomer.getGrade().getMessage());
+        }
+        return Customer.builder()
+                .name(pCustomer.getName())
+                .company(pCustomer.getCompany())
+                .dept(pCustomer.getDept())
+                .position(pCustomer.getPosition())
+                .phone(pCustomer.getPhone())
+                .email(pCustomer.getEmail())
+                .grade(grade)
+                .potentialCustomer(pCustomer)
+                .user(user)
+                .build();
+
     }
 
     public void insertContactHistory(Long pCustomerId, CreateContactHistoryReq request) {
