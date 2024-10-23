@@ -19,7 +19,7 @@ public class CustomerController {
 
     private final CustomerService customerService;
 
-    /*
+    /**
     고객 등록 API
      */
     @Operation(summary = "고객 등록", description = "새로운 고객 등록")
@@ -40,9 +40,8 @@ public class CustomerController {
         return new BaseResponse<>(result);
 
     }
-
-
-    /*
+  
+    /**
     고객 수정 API
      */
     @PatchMapping("/{customerId}")
@@ -51,14 +50,15 @@ public class CustomerController {
         return new BaseResponse<>("고객 정보가 수정되었습니다");
     }
 
-    /*
+
+    /**
     고객 삭제 API
      */
     @DeleteMapping
     public void deleteCustomer() {
     }
 
-    /*
+    /**
     고객 목록 조회 API
     */
     @GetMapping
@@ -67,7 +67,7 @@ public class CustomerController {
         return new BaseResponse<>(result);
     }
 
-    /*
+    /**
     고객 목록 조회 by Filter API
      */
     @PostMapping

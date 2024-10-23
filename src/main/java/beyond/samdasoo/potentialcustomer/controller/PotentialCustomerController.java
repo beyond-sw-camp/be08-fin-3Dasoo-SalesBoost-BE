@@ -3,6 +3,7 @@ package beyond.samdasoo.potentialcustomer.controller;
 import beyond.samdasoo.common.dto.SearchCond;
 import beyond.samdasoo.common.exception.BaseException;
 import beyond.samdasoo.common.response.BaseResponse;
+import beyond.samdasoo.potentialcustomer.dto.SearchCriteriaDTO;
 import beyond.samdasoo.potentialcustomer.dto.*;
 import beyond.samdasoo.potentialcustomer.service.PotentialCustomerService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -26,7 +27,7 @@ public class PotentialCustomerController {
     /**
      * 잠재고객 생성 API
      */
-    @PostMapping("")
+    @PostMapping("/add")
     @Operation(summary = "잠재고객 등록", description = "새로운 잠재고객을 등록한다")
     public BaseResponse<String> createPotentialCustomer(@RequestBody CreatePotentialCustomerReq request) {
         validateInputEmptyCreate(request);
@@ -63,8 +64,17 @@ public class PotentialCustomerController {
      */
     @GetMapping
     @Operation(summary = "잠재고객 목록 조회", description = "잠재고객 목록을 조회한다")
-    public BaseResponse<List<PotentialCustomerListDto>> getAllPotentialCustomer() {
-        List<PotentialCustomerListDto> result = potentialCustomerService.getAllPotentialCustomer();
+    public BaseResponse<List<PotentialCustomersGetRes>> getPotentialCustomers() {
+        List<PotentialCustomersGetRes> result = potentialCustomerService.getAllPotentialCustomer();
+        return new BaseResponse<>(result);
+    }
+
+    /**
+     * 잠재고객 목록 조회 by Filter API
+     */
+    @PostMapping
+    public BaseResponse<List<PotentialCustomersGetRes>> getPotentialCustomersByFilter(@RequestBody SearchCriteriaDTO searchCriteria){
+        List<PotentialCustomersGetRes> result  = potentialCustomerService.getListByFilter(searchCriteria);
         return new BaseResponse<>(result);
     }
 
@@ -99,7 +109,7 @@ public class PotentialCustomerController {
 
         potentialCustomerService.deleteContactHistory(historyId);
 
-        return new BaseResponse<>("해당 내용을 삭제했습니다.");
+        return new BaseResponse<>("해당 이력을 삭제했습니다");
     }
 
     private void validateInputEmptyCreate(CreatePotentialCustomerReq req) {
