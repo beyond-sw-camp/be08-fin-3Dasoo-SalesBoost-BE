@@ -22,7 +22,9 @@ public interface UserRepository extends JpaRepository<User, Long>, QuerydslPredi
     Optional<User> findByEmployeeId(String employeeId);
 
     boolean existsByEmail(String email);
-
+  
     @Query(value = "SELECT new beyond.samdasoo.user.dto.UserDepartmentDto(u.id, u.name,d.deptName) FROM User u JOIN u.department d")
     List<UserDepartmentDto> findAllUsersWithDepartmentNames();
+  
+    User getUserByName(String userName);
 }

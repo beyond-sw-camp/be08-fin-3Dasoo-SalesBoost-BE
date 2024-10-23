@@ -30,12 +30,15 @@ public class SubProcess extends BaseEntity {
     @Column(name = "progress_step", nullable = false)
     private String progressStep;        // 현재 진행 단계
 
+    @Column(name = "description")
+    private String description;
+
     @Column(name = "success_rate")
     private Integer successRate;            // 성공 확률
-
+    
     @Column(name = "action", nullable = true)
     private String action;              // 프로세스 변경 액션
-
+    
     @Column(name = "expected_duration")
     private Integer expectedDuration;       // 예상 소요 시간
 }
