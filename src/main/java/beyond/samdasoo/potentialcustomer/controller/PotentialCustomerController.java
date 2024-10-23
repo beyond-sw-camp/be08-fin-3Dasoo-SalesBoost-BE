@@ -109,7 +109,7 @@ public class PotentialCustomerController {
 
         potentialCustomerService.deleteContactHistory(historyId);
 
-        return new BaseResponse<>("해당 내용을 삭제했습니다.");
+        return new BaseResponse<>("해당 이력을 삭제했습니다");
     }
 
     private void validateInputEmptyCreate(CreatePotentialCustomerReq req) {
