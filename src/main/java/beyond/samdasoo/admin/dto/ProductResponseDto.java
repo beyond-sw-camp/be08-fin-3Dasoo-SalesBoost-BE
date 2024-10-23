@@ -14,6 +14,8 @@ import java.time.LocalDate;
 @Builder
 public class ProductResponseDto {
 
+    private Long prodNo;
+
     private String prodCode;
 
     private String name;
@@ -41,6 +43,7 @@ public class ProductResponseDto {
     private int price;
 
     public ProductResponseDto(Product product) {
+        this.prodNo = product.getProdNo();
         this.prodCode = product.getProdCode();
         this.name = product.getName();
         this.engName = product.getEngName();

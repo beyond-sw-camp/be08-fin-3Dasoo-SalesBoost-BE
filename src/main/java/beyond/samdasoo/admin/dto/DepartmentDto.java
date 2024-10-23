@@ -21,11 +21,12 @@ public class DepartmentDto {
 
     private String deptHead;
 
-
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<DepartmentDto> children;
 
-    public DepartmentDto(Long no, String name, String deptCode, String engName, String deptHead) {
+    private String upperDeptName;
+
+    public DepartmentDto(Long no, String name, String deptCode, String engName, String deptHead, String upperDeptName) {
         this.no = no;
 
         this.name = name;
@@ -36,5 +37,6 @@ public class DepartmentDto {
 
         this.deptHead = deptHead;
 
+        this.upperDeptName = upperDeptName;
     }
 }

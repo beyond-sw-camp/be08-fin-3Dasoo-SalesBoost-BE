@@ -13,7 +13,7 @@ public interface ProductService {
     // 이름으로 상품 조회
     ProductResponseDto getProductByName(String name);
 
-    void deleteProductByNo(Long productNo);
+    void deleteProductByNo(Long prodNo);
 
     void updateProductByNo(Long productNo, ProductRequestDto request);
 }

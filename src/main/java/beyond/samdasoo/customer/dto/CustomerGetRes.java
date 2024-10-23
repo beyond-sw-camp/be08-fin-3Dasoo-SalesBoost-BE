@@ -1,12 +1,12 @@
 package beyond.samdasoo.customer.dto;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
 @AllArgsConstructor
 @Getter
 public class CustomerGetRes {
-
 
         private Long id;
 
@@ -24,8 +24,10 @@ public class CustomerGetRes {
 
         private String grade;
 
-        private boolean isKeyMan;
+        private boolean keyMan;
 
         private String dept;
+
+        private String userName; // 담당자
 
     }

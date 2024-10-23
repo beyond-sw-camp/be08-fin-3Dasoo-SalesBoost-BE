@@ -19,7 +19,7 @@ public class SubProcessRequestDto {
 
     private Integer successRate;            // 성공 확률
 
-    private String action;              // 프로세스 변경 액션
+    private String description;             // 내용
 
     private Integer expectedDuration;       // 예상 소요 시간
 }

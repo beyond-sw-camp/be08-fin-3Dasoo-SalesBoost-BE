@@ -11,7 +11,7 @@ import lombok.NoArgsConstructor;
 @Builder
 public class DepartmentRequestDto {
 
-    private Long upperDeptNo;        // 상위 부서 코드
+    private String upperDeptName;        // 상위 부서 이름
 
     private String deptCode;    // 부서 코드
 

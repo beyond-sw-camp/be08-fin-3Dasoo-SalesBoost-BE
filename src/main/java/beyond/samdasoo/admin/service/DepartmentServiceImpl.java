@@ -26,25 +26,23 @@ public class DepartmentServiceImpl implements DepartmentService{
     @Override
     public void addDepartment(DepartmentRequestDto request) {
         boolean exists = departmentRepository.existsByDeptName(request.getDeptName());
-        Department upprDepartment = null;
+        Optional<Department> upprDepartment = null;
 
         if(exists){
             throw new BaseException(DEPARTMENT_ALREADY_EXIST);
         }
 
-        if(request.getUpperDeptNo() != null) {
-            Optional<Department> optionalUpperDepartment = departmentRepository.findById(request.getUpperDeptNo());
+        if(request.getUpperDeptName() != null) {
+            upprDepartment = departmentRepository.findByDeptName(request.getUpperDeptName());
 
-            if (optionalUpperDepartment.isEmpty()) {
+            if (upprDepartment.isEmpty()) {
                 throw new BaseException(UPPER_DEPARTMENT_NOT_EXIST);
             }
-
-            upprDepartment = optionalUpperDepartment.get();
         }
 
         Department department = Department.builder()
                 .engName(request.getEngName())
-                .parent(upprDepartment)
+                .parent(upprDepartment.get())
                 .deptName(request.getDeptName())
                 .deptCode(request.getDeptCode())
                 .deptHead(request.getDeptHead())
@@ -66,16 +64,25 @@ public class DepartmentServiceImpl implements DepartmentService{
 
     private DepartmentDto departmentTree(Department department) {
 
+        String upperDeptName = "";
+
+        if(department.getParent() != null){
+            Optional<Department> upperDept =  departmentRepository.findById(department.getParent().getDeptNo());
+
+            upperDeptName = upperDept.get().getDeptName();
+
+        }
+
         if (!department.getChildren().isEmpty()) {
             List<DepartmentDto> childDtos = new ArrayList<>();
             for (Department child : department.getChildren()) {
                 childDtos.add(departmentTree(child));
             }
             return new DepartmentDto(department.getDeptNo(), department.getDeptName(),
-                    department.getDeptCode(), department.getEngName(), department.getDeptHead(), childDtos);
+                    department.getDeptCode(), department.getEngName(), department.getDeptHead(), childDtos, upperDeptName);
         } else {
             return new DepartmentDto(department.getDeptNo(), department.getDeptName(),
-                    department.getDeptCode(), department.getEngName(), department.getDeptHead());
+                    department.getDeptCode(), department.getEngName(), department.getDeptHead(), upperDeptName);
         }
     }
 
@@ -124,8 +131,8 @@ public class DepartmentServiceImpl implements DepartmentService{
         if(request.getDeptHead() != null){
             department.setDeptHead(request.getDeptHead());
         }
-        if(request.getUpperDeptNo() != null){
-            Optional<Department> optionalUpperDepartment = departmentRepository.findById(request.getUpperDeptNo());
+        if(request.getUpperDeptName() != null){
+            Optional<Department> optionalUpperDepartment = departmentRepository.findByDeptName(request.getUpperDeptName());
 
             if (optionalUpperDepartment.isEmpty()) {
                 throw new BaseException(UPPER_DEPARTMENT_NOT_EXIST);
