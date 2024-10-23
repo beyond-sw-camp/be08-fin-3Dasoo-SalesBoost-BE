@@ -2,6 +2,7 @@ package beyond.samdasoo.user.repository;
 
 import beyond.samdasoo.admin.entity.Department;
 import beyond.samdasoo.admin.repository.DepartmentRepository;
+import beyond.samdasoo.common.config.QuerydslConfig;
 import beyond.samdasoo.user.dto.UserRole;
 import beyond.samdasoo.user.entity.User;
 import org.junit.jupiter.api.DisplayName;
@@ -9,6 +10,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.context.annotation.Import;
 import org.springframework.test.context.TestPropertySource;
 
 import java.util.Optional;
@@ -17,6 +19,7 @@ import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 
 @DataJpaTest
 @TestPropertySource("classpath:application-test.properties")
+@Import(QuerydslConfig.class)
 public class UserRepositoryTest {
 
     @Autowired
