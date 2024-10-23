@@ -2,7 +2,9 @@ package beyond.samdasoo.act.controller;
 
 import beyond.samdasoo.act.dto.ActRequestDto;
 import beyond.samdasoo.act.dto.ActResponseDto;
+import beyond.samdasoo.act.dto.ActStatusDto;
 import beyond.samdasoo.act.service.ActService;
+import beyond.samdasoo.common.dto.SearchCond;
 import beyond.samdasoo.common.exception.BaseException;
 import beyond.samdasoo.common.response.BaseResponse;
 import beyond.samdasoo.common.response.BaseResponseStatus;
@@ -117,4 +119,9 @@ public class ActController {
         }
     }
 
+    @PostMapping("/status/main")
+    public ResponseEntity<ActStatusDto> getActStatus(@RequestBody SearchCond searchCond) {
+        ActStatusDto actStatus = actService.getActStatus(searchCond);
+        return ResponseEntity.ok(actStatus);
+    }
 }

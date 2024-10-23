@@ -2,10 +2,12 @@ package beyond.samdasoo.act.service;
 
 import beyond.samdasoo.act.dto.ActRequestDto;
 import beyond.samdasoo.act.dto.ActResponseDto;
+import beyond.samdasoo.act.dto.ActStatusDto;
 import beyond.samdasoo.act.entity.Act;
 import beyond.samdasoo.act.entity.QAct;
 import beyond.samdasoo.act.repository.ActRepository;
 import beyond.samdasoo.calendar.repository.CalendarRepository;
+import beyond.samdasoo.common.dto.SearchCond;
 import beyond.samdasoo.common.exception.BaseException;
 import beyond.samdasoo.lead.Entity.Lead;
 import beyond.samdasoo.lead.repository.LeadRepository;
@@ -15,6 +17,7 @@ import com.querydsl.jpa.impl.JPAQueryFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -155,5 +158,8 @@ public class ActService {
                 ));
     }
 
-
+    @Transactional(readOnly = true)
+    public ActStatusDto getActStatus(SearchCond searchCond) {
+        return actRepository.findActStatus(searchCond.getSearchDate(), searchCond.getUserNo());
+    }
 }
