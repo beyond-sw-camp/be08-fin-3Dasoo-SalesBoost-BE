@@ -1,11 +1,13 @@
 package beyond.samdasoo.sales.service;
 
+import beyond.samdasoo.common.dto.SearchCond;
 import beyond.samdasoo.common.exception.BaseException;
 import beyond.samdasoo.common.response.BaseResponseStatus;
 import beyond.samdasoo.contract.entity.Contract;
 import beyond.samdasoo.contract.repository.ContractRepository;
 import beyond.samdasoo.sales.dto.SalesRequestDto;
 import beyond.samdasoo.sales.dto.SalesResponseDto;
+import beyond.samdasoo.sales.dto.SalesStatusDto;
 import beyond.samdasoo.sales.entity.Sales;
 import beyond.samdasoo.sales.repository.SalesRepository;
 import lombok.RequiredArgsConstructor;
@@ -108,5 +110,10 @@ public class SalesService {
     @Transactional
     public void deleteSales(@PathVariable("no") Long no) {
         salesRepository.delete(findSalesId(no));
+    }
+
+    @Transactional(readOnly = true)
+    public SalesStatusDto getSalesStatus(SearchCond searchCond) {
+        return salesRepository.findSalesStatus(searchCond);
     }
 }
