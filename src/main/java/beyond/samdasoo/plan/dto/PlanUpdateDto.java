@@ -2,12 +2,16 @@ package beyond.samdasoo.plan.dto;
 
 import beyond.samdasoo.plan.entity.PlanStatus;
 import io.swagger.v3.oas.annotations.media.Schema;
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.time.LocalDate;
 import java.util.List;
 
 @Data
+@NoArgsConstructor
+@AllArgsConstructor
 public class PlanUpdateDto {
 
     @Schema(description = "개인일정 여부(Y:개인일정)", defaultValue = "Y")
