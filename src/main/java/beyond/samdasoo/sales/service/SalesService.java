@@ -21,6 +21,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.client.RestTemplate;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -46,6 +47,18 @@ public class SalesService {
         return salesRepository.findById(no)
                 .map(SalesResponseDto::new)
                 .orElseThrow(() -> new BaseException(BaseResponseStatus.SALES_NOT_EXIST));
+    }
+
+    // 해당 연도의 월별 매출 데이터를 조회하는 메서드
+    public Map<String, Integer> getMonthlySalesData(String year) {
+        Map<String, Integer> monthlySales = new HashMap<>();
+        for (int i = 1; i <= 12; i++) {
+            String yearMonth = String.format("%s-%02d", year, i);
+            // 월별 매출 데이터를 조회하여 없으면 0으로 설정
+            Integer salesCount = salesRepository.findSalesCountByMonth(yearMonth).orElse(0);
+            monthlySales.put(yearMonth, salesCount);
+        }
+        return monthlySales;
     }
 
     // 매출 생성
