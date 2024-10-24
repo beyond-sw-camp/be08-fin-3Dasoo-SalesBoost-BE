@@ -72,35 +72,35 @@ public class UserService {
         return new JoinUserRes(saveUser.getEmployeeId());
     }
 
-    public TokenResult login(LoginUserReq loginUserReq) {
-        String type = loginUserReq.getLoginType();
-
-        User findUser = null;
-
-        if (type.equals("email")) { // 이메일 로그인
-            findUser = userRepository.findByEmail(loginUserReq.getEmail())
-                    .orElseThrow(() -> new BaseException(EMAIL_OR_PWD_NOT_FOUND));
-        } else if (type.equals("employeeId")) {
-            findUser = userRepository.findByEmployeeId(loginUserReq.getEmployeeId())
-                    .orElseThrow(() -> new BaseException(EMPLOYEE_ID_NOT_VALID));
-        } else {
-            throw new BaseException(LOGIN_TYPE_NOT_VALID);
-        }
-
-
-        boolean matches = encoder.matches(loginUserReq.getPassword(), findUser.getPassword());
-
-        if (!matches) {
-            throw new BaseException(EMAIL_OR_PWD_NOT_FOUND);
-        }
-
-        String accessToken = jwtTokenProvider.createToken(findUser.getEmail(), findUser.getRole().toString(), "ACCESS");
-        String refreshToken = jwtTokenProvider.createToken(findUser.getEmail(), findUser.getRole().toString(), "REFRESH");
-
-        refreshTokenService.saveToken(findUser.getEmail(), refreshToken);
-
-        return new TokenResult(accessToken, refreshToken, findUser.getName(), findUser.getEmail(), findUser.getRole(), findUser.getDepartment().getDeptName());
-    }
+//    public TokenResult login(LoginUserReq loginUserReq) {
+//        String type = loginUserReq.getLoginType();
+//
+//        User findUser = null;
+//
+//        if (type.equals("email")) { // 이메일 로그인
+//            findUser = userRepository.findByEmail(loginUserReq.getEmail())
+//                    .orElseThrow(() -> new BaseException(EMAIL_OR_PWD_NOT_FOUND));
+//        } else if (type.equals("employeeId")) {
+//            findUser = userRepository.findByEmployeeId(loginUserReq.getEmployeeId())
+//                    .orElseThrow(() -> new BaseException(EMPLOYEE_ID_NOT_VALID));
+//        } else {
+//            throw new BaseException(LOGIN_TYPE_NOT_VALID);
+//        }
+//
+//
+//        boolean matches = encoder.matches(loginUserReq.getPassword(), findUser.getPassword());
+//
+//        if (!matches) {
+//            throw new BaseException(EMAIL_OR_PWD_NOT_FOUND);
+//        }
+//
+//        String accessToken = jwtTokenProvider.createToken(findUser.getEmail(), findUser.getRole().toString(), "ACCESS");
+//        String refreshToken = jwtTokenProvider.createToken(findUser.getEmail(), findUser.getRole().toString(), "REFRESH");
+//
+//        refreshTokenService.saveToken(findUser.getEmail(), refreshToken);
+//
+//        return new TokenResult(accessToken, refreshToken, findUser.getName(), findUser.getEmail(), findUser.getRole(), findUser.getDepartment().getDeptName());
+//    }
 
     public UserDto getUser(String email) {
         //   User findUser = userRepository.findById(userId).orElseThrow(()->new BaseException(USER_NOT_EXIST));
