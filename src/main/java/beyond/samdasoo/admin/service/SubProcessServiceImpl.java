@@ -39,6 +39,8 @@ public class SubProcessServiceImpl implements SubProcessService{
             throw new BaseException(SUBPROCESS_ALREADY_EXIST);
         }
 
+        process.setExpectedDuration(process.getExpectedDuration() + request.getExpectedDuration());
+
         SubProcess subProcess = SubProcess.builder()
                 .process(process)
                 .subProcessName(request.getSubProcessName())
@@ -123,6 +125,15 @@ public class SubProcessServiceImpl implements SubProcessService{
         }
 
         subProcessRepository.save(subProcess);
+    }
+
+    @Override
+    public List<SubProcessResponseDto> getAllSubProcess() {
+        List<SubProcess> subProcesses = subProcessRepository.findAll();
+
+        return subProcesses.stream()
+                .map(subProcess -> new SubProcessResponseDto(subProcess))
+                .collect(Collectors.toList());
     }
 }
 

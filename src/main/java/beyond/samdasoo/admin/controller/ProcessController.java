@@ -13,7 +13,7 @@ import java.util.List;
 
 @Tag(name="Process APIs",description = "프로세스 관련 API")
 @RestController
-@RequestMapping("/api/processes")
+@RequestMapping("/api/admin/processes")
 public class ProcessController {
     @Autowired
     private ProcessService processService;
@@ -21,7 +21,7 @@ public class ProcessController {
     // 모든 상품 조회 API
     @GetMapping
     @Operation(summary = "모든 프로세스 조회", description = "관리자 계정에 등록되어있는 모든 프로세스를 조회")
-    public BaseResponse<List< ProcessResponseDto >> getAllProducts() {
+    public BaseResponse<List< ProcessResponseDto >> getAllProcesses() {
         List<ProcessResponseDto> processes = processService.getAllProcesses();
         return new BaseResponse<>(processes);
     }
