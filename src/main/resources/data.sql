@@ -31,6 +31,10 @@ INSERT INTO `tb_user` (user_no,name,email,password,employee_id,dept_id,role,crea
 SELECT 2,'삼다수','samdasoo@naver.com','$2a$10$NQ5nj6.3UnFxec0idKxma.pn2mq5L5qIjouO4oueMRzjH/5tPX84e','20241011005','006','USER',now(),now(),now()
 WHERE NOT EXISTS (SELECT 1 FROM tb_user WHERE email = 'samdasoo@naver.com');
 
+INSERT INTO `tb_user` (user_no,name,email,password,employee_id,dept_id,role,created_at,updated_at,join_date)
+SELECT 3,'관리자','admin@naver.com','$2a$10$NQ5nj6.3UnFxec0idKxma.pn2mq5L5qIjouO4oueMRzjH/5tPX84e','20200711002','003','ADMIN',now(),now(),now()
+WHERE NOT EXISTS (SELECT 1 FROM tb_user WHERE email = 'admin@naver.com');
+
 INSERT INTO `tb_customer` (customer_no,name,company,dept,position,email,phone,tel,grade,is_keyman,user_no,created_at,updated_at)
 SELECT 1, '김은경', '네이버','개발1팀','과장','abc@naver.com','01012348888','0313445999','S',true,1,now(),now()
 WHERE NOT EXISTS (SELECT 1 FROM tb_customer WHERE customer_no=1);

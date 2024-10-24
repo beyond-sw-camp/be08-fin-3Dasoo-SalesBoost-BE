@@ -1,6 +1,7 @@
 package beyond.samdasoo.act.entity;
 
 import beyond.samdasoo.calendar.entity.Calendar;
+import beyond.samdasoo.common.entity.BaseEntity;
 import beyond.samdasoo.lead.Entity.Lead;
 import beyond.samdasoo.plan.entity.Plan;
 import jakarta.persistence.*;
@@ -17,7 +18,7 @@ import java.time.LocalDate;
 @NoArgsConstructor
 @AllArgsConstructor
 @Table(name="tb_act")
-public class Act {
+public class Act extends BaseEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

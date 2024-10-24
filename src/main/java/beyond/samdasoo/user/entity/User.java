@@ -38,7 +38,7 @@ public class User extends BaseEntity {
     private String employeeId; // 사번
 
     @JoinColumn(name = "dept_id",nullable = false)
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     private Department department;
 
     @Enumerated(EnumType.STRING)
@@ -57,6 +57,10 @@ public class User extends BaseEntity {
 
     public void RoleChangeToUser(){
         this.role = UserRole.USER;
+    }
+
+    public void setJoinDate(LocalDate joinDate){
+        this.joinDate = joinDate;
     }
 
     @Builder

@@ -7,8 +7,9 @@ import org.springframework.data.jpa.repository.Query;
 
 import java.util.Optional;
 
-public interface SalesRepository extends JpaRepository<Sales, Long> {
+public interface SalesRepository extends JpaRepository<Sales, Long >,SalesRepositoryCustom {
 
     @Query("SELECT SUM(s.price) FROM Sales s WHERE FUNCTION('DATE_FORMAT', s.salesDate, '%Y-%m') = :yearMonth")
     Optional<Integer> findSalesCountByMonth(@Param("yearMonth") String yearMonth);
+
 }

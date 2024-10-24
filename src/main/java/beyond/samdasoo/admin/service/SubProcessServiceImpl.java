@@ -44,7 +44,7 @@ public class SubProcessServiceImpl implements SubProcessService{
                 .subProcessName(request.getSubProcessName())
                 .progressStep(request.getProgressStep())
                 .successRate(request.getSuccessRate())
-                .action(request.getAction())
+                .description(request.getDescription())
                 .expectedDuration(request.getExpectedDuration())
                 .build();
 
@@ -114,8 +114,8 @@ public class SubProcessServiceImpl implements SubProcessService{
             subProcess.setSuccessRate(request.getSuccessRate());
         }
 
-        if(request.getAction() != null){
-            subProcess.setAction(request.getAction());
+        if(request.getDescription() != null){
+            subProcess.setDescription(request.getDescription());
         }
 
         if(request.getExpectedDuration() != null){

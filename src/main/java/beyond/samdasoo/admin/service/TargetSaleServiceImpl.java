@@ -2,16 +2,19 @@ package beyond.samdasoo.admin.service;
 
 import beyond.samdasoo.admin.dto.TargetSaleRequestDto;
 import beyond.samdasoo.admin.dto.TargetSaleResponseDto;
+import beyond.samdasoo.admin.dto.TargetSalesStatusDto;
 import beyond.samdasoo.admin.entity.Product;
 import beyond.samdasoo.admin.entity.TargetSale;
 import beyond.samdasoo.admin.repository.ProductRepository;
 import beyond.samdasoo.admin.repository.TargetSaleRepository;
+import beyond.samdasoo.common.dto.SearchCond;
 import beyond.samdasoo.common.exception.BaseException;
+import beyond.samdasoo.sales.dto.SalesStatusDto;
 import beyond.samdasoo.user.entity.User;
 import beyond.samdasoo.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -22,99 +25,97 @@ import static beyond.samdasoo.common.response.BaseResponseStatus.USER_NOT_EXIST;
 
 @Service
 @RequiredArgsConstructor
-public class TargetSaleServiceImpl implements TargetSaleService{
-    @Autowired
-    private final TargetSaleRepository targetSaleRepository;
-    @Autowired
-    private final UserRepository userRepository;
-    @Autowired
-    private final ProductRepository productRepository;
+public class TargetSaleServiceImpl implements TargetSaleService {
 
+    private final TargetSaleRepository targetSaleRepository;
+    private final UserRepository userRepository;
+    private final ProductRepository productRepository;
 
     @Override
     public void addTargetSale(TargetSaleRequestDto request) {
 
-        Product product = productRepository.getByProdNo(request.getProductNo());
-        User user = userRepository.getReferenceById(request.getUserId());
+        Product product = productRepository.getByName(request.getProdName());
+        User user = userRepository.getUserByName(request.getUserName());
 
-        if(!userRepository.existsById(request.getUserId())){
+        if (user == null) {
             throw new BaseException(USER_NOT_EXIST);
         }
 
-        if(product == null){
+        if (product == null) {
             throw new BaseException(Product_NOT_EXIST);
         }
 
         List<TargetSale> targetSales = targetSaleRepository.findByUserAndProductAndYear(user, product, request.getYear());
 
-        if(targetSales.isEmpty()){
-            if(request.getSum() != 0){
-
+        if (targetSales.isEmpty()) {
+            if (request.getSum() != 0) {
                 int sum = request.getSum() - (request.getSum() % 12);
 
-                for(int i = 0; i < 12; i ++){
+                for (int i = 0; i < 12; i++) {
+                    int monthTarget = sum / 12;
+
                     TargetSale targetSale = TargetSale.builder()
                             .user(user)
                             .product(product)
-                            .monthTarget(sum/12)
-                            .month(i+1)
+                            .monthTarget(monthTarget)
+                            .month(i + 1)
                             .year(request.getYear())
                             .build();
 
                     targetSaleRepository.save(targetSale);
-
                 }
-            }else{
-                for(int i = 0; i < 12; i++){
-                    TargetSale targetSale = null;
-                    if(i+1 == request.getMonth()){
-                        targetSale = TargetSale.builder()
-                                .user(user)
-                                .product(product)
-                                .monthTarget(request.getMonthTarget())
-                                .month(i+1)
-                                .year(request.getYear())
-                                .build();
-                    }else{
-                        targetSale = TargetSale.builder()
-                                .user(user)
-                                .product(product)
-                                .monthTarget(0)
-                                .month(i+1)
-                                .year(request.getYear())
-                                .build();
-                    }
+            } else {
+                for (int i = 0; i < 12; i++) {
+                    int monthTarget = request.getMonthTargets().get(i);
+
+                    TargetSale targetSale = TargetSale.builder()
+                            .user(user)
+                            .product(product)
+                            .monthTarget(monthTarget)
+                            .month(i + 1)
+                            .year(request.getYear())
+                            .build();
 
                     targetSaleRepository.save(targetSale);
                 }
             }
-        }else{
-            if(request.getSum() != 0){
+        } else {
+            if (request.getSum() != 0) {
                 int sum = request.getSum() - (request.getSum() % 12);
+                for (int i = 0; i < 12; i++) {
+                    int newMonthTarget = sum / 12;
 
-                for(int i = 0; i < 12; i ++) {
-                    targetSales.get(i).setMonthTarget(sum/12);
-
-                    targetSaleRepository.save(targetSales.get(i));
-                }
-            }else{
-                for(int i = 0; i < 12; i++){
-                    if(targetSales.get(i).getMonth() == request.getMonth()){
-                        targetSales.get(i).setMonthTarget(request.getMonthTarget());
-
+                    if (targetSales.get(i).getMonthTarget() != newMonthTarget) {
+                        targetSales.get(i).setMonthTarget(newMonthTarget);
                         targetSaleRepository.save(targetSales.get(i));
+                    }
+                }
+            } else {
+                for (int i = 0; i < 12; i++) {
+                    int newMonthTarget = 0;
+                    if (request.getMonthTargets() != null && request.getMonthTargets().size() > i) {
+                        if (request.getMonthTargets().get(i) == null) {
+                            newMonthTarget = 0;
+                        } else {
+                            newMonthTarget = request.getMonthTargets().get(i);
+                        }
+
+                        if (targetSales.get(i).getMonthTarget() != newMonthTarget) {
+                            targetSales.get(i).setMonthTarget(newMonthTarget);
+                            targetSaleRepository.save(targetSales.get(i));
+                        }
                     }
                 }
             }
         }
-
     }
 
     @Override
-    public List<TargetSaleResponseDto> getTargetSaleByUserId(Long userNo, int year) {
-        User user = userRepository.getReferenceById(userNo);
+    public List<TargetSaleResponseDto> getTargetSaleByUserName(String userName, int year) {
 
-        if(!userRepository.existsById(userNo)){
+        User user = userRepository.getUserByName(userName);
+
+        if(user == null){
             throw new BaseException(USER_NOT_EXIST);
         }
 
@@ -123,5 +124,10 @@ public class TargetSaleServiceImpl implements TargetSaleService{
         return targetSales.stream()
                 .map(targetSale -> new TargetSaleResponseDto(targetSale))
                 .collect(Collectors.toList());
+    }
+
+    @Transactional(readOnly = true)
+    public TargetSalesStatusDto getTargetSalesStatus(SearchCond searchCond) {
+        return targetSaleRepository.findTargetSalesStatus(searchCond);
     }
 }
