@@ -112,7 +112,7 @@ public class EstimateService {
         Optional.ofNullable(estimateRequestDto.getSupplyPrice()).ifPresent(estimate::setSupplyPrice);
         Optional.ofNullable(estimateRequestDto.getTax()).ifPresent(estimate::setTax);
         Optional.ofNullable(estimateRequestDto.getTotalPrice()).ifPresent(estimate::setTotalPrice);
-        Optional.ofNullable(estimateRequestDto.getNote()).ifPresent(estimate::setNote);
+        Optional.of(estimateRequestDto.getNote()).ifPresent(estimate::setNote);
 
 
         if (estimateRequestDto.getEstProducts() != null) {
