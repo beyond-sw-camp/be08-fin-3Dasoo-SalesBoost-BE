@@ -12,4 +12,6 @@ public interface SubProcessService {
     void deleteSubProcessByNo(Long no);
 
     void updateSubProcessByNo(Long no, SubProcessRequestDto request);
+
+    List<SubProcessResponseDto> getAllSubProcess();
 }

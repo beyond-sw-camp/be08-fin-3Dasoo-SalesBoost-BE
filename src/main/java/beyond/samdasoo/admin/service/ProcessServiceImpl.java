@@ -41,7 +41,7 @@ public class ProcessServiceImpl implements ProcessService {
         Process process = Process.builder()
                 .processName(request.getProcessName())
                 .isDefault(request.getIsDefault())
-                .expectedDuration(request.getExpectedDuration())
+                .expectedDuration(0)
                 .description(request.getDescription())
                 .build();
 

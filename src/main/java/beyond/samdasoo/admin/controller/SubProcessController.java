@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/subprocesses")
+@RequestMapping("/api/admin/subprocesses")
 @Tag(name="SubProcess APIs",description = "하위 프로세스 관련 API")
 public class SubProcessController {
 
