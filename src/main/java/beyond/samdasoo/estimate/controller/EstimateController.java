@@ -1,6 +1,7 @@
 package beyond.samdasoo.estimate.controller;
 
 import beyond.samdasoo.common.response.BaseResponse;
+import beyond.samdasoo.estimate.dto.CreateEstimateDto;
 import beyond.samdasoo.estimate.dto.EstimateRequestDto;
 import beyond.samdasoo.estimate.dto.EstimateResponseDto;
 import beyond.samdasoo.estimate.service.EstimateService;
@@ -26,8 +27,8 @@ public class EstimateController {
 
     @PostMapping
     @Operation(summary = "견적 등록",description = "새로운 견적 건을 등록")
-    public BaseResponse<EstimateResponseDto> createEstimate(@RequestBody EstimateRequestDto estimateRequestDto) {
-        EstimateResponseDto responseDto = estimateService.createEstimate(estimateRequestDto);
+    public BaseResponse<EstimateResponseDto> createEstimate(@RequestBody CreateEstimateDto createEstimateDto) {
+        EstimateResponseDto responseDto = estimateService.createEstimate(createEstimateDto);
         return new BaseResponse<>(responseDto);
     }
 
