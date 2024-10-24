@@ -3,6 +3,7 @@ package beyond.samdasoo.estimate.dto;
 import lombok.Data;
 
 import java.time.LocalDate;
+import java.util.List;
 
 @Data
 public class EstimateRequestDto {
@@ -17,4 +18,7 @@ public class EstimateRequestDto {
     private int totalPrice;
     private String note;
     private Long propNo;
+    private List<CreateEstProductDto> estProducts;
+
+
 }
