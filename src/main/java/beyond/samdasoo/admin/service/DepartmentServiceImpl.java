@@ -26,13 +26,14 @@ public class DepartmentServiceImpl implements DepartmentService{
     @Override
     public void addDepartment(DepartmentRequestDto request) {
         boolean exists = departmentRepository.existsByDeptName(request.getDeptName());
-        Optional<Department> upprDepartment = null;
 
-        if(exists){
+        if (exists) {
             throw new BaseException(DEPARTMENT_ALREADY_EXIST);
         }
 
-        if(request.getUpperDeptName() != null) {
+        Optional<Department> upprDepartment = Optional.empty();
+
+        if (!request.getUpperDeptName().isEmpty()) {
             upprDepartment = departmentRepository.findByDeptName(request.getUpperDeptName());
 
             if (upprDepartment.isEmpty()) {
@@ -42,7 +43,7 @@ public class DepartmentServiceImpl implements DepartmentService{
 
         Department department = Department.builder()
                 .engName(request.getEngName())
-                .parent(upprDepartment.get())
+                .parent(upprDepartment.orElse(null))
                 .deptName(request.getDeptName())
                 .deptCode(request.getDeptCode())
                 .deptHead(request.getDeptHead())

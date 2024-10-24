@@ -15,7 +15,7 @@ import java.util.List;
 
 @Tag(name="Department APIs",description = "부서 관련 API")
 @RestController
-@RequestMapping("/api/departments")
+@RequestMapping("/api/admin/departments")
 public class DepartmentController {
     @Autowired
     private DepartmentService departmentService;
