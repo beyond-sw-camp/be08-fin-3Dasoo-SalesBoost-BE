@@ -60,6 +60,6 @@ public class Sales extends BaseEntity {
     private String note;
 
     @JoinColumn(name = "contract_no", nullable = false)
-    @OneToOne
+    @ManyToOne
     private Contract contract;
 }

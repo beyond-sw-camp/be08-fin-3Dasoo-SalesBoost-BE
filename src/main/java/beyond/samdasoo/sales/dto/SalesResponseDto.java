@@ -42,4 +42,5 @@ public class SalesResponseDto {
         this.note = sales.getNote();
         this.contractNo = sales.getContract().getContractNo();
     }
+
 }
