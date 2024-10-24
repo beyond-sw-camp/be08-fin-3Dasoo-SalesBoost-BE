@@ -2,11 +2,15 @@ package beyond.samdasoo.todo.dto;
 
 import beyond.samdasoo.todo.entity.TodoStatus;
 import io.swagger.v3.oas.annotations.media.Schema;
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.time.LocalDate;
 
 @Data
+@NoArgsConstructor
+@AllArgsConstructor
 public class TodoUpdateDto {
 
     @Schema(description = "캘린더 번호", defaultValue = "1")
