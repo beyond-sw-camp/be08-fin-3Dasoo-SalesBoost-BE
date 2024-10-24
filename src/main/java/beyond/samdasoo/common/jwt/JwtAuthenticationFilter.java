@@ -1,8 +1,10 @@
 package beyond.samdasoo.common.jwt;
 
 import beyond.samdasoo.common.response.BaseResponseStatus;
+import beyond.samdasoo.user.CustomUserDetails;
 import beyond.samdasoo.user.dto.UserRole;
 import beyond.samdasoo.user.entity.User;
+import beyond.samdasoo.user.service.CustomUserDetailService;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -13,6 +15,7 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.util.PatternMatchUtils;
 import org.springframework.web.filter.OncePerRequestFilter;
 import java.io.IOException;
@@ -23,6 +26,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter { // JWT ê²€ì¦
 
     private static String[] whiteList={"/api/users/login","/api/users/join","/api/users/reissue"};
     private final JwtTokenProvider jwtTokenProvider;
+    private final CustomUserDetailService customUserDetailService;
     String jwtToken;
 
 
@@ -73,7 +77,10 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter { // JWT ê²€ì¦
         String email = jwtTokenProvider.getEmail(token);
         UserRole userRole = UserRole.valueOf(jwtTokenProvider.getRole(token));
 
-        Authentication authToken = new UsernamePasswordAuthenticationToken(email,null,null);
+        UserDetails userDetails = customUserDetailService.loadUserByUsername(jwtTokenProvider.getEmail(token));
+
+        Authentication authToken = new UsernamePasswordAuthenticationToken(email,null,userDetails.getAuthorities());
         SecurityContextHolder.getContext().setAuthentication(authToken);
+
     }
 }

@@ -12,7 +12,7 @@ public class LoginUserRes {
     private String name;
     private String email;
     private UserRole role;
-    private String dept;
+  //  private String dept;
     private String accessToken;
 
 

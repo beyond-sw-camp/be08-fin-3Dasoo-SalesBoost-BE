@@ -4,6 +4,8 @@ import beyond.samdasoo.common.exception.JwtAuthenticationEntrypoint;
 import beyond.samdasoo.common.filter.AuthenticationFilter;
 import beyond.samdasoo.common.jwt.JwtAuthenticationFilter;
 import beyond.samdasoo.common.jwt.JwtTokenProvider;
+import beyond.samdasoo.common.jwt.service.RefreshTokenService;
+import beyond.samdasoo.common.utils.CookieUtil;
 import beyond.samdasoo.user.CustomUserDetails;
 import beyond.samdasoo.user.service.CustomUserDetailService;
 import jdk.jfr.Enabled;
@@ -41,6 +43,8 @@ public class SecurityConfig {
     private final JwtTokenProvider jwtTokenProvider;
     private final JwtAuthenticationEntrypoint jwtAuthenticationEntrypoint;
     private final CustomUserDetailService customUserDetailService;
+    private final CookieUtil cookieUtil;
+    private final RefreshTokenService refreshTokenService;
 
 
     @Bean
@@ -78,7 +82,7 @@ public class SecurityConfig {
  //               .requestMatchers("/api/**","/swagger-ui/**", "/v3/api-docs/**").permitAll() // 테스트용
                 .requestMatchers("/swagger-ui/**", "/v3/api-docs/**","/test/**","/api/users/login","/api/users/join",
                         "/api/users/reissue","/api/users/email/**").permitAll()
-                                .requestMatchers("/admin/**").hasRole("ADMIN")
+                                .requestMatchers("/api/admin/**").hasRole("ADMIN")
                 .anyRequest().authenticated()
           );
 
@@ -91,11 +95,11 @@ public class SecurityConfig {
                 .exceptionHandling(httpSecurityExceptionHandlingConfigurer
                         -> httpSecurityExceptionHandlingConfigurer.authenticationEntryPoint(jwtAuthenticationEntrypoint));
 
-        AuthenticationFilter authenticationFilter = new AuthenticationFilter();
+        AuthenticationFilter authenticationFilter = new AuthenticationFilter(authenticationManager(httpSecurity.getSharedObject(AuthenticationConfiguration.class)), jwtTokenProvider,cookieUtil,refreshTokenService);
         authenticationFilter.setFilterProcessesUrl("/api/users/login"); // 로그인 경로 재설정
         httpSecurity.addFilterAt(authenticationFilter, UsernamePasswordAuthenticationFilter.class);
         httpSecurity
-                .addFilterBefore(new JwtAuthenticationFilter(jwtTokenProvider), UsernamePasswordAuthenticationFilter.class);
+                .addFilterBefore(new JwtAuthenticationFilter(jwtTokenProvider,customUserDetailService), UsernamePasswordAuthenticationFilter.class);
 
         return httpSecurity.build();
     }
